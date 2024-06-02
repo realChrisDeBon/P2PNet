@@ -7,6 +7,9 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace P2PNet.NetworkPackets { 
+    /// <summary>
+    /// Standard packet used to relay identifying information through out peer network.
+    /// </summary>
     public class IdentifierPacket
     {
         public string Message { get; set; }

@@ -4,10 +4,28 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+	<IsPackable>true</IsPackable>
+	<Version>1.0.0.3</Version>
+	<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+	<Title>P2PNet</Title>
+	<Company>CD</Company>
+	<Description> P2PNet is a peer-to-peer faciliation library with the goal of seamless peer discovery, secure encryption, and distributed data exchange. </Description>
+	<PackageReleaseNotes>LAN discovery and faciliation in good standing.
+Focus shift to WAN discovery and heightened encryption.</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="ConsoleDebugger" Version="1.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="P2PNet.Distribution.Distribution_Protocol">
+      <Static>True</Static>
+    </Using>
+    <Using Include="System.Timers.Timer">
+      <Alias>Timer</Alias>
+    </Using>
   </ItemGroup>
 
 </Project>

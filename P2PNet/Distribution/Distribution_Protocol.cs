@@ -10,6 +10,10 @@ using System.Threading.Tasks;
 
 namespace P2PNet.Distribution
     {
+    /// <summary>
+    /// The Distribution_Protocol provides uniformity with data exchange, packet formatting, and other functions within the peer-to-peer network.
+    /// This should be included as a static reference.
+    /// </summary>
     public static class Distribution_Protocol
         {
         public struct MessageTags
@@ -61,6 +65,13 @@ namespace P2PNet.Distribution
                 { DataFormat.Task, new MessageTags() { OpeningTag = "<Task>", ClosingTag = "</Task>" } },
             };
 
+        /// <summary>
+        /// Removes the <see cref="DataFormatTagMap"/> tags that are placed in the byte[] payload of the <see cref="DataTransmissionPacket"/>.
+        /// These tags are automatically placed upon instantiation in the constructor to helps identify and handle the payload throughout its lifecycle.
+        /// </summary>
+        /// <param name="packet">The packet whose payloads needs extracting</param>
+        /// <returns>The payload of the packet with the opening and closing data format tags removed (ie the raw data).</returns>
+        /// <exception cref="InvalidDataException"></exception>
         public static byte[] UnwrapData(DataTransmissionPacket packet)
             {
 
@@ -119,7 +130,27 @@ namespace P2PNet.Distribution
             { typeof(DataTransmissionPacket), new DataTransmissionPacketContext().GetTypeInfo(typeof(DataTransmissionPacket)) },
         };
 
-        internal static string Serialize<T>(T obj)
+        /// <summary>
+        /// This implementation of JSON serialization is used specifically for the following types:
+        /// <list type="bullet">
+        /// <item>
+        /// <description>DataTransmissionPacket</description>
+        /// </item>
+        /// <item>
+        /// <description>CollectionSharePacket</description>
+        /// </item>
+        /// <item>
+        /// <description>IdentifierPacket</description>
+        /// </item>
+        /// <item>
+        /// <description>PureMessagePacket</description>
+        /// </item>
+        /// </list>
+        /// </summary>
+        /// <typeparam name="T">The Type of the object being serialized.</typeparam>
+        /// <param name="obj">The target objectt being serialized.</param>
+        /// <returns>Returns a JSON serialized string of the target object.</returns>
+        public static string Serialize<T>(T obj)
             {
             if (!_serializerContexts.TryGetValue(typeof(T), out var context))
                 {
@@ -129,7 +160,27 @@ namespace P2PNet.Distribution
             return System.Text.Json.JsonSerializer.Serialize(obj, context);
             }
 
-        internal static T Deserialize<T>(string json)
+        /// <summary>
+        /// This implementation of JSON deserialization is used specifically for the following types:
+        /// <list type="bullet">
+        /// <item>
+        /// <description>DataTransmissionPacket</description>
+        /// </item>
+        /// <item>
+        /// <description>CollectionSharePacket</description>
+        /// </item>
+        /// <item>
+        /// <description>IdentifierPacket</description>
+        /// </item>
+        /// <item>
+        /// <description>PureMessagePacket</description>
+        /// </item>
+        /// </list>
+        /// </summary>
+        /// <typeparam name="T">The Type of the object being deserialized.</typeparam>
+        /// <param name="json">The serialized string representation of the Type.</param>
+        /// <returns>Returns a Type of object from a JSON serialized string.</returns>
+        public static T Deserialize<T>(string json)
             {
             if (!_serializerContexts.TryGetValue(typeof(T), out var context))
                 {

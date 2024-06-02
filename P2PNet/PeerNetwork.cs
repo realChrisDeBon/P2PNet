@@ -1,25 +1,25 @@
 ﻿#if DEBUG
 global using static ConsoleDebugger.ConsoleDebugger;
 #endif
-using static P2PNet.Distribution.DistributionHandler;
 using P2PNet.DiscoveryChannels;
 using P2PNet.Distribution;
 using P2PNet.NetworkPackets;
 using P2PNet.Peers;
+using System;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
-using System.Security.Cryptography.X509Certificates;
-
 
 namespace P2PNet
     {
-    static class PeerNetwork
+    public static class PeerNetwork
         {
 
         // Some public facing settings for better user-defined control
 
-        public static string NAME = "Test"; 
+        public static string NAME = "Test"; // placeholder, ignore for now
+        static bool isBroadcaster = false;
+        static Random random = new Random();
 
         /// <summary>
         /// Indicates whether to automatically throttle on connect.
@@ -191,7 +191,7 @@ namespace P2PNet
 
             cleanupTimer.Elapsed += DiscernPeerChannels;
             cleanupTimer.Interval = 7000;
-            cleanupTimer.Stop();
+            cleanupTimer.Stop(); // redundant engineering at its finest
             }
 
         static async Task AcceptClientsAsync()
@@ -392,7 +392,8 @@ namespace P2PNet
 
         #region Bootup
 
-        public static void LoadLocalAddresses()
+        // Scans all network interfaces to get some useful info (ie multicast, public facing IP, ect)
+        private static void LoadLocalAddresses()
             {
             // Get the first available network interface
             NetworkInterface[] networkInterfaces = NetworkInterface.GetAllNetworkInterfaces();
@@ -462,10 +463,46 @@ namespace P2PNet
                 }
             }
 
+        /// <summary>
+        /// Begin LAN broadcast and discovery.
+        /// </summary>
+        public static void BootDiscoveryChannels()
+            {
+            cleanupTimer.Start();
+            DetermineRole();
+
+            foreach (int port in designatedPorts)
+                {
+                LocalChannel localChannel = new LocalChannel(port);
+                ActiveLocalChannels.Add(localChannel);
+                }
+            InitiateLocalChannels(broadcasterPort);
+
+
+            foreach (IPAddress multicaster in multicast_addresses)
+                {
+                MulticastChannel multicastChannel = new MulticastChannel(multicaster);
+                ActiveMulticastChannels.Add(multicastChannel);
+                }
+            InitializeMulticaseChannels();
+            }
+
+        static void DetermineRole()
+            {
+            broadcasterPort = designatedPorts[random.Next(designatedPorts.Count)];
+            isBroadcaster = true;  // Just for testing, in real-world you'd have more logic
+#if DEBUG
+            Console.WriteLine("Role: {0}, Port: {1}", isBroadcaster ? "Broadcaster" : "Listener", broadcasterPort);
+            Console.Title = ($"Broadcast port: {broadcasterPort}");
+#endif
+            }
+
         #endregion
 
         #region Routines
-        public static void DiscernPeerChannels(object sender, System.Timers.ElapsedEventArgs e)
+
+        // Cleanup likely-inactive peers
+        private static void DiscernPeerChannels(object sender, System.Timers.ElapsedEventArgs e)
             {
 #if DEBUG
             DebugMessage("DISCERNING CHANNELS", ConsoleColor.Magenta);
@@ -479,7 +516,7 @@ namespace P2PNet
 
                     foreach (PeerChannel channel in ActivePeerChannels)
                         {
-                        if (DateTime.Now - channel.lastIncomingReceived > TimeSpan.FromMinutes(1))
+                        if (DateTime.Now - channel.lastIncomingReceived > TimeSpan.FromMinutes(1)) // No activity for 60 seconds ~ subject to change
                             {
                             peersToRemove.Add(channel);
                             }
@@ -508,7 +545,7 @@ namespace P2PNet
                             {
                             channel.TrustPeer();
                             }
-#if TESTING
+#if DEBUG
                         DebugMessage($"Trusting peer: {channel.peer.IP.ToString()} port {channel.peer.Port}", ConsoleColor.Cyan);
 #endif
 

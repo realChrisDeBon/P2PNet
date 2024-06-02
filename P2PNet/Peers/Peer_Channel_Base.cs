@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static P2PNet.Distribution.Distribution_Protocol;
 
 namespace P2PNet.Peers
     {

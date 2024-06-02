@@ -1,7 +1,6 @@
 ﻿using static P2PNet.PeerNetwork;
 using P2PNet.NetworkPackets;
 using static P2PNet.Distribution.DistributionHandler;
-using static P2PNet.Distribution.Distribution_Protocol;
 using System;
 using System.Collections.Generic;
 using System.Net;

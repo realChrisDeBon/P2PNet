@@ -10,10 +10,11 @@ using static P2PNet.PeerNetwork;
 
 namespace P2PNet.DiscoveryChannels
 {
-
+    /// <summary>
+    /// Conducts LAN casting to broadcast address to broaden network.
+    /// </summary>
     internal class LocalChannel : Discovery_Channel_Base
     {
-
         public int DESIGNATED_PORT { get; set; }
         public LocalChannel(int port_designation)
         {
