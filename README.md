@@ -16,12 +16,17 @@ P2PNet is meant to facilitate true serverless peer to peer networking. This is a
 
 **Note:** DistributionHandler is still in mid development and more functionality will be rolled out. In its present state it works to transmit, recieve, and store.
 
-![Static Badge](https://img.shields.io/badge/WAN_discovery-TODO-orange)
+![Static Badge](https://img.shields.io/badge/WAN_discovery-IN_PROGRESS-yellow)
 
-**Note:** WAN discovery will likely entail a blend of spaghetti flinging, port scanning, and while not in the spirit of 'true serverless' in the most purist sense, an extension library for setting up trusted nodes with API endpoints to serve as bootstraps, alongside hardcoded bootstraps.
+**Note:** WAN discovery still in early development. See [P2PNet.Bootstrap](https://github.com/realChrisDeBon/P2PNet.Bootstrap)
 
 Roadmap:
 1. Short term implementation to improve reliability and stability of peer connections: ~~**[1]** Rotating broadcast port~~ ~~**[2]** Discern excess local connection and trim them~~ ~~**[3]** Variabalize rate of broadcasting as to a sine wave rather than constant heart beat to lighten computation load~~
 2. Full implementation of duty packets (CollectionSharePacket and DisconnectPacket) to enchance peer discovery and connection integrity.
 3. ~~Medium term finalization of DistributionHandler to faciliate data transmission among peers.~~ 
-4. Long term implementation of WAN discovery mechanism(s).
+4. Initial WAN discovery mechanisms:
+   * [P2PNet.Bootstrap](https://github.com/realChrisDeBon/P2PNet.Bootstrap) ![Static Badge](https://img.shields.io/badge/non_working-IN_PROGRESS-yellow)
+   * P2PNet.TURN ![Static Badge](https://img.shields.io/badge/non_working-IN_PLANNING-orange)
+   * P2PNet.Widescan ![Static Badge](https://img.shields.io/badge/non_working-IN_PLANNING-orange)
+5. Thorough documentation published.
+6. Public NuGet launch.
