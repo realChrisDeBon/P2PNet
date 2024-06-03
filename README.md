@@ -1,8 +1,8 @@
-# P2PConnect
+# P2PNet
 <p align="center">
-    <img src="https://github.com/realChrisDeBon/P2PConnect/assets/97779307/f0525c45-5229-4772-96f2-017afffab52f" width="175" height="175" alt="p2pconnect logo">
+    <img src="https://github.com/realChrisDeBon/P2PNet/assets/97779307/36f3441a-2905-476e-ac6a-c5fa8a9112b0" width="175" height="175" alt="p2pnet logo">
 </p>
-P2PConnect is meant to facilitate true serverless peer to peer networking. This is an early stage project. Initial peer discovery is initiated as the client randomly selects one port of a fixed collection to be the designated broadcast port, while listening on all the others. The pool of ports are, theoretically, the same for all clients, so as they begin to broadcast to the network they will at some point reach  each other. Multicast is also utilized if available to the network. The clients are broadcasting a unique identifier that tells the reciever [1] Whether or not the packet came from a trusted source [2] How to connect to the sender, which the receiver can use to then establish a reliable TCP connection. Once a TCP connection is esablished, data transmission can begin.
+P2PNet is meant to facilitate true serverless peer to peer networking. This is an early stage project. Initial peer discovery is initiated as the client randomly selects one port of a fixed collection to be the designated broadcast port, while listening on all the others. The pool of ports are, theoretically, the same for all clients, so as they begin to broadcast to the network they will at some point reach  each other. Multicast is also utilized if available to the network. The clients are broadcasting a unique identifier that tells the reciever [1] Whether or not the packet came from a trusted source [2] How to connect to the sender, which the receiver can use to then establish a reliable TCP connection. Once a TCP connection is esablished, data transmission can begin.
 
 ![Static Badge](https://img.shields.io/badge/LAN_discovery-working-darkgreen)
 
@@ -14,7 +14,7 @@ P2PConnect is meant to facilitate true serverless peer to peer networking. This 
 
 ![Static Badge](https://img.shields.io/badge/data_transmission-mostly_working-darkgreen)
 
-**Note:** DistributionHandler is still in early development and is mostly just scaffolding for now.
+**Note:** DistributionHandler is still in mid development and more functionality will be rolled out. In its present state it works to transmit, recieve, and store.
 
 ![Static Badge](https://img.shields.io/badge/WAN_discovery-TODO-orange)
 
@@ -23,5 +23,5 @@ P2PConnect is meant to facilitate true serverless peer to peer networking. This 
 Roadmap:
 1. Short term implementation to improve reliability and stability of peer connections: ~~**[1]** Rotating broadcast port~~ ~~**[2]** Discern excess local connection and trim them~~ ~~**[3]** Variabalize rate of broadcasting as to a sine wave rather than constant heart beat to lighten computation load~~
 2. Full implementation of duty packets (CollectionSharePacket and DisconnectPacket) to enchance peer discovery and connection integrity.
-3. Medium term finalization of DistributionHandler to faciliate data transmission among peers.
+3. ~~Medium term finalization of DistributionHandler to faciliate data transmission among peers.~~ 
 4. Long term implementation of WAN discovery mechanism(s).
