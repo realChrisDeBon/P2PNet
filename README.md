@@ -2,7 +2,7 @@
 <p align="center">
     <img src="https://github.com/realChrisDeBon/P2PNet/assets/97779307/36f3441a-2905-476e-ac6a-c5fa8a9112b0" width="175" height="175" alt="p2pnet logo">
 </p>
-P2PNet is meant to facilitate true serverless peer to peer networking. This is an early stage project. Initial peer discovery is initiated as the client randomly selects one port of a fixed collection to be the designated broadcast port, while listening on all the others. The pool of ports are, theoretically, the same for all clients, so as they begin to broadcast to the network they will at some point reach  each other. Multicast is also utilized if available to the network. The clients are broadcasting a unique identifier that tells the reciever [1] Whether or not the packet came from a trusted source [2] How to connect to the sender, which the receiver can use to then establish a reliable TCP connection. Once a TCP connection is esablished, data transmission can begin.
+P2PNet is meant to facilitate true serverless peer to peer networking. This is an early-stage project. Initial peer discovery is initiated at the local area network level by the PeerNetwork. The PeerNetwork will be able to use a range of interoperable WAN discovery mechanisms to expand and grow the network, such as bootstrapping and TURN. Implementing the P2PNet library, you will be able to integrate your own verification steps and protocols to validate discovered peer members before establishing an enhanced connection that will facilitate the exchange of data and information.
 
 ![Static Badge](https://img.shields.io/badge/LAN_discovery-working-darkgreen)
 
