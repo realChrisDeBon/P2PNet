@@ -19,20 +19,19 @@ namespace P2PNet
 
         public static string NAME = "Test"; // placeholder, ignore for now
         static bool isBroadcaster = false;
-        static Random random = new Random();
 
         /// <summary>
-        /// Indicates whether to automatically throttle on connect.
+        /// Indicates whether to automatically throttle outbound broadcast rate when a new peer is discovered.
         /// </summary>
         public static bool AutoThrottleOnConnect { get; set; } = true;
 
         /// <summary>
-        /// Gets or sets the list of designated ports.
+        /// Gets or sets the list of designated ports for broadcast and discovery.
         /// </summary>
         public static List<int> designatedPorts { get; set; } = new List<int> { 8001, 8002, 8003 }; // Your designated ports
 
         /// <summary>
-        /// Gets or sets the broadcaster port.
+        /// Gets or sets the broadcaster port designated for outbound sending.
         /// </summary>
         public static int broadcasterPort;
 
@@ -51,7 +50,7 @@ namespace P2PNet
         private static TcpListener listener;
 
         /// <summary>
-        /// Gets the listening port for inbound connections.
+        /// Gets the listening port for inbound TCP peer connections.
         /// </summary>
         public static int ListeningPort { get; private set; }
 
@@ -62,6 +61,7 @@ namespace P2PNet
 
         /// <summary>
         /// Gets or sets the list of known peers.
+        /// KnownPeers do not necessarily have established trust to exchange extensive data and information.
         /// </summary>
         public static List<IPeer> KnownPeers
             {
@@ -76,21 +76,28 @@ namespace P2PNet
             }
 
         /// <summary>
-        /// Queue of inbound connecting peers.
+        /// Queue of inbound connecting peers that have not been assigned a peer channel.
+        /// Pass these peers through your verification pipeline and/or <see cref="AddPeer(IPeer, TcpClient)"/> once verified.
         /// </summary>
         /// <remarks>
         /// Inbound connections opened through <see cref="ListeningPort"/> will automatically be enqueued here. This allows you to implement any additional verification you may want in place before calling <see cref="AddPeer(IPeer, TcpClient)"/> and opening a PeerChannel
         /// </remarks>
         public static Queue<GenericPeer> InboundConnectingPeers = new Queue<GenericPeer>();
 
-        internal static volatile List<PeerChannel> ActivePeerChannels = new List<PeerChannel>();
+        /// <summary>
+        /// All active <see cref="PeerChannel"/> connections are stored here. 
+        /// </summary>
+        /// <remarks>
+        /// Inbound connections opened through <see cref="ListeningPort"/> will automatically be enqueued here. This allows you to implement any additional verification you may want in place before calling <see cref="AddPeer(IPeer, TcpClient)"/> and opening a PeerChannel
+        /// </remarks>
+        public static volatile List<PeerChannel> ActivePeerChannels = new List<PeerChannel>();
         private static List<LocalChannel> ActiveLocalChannels = new List<LocalChannel>();
         private static List<MulticastChannel> ActiveMulticastChannels = new List<MulticastChannel>();
 
         private static List<IPAddress> multicast_addresses = new List<IPAddress>();
         #endregion
 
-        public static void InitiateLocalChannels(int designated_broadcast_port)
+        private static void InitiateLocalChannels(int designated_broadcast_port)
             {
             Queue<LocalChannel> badChannels = new Queue<LocalChannel>();
             bool error_occurred = false;
@@ -130,7 +137,7 @@ namespace P2PNet
                 ActiveLocalChannels.Remove(badChannels.Dequeue());
                 }
             }
-        public static void InitializeMulticaseChannels()
+        private static void InitializeMulticaseChannels()
             {
             Queue<MulticastChannel> badChannels = new Queue<MulticastChannel>();
             foreach (MulticastChannel multicastChannel in ActiveMulticastChannels)
@@ -218,7 +225,8 @@ namespace P2PNet
             }
 
         /// <summary>
-        /// Adds a peer to the known peers list and establishes a connection if a client is not provided.
+        /// Adds a peer to the <see cref="KnownPeers"/> list and establishes a connection if one is not provided.
+        /// A new peer channel will be automatically added to <see cref="ActivePeerChannels"/> with standard non-elevated permissions.
         /// </summary>
         /// <param name="peer">The peer to add.</param>
         /// <param name="client">The TCP client associated with the peer.</param>
@@ -298,7 +306,7 @@ namespace P2PNet
             }
 
         /// <summary>
-        /// Removes a peer from the active peer channels and known peers lists.
+        /// Terminates a peer connection and removes it from <see cref="KnownPeers"/> and <see cref="ActivePeerChannels"/>.
         /// </summary>
         /// <param name="channel">The peer channel to remove.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains a boolean indicating success or failure.</returns>
@@ -393,7 +401,10 @@ namespace P2PNet
         #region Bootup
 
         // Scans all network interfaces to get some useful info (ie multicast, public facing IP, ect)
-        private static void LoadLocalAddresses()
+        /// <summary>
+        /// Scans all network interface devices and collects essential information needed for peer network.
+        /// </summary>
+        public static void LoadLocalAddresses()
             {
             // Get the first available network interface
             NetworkInterface[] networkInterfaces = NetworkInterface.GetAllNetworkInterfaces();
@@ -489,7 +500,7 @@ namespace P2PNet
 
         static void DetermineRole()
             {
-            broadcasterPort = designatedPorts[random.Next(designatedPorts.Count)];
+            broadcasterPort = designatedPorts[randomizer.Next(designatedPorts.Count)];
             isBroadcaster = true;  // Just for testing, in real-world you'd have more logic
 #if DEBUG
             Console.WriteLine("Role: {0}, Port: {1}", isBroadcaster ? "Broadcaster" : "Listener", broadcasterPort);
