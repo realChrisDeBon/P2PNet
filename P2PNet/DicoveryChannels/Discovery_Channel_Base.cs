@@ -61,7 +61,7 @@ namespace P2PNet.DicoveryChannels
         public static Queue<int> dutypackets = new Queue<int>();
         internal static Random randomizer = new Random();
         private static System.Timers.Timer portRotationTimer;
-        public readonly IdentifierPacket packet_ = new IdentifierPacket(NAME, ListeningPort, publicip);
+        public readonly IdentifierPacket packet_ = new IdentifierPacket("IP", ListeningPort, PublicIPV4Address);
         public static CollectionSharePacket collectionpacket_;
 
         public static IPEndPoint listenerendpoint;
@@ -116,20 +116,15 @@ namespace P2PNet.DicoveryChannels
             }
         private static void RotatePort(object sender, System.Timers.ElapsedEventArgs e)
             {
-            int currentDesgPort = broadcasterPort;
-            while (broadcasterPort == currentDesgPort) // make sure we get a new port
+            int currentDesgPort = BroadcasterPort;
+            while (BroadcasterPort == currentDesgPort) // make sure we get a new port
                 {
-                broadcasterPort = designatedPorts[randomizer.Next(designatedPorts.Count)];
+                BroadcasterPort = DesignatedPorts[randomizer.Next(DesignatedPorts.Count)];
                 }
             portRotationTimer.Interval = RandomizeInterval();
 #if DEBUG
-            DebugMessage($"Rotated to new port: {broadcasterPort}", MessageType.General);
+            DebugMessage($"Rotated to new port: {BroadcasterPort}", MessageType.General);
 #endif
-            }
-
-        public static bool Checker(string message)
-            {
-            return message == NAME;
             }
 
         public int CreateTimeVariation(int min, int max) { return randomizer.Next(min, max); }

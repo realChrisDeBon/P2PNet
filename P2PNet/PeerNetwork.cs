@@ -5,10 +5,13 @@ using P2PNet.DiscoveryChannels;
 using P2PNet.Distribution;
 using P2PNet.NetworkPackets;
 using P2PNet.Peers;
+using SharpPcap;
+using SharpPcap.LibPcap;
 using System;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
+using System.Threading.Channels;
 
 namespace P2PNet
     {
@@ -17,8 +20,8 @@ namespace P2PNet
 
         // Some public facing settings for better user-defined control
 
-        public static string NAME = "Test"; // placeholder, ignore for now
         static bool isBroadcaster = false;
+        private static Random randomizer = new Random();
 
         /// <summary>
         /// Indicates whether to automatically throttle outbound broadcast rate when a new peer is discovered.
@@ -28,33 +31,107 @@ namespace P2PNet
         /// <summary>
         /// Gets or sets the list of designated ports for broadcast and discovery.
         /// </summary>
-        public static List<int> designatedPorts { get; set; } = new List<int> { 8001, 8002, 8003 }; // Your designated ports
+        public static List<int> DesignatedPorts { get; set; } = new List<int> { 8001, 8002, 8003 }; // Your designated ports
 
         /// <summary>
         /// Gets or sets the broadcaster port designated for outbound sending.
         /// </summary>
-        public static int broadcasterPort;
+        public static int BroadcasterPort;
 
         /// <summary>
-        /// Gets the public IP address.
+        /// Gets the public IPv4 IP address.
         /// </summary>
-        public static IPAddress publicip;
+        public static IPAddress PublicIPV4Address;
+
+        /// <summary>
+        /// Gets the public IPv6 IP address.
+        /// </summary>
+        public static IPAddress PublicIPV6Address;
+        private static bool IPv6AddressFound = false;
 
         /// <summary>
         /// Gets the system MAC address.
         /// </summary>
-        public static string MAC;
+        public static PhysicalAddress MAC;
 
-
-        private static Random randomizer = new Random();
         private static TcpListener listener;
+
+        /// <summary>
+        /// Gets or sets whether a designated TCP port will be actively listening for and accepting inbound TCP peer connections.
+        /// The default is true, but you may want to toggle this for server instances that serve different network purposes.
+        /// </summary>
+        public static bool AcceptInboundPeers 
+            { 
+            get
+                {
+                return runningListener;
+                }
+            set
+                {
+                runningListener = value;
+                InboundToggle(value);
+                }
+            }
+        private static  bool runningListener = true;
+        private static void InboundToggle(bool status_)
+            {
+            if(status_ == true)
+                {
+                BeginAcceptingInboundPeers();
+                } else
+                {
+                StopAcceptingInboundPeers();
+                }
+            }
+
+        /// <summary>
+        /// Begins accepting inbound peers connections.
+        /// </summary>
+        public static void BeginAcceptingInboundPeers()
+            {
+            if (AcceptInboundPeers == true)
+                {
+                listener.Start();
+                Task.Run(() => AcceptClientsAsync());
+                } else
+                {
+#if DEBUG
+                DebugMessage("Attempt was made to start inbound listener while AcceptInboundPeers is false.", MessageType.Warning);
+#endif
+                }
+            }
+        
+        /// <summary>
+        /// Stops accepting inbound peer connections.
+        /// </summary>
+        public static void StopAcceptingInboundPeers()
+            {
+            listener.Stop();
+            if(AcceptInboundPeers == true)
+                {
+                AcceptInboundPeers = false; // redundant but never too careful
+                }
+            }
+
 
         /// <summary>
         /// Gets the listening port for inbound TCP peer connections.
         /// </summary>
         public static int ListeningPort { get; private set; }
 
+        /// <summary>
+        /// Get or set whether or not the cleanup timer will run on a regular interval.
+        /// Cleanup timer scans and removes peers that have been active for the duration
+        /// set by <see cref="PeerChannelCleanupDuration"/>
+        /// </summary>
+        public static bool RunCleanupTimer { get; set; } = true;
         private static System.Timers.Timer cleanupTimer = new System.Timers.Timer();
+
+        /// <summary>
+        /// The duration, in minutes, of how often a cleanup of peer channels will run.
+        /// This scan checks for likely inactive or disconnected peers, and removes them.
+        /// </summary>
+        public static int PeerChannelCleanupDuration { get; set; } = 2;
 
         #region Connection Collections
         private static volatile List<IPeer> activePeers_ = new List<IPeer>();
@@ -99,6 +176,12 @@ namespace P2PNet
 
         private static void InitiateLocalChannels(int designated_broadcast_port)
             {
+            if (AcceptInboundPeers == true)
+                {
+                listener.Start();
+                Task.Run(() => AcceptClientsAsync());
+                }
+
             Queue<LocalChannel> badChannels = new Queue<LocalChannel>();
             bool error_occurred = false;
             foreach (LocalChannel channel_ in ActiveLocalChannels)
@@ -190,20 +273,17 @@ namespace P2PNet
 
         static PeerNetwork()
             {
-            ListeningPort = randomizer.Next(8051, 9000);
+            ListeningPort = randomizer.Next(8051, 9000); // setup a port for listening
             listener = new TcpListener(IPAddress.Any, ListeningPort);
 
-            listener.Start();
-            Task.Run(() => AcceptClientsAsync());
-
             cleanupTimer.Elapsed += DiscernPeerChannels;
-            cleanupTimer.Interval = 7000;
-            cleanupTimer.Stop(); // redundant engineering at its finest
+            cleanupTimer.Interval = PeerChannelCleanupDuration;
+            cleanupTimer.Stop(); // redundant coding at its finest
             }
 
         static async Task AcceptClientsAsync()
             {
-            while (true)
+            while (AcceptInboundPeers == true)
                 {
                 TcpClient client = await listener.AcceptTcpClientAsync();
 
@@ -214,7 +294,6 @@ namespace P2PNet
 #if DEBUG
                     DebugMessage("Duplicate connection attempt from existing peer. Ignoring.", MessageType.Warning);
 #endif
-                    client.Dispose();
                     }
                 else
                     {
@@ -242,7 +321,7 @@ namespace P2PNet
 #endif
                 return;
                 }
-            else if (peer.IP.ToString() == publicip.ToString() && peer.Port == ListeningPort)
+            else if (peer.IP.ToString() == PublicIPV4Address.ToString() && peer.Port == ListeningPort)
                 {
 #if DEBUG
                 DebugMessage("Listener broadcasted to iteself.");
@@ -312,19 +391,11 @@ namespace P2PNet
         /// <returns>A task that represents the asynchronous operation. The task result contains a boolean indicating success or failure.</returns>
         public static async Task<bool> RemovePeer(PeerChannel channel)
             {
-            bool flawless = true;
+            bool flawless = true; // This is here for more intricate scenarios later
             try
                 {
 
                 channel.ClosePeerChannel();
-
-                // Close connections and stop tasks gracefully
-                channel.peer.Stream?.Close();
-                channel.peer.Client?.Close();
-
-                // Signal tasks/threads linked to the PeerChannel to stop 
-                KnownPeers.RemoveAll(deadconnection => deadconnection.IP.ToString() == channel.peer.IP.ToString() && deadconnection.Port == channel.peer.Port);
-                ActivePeerChannels.RemoveAll(deadchannel => deadchannel.peer.Identifier == channel.peer.Identifier);
 
                 }
             catch (Exception ex)
@@ -400,14 +471,30 @@ namespace P2PNet
 
         #region Bootup
 
-        // Scans all network interfaces to get some useful info (ie multicast, public facing IP, ect)
         /// <summary>
         /// Scans all network interface devices and collects essential information needed for peer network.
         /// </summary>
         public static void LoadLocalAddresses()
             {
+            PublicIPV6Address = GetLocalIPv6Address();
+            if(PublicIPV6Address != null)
+                {
+                IPv6AddressFound = true; // this will signal to us later if IPv6 is usable or not
+#if DEBUG
+                DebugMessage($"IPv6 IP address: {PublicIPV6Address.ToString()}", ConsoleColor.Green);
+#endif
+                }
+            else
+                {
+#if DEBUG
+                DebugMessage("IPv6 IP address not found. IPv6 features will not be available.", MessageType.Warning);
+#endif
+                }
+
             // Get the first available network interface
             NetworkInterface[] networkInterfaces = NetworkInterface.GetAllNetworkInterfaces();
+            var devices = CaptureDeviceList.Instance; // loads active interfaces
+
 
             var relevantInterfaces = networkInterfaces
            .Where(adapter =>
@@ -430,13 +517,15 @@ namespace P2PNet
             if (primaryInterface != null)
                 {
                 IPInterfaceProperties adapterProperties = primaryInterface.GetIPProperties();
+                
                 var ipv4Addresses = adapterProperties.UnicastAddresses
                 .Where(addr => addr.Address.AddressFamily == AddressFamily.InterNetwork && !IPAddress.IsLoopback(addr.Address))
                 .Select(addr => addr.Address);
+
                 foreach (IPAddress ip in ipv4Addresses)
                     {
-                    publicip = ip; // grab public IP, typically the last/only one is true
-                    MAC = primaryInterface.GetPhysicalAddress().ToString();
+                    PublicIPV4Address = ip; // grab public IP, typically the last/only one is true
+                    MAC = primaryInterface.GetPhysicalAddress();
                     }
                 }
             else
@@ -451,27 +540,58 @@ namespace P2PNet
 
             foreach (NetworkInterface adapter in networkInterfaces)
                 {
-                IPInterfaceProperties adapterProperties = adapter.GetIPProperties();
-                GatewayIPAddressInformationCollection addresses = adapterProperties.GatewayAddresses;
-#if DEBUG
-                DebugMessage(adapter.GetPhysicalAddress().ToString());
-                DebugMessage($"{adapter.Name.ToString()}\t {adapter.NetworkInterfaceType.ToString()}");
-                DebugMessage($"Multicast supported: {adapter.SupportsMulticast}");
-#endif
-                IPAddressCollection addresses_DNS = adapterProperties.DnsAddresses;
-
-                foreach (MulticastIPAddressInformation address in adapterProperties.MulticastAddresses)
+                foreach (var dev in devices)
                     {
-#if DEBUG
+                    if ((dev is LibPcapLiveDevice libPcapDevice) && (dev.Description.Equals(adapter.Description, StringComparison.OrdinalIgnoreCase)))
+                        {
 
-                    DebugMessage($"Multicast address: {address.Address.ToString()}");
-#endif
-                    multicast_addresses.Add(address.Address);
-                    }
+                        IPInterfaceProperties adapterProperties = adapter.GetIPProperties();
 #if DEBUG
-                Console.WriteLine();
+                        DebugMessage(adapter.GetPhysicalAddress().ToString());
+                        DebugMessage($"{adapter.Name.ToString()}\t {adapter.NetworkInterfaceType.ToString()}");
+                        DebugMessage($"Multicast supported: {adapter.SupportsMulticast}");
 #endif
+                        foreach (MulticastIPAddressInformation address in adapterProperties.MulticastAddresses)
+                            {
+#if DEBUG
+                            DebugMessage($"Multicast address: {address.Address.ToString()}");
+#endif
+                            multicast_addresses.Add(address.Address);
+                            }
+                        }
+                    }
                 }
+            // Ensure there's no duplicates
+            multicast_addresses = multicast_addresses.Distinct().ToList();
+
+            }
+
+        /// <summary>
+        /// Gets the IPv6 address of the host machine.
+        /// </summary>
+        /// <returns>The non-temporary IPv6 address of the host machine.</returns>
+        private static IPAddress GetLocalIPv6Address()
+            {
+            foreach (NetworkInterface ni in NetworkInterface.GetAllNetworkInterfaces())
+                {
+                if (ni.OperationalStatus == OperationalStatus.Up &&
+                    ni.NetworkInterfaceType != NetworkInterfaceType.Loopback &&
+                    ni.NetworkInterfaceType != NetworkInterfaceType.Tunnel)
+                    {
+                    foreach (UnicastIPAddressInformation ip in ni.GetIPProperties().UnicastAddresses)
+                        {
+                        if (ip.Address.AddressFamily == AddressFamily.InterNetworkV6 &&
+                            !ip.Address.IsIPv6LinkLocal &&
+                            !ip.Address.IsIPv6Multicast &&
+                            !ip.Address.IsIPv6SiteLocal &&
+                            !ip.DuplicateAddressDetectionState.HasFlag(DuplicateAddressDetectionState.Deprecated))
+                            {
+                            return ip.Address;
+                            }
+                        }
+                    }
+                }
+            return null;
             }
 
         /// <summary>
@@ -479,16 +599,19 @@ namespace P2PNet
         /// </summary>
         public static void BootDiscoveryChannels()
             {
-            cleanupTimer.Start();
-            DetermineRole();
+            if (RunCleanupTimer == true)
+                {
+                cleanupTimer.Start();
+                } // startup the cleanup timer 
 
-            foreach (int port in designatedPorts)
+            RandomizeBroadcasterPort(); // randomize a broadcast port
+
+            foreach (int port in DesignatedPorts)
                 {
                 LocalChannel localChannel = new LocalChannel(port);
                 ActiveLocalChannels.Add(localChannel);
                 }
-            InitiateLocalChannels(broadcasterPort);
-
+            InitiateLocalChannels(BroadcasterPort);
 
             foreach (IPAddress multicaster in multicast_addresses)
                 {
@@ -498,13 +621,13 @@ namespace P2PNet
             InitializeMulticaseChannels();
             }
 
-        static void DetermineRole()
+        // Randomly selects a port from the designated port collection to focus on outbound broadcasting
+        static void RandomizeBroadcasterPort()
             {
-            broadcasterPort = designatedPorts[randomizer.Next(designatedPorts.Count)];
-            isBroadcaster = true;  // Just for testing, in real-world you'd have more logic
+            BroadcasterPort = DesignatedPorts[randomizer.Next(DesignatedPorts.Count)];
 #if DEBUG
-            Console.WriteLine("Role: {0}, Port: {1}", isBroadcaster ? "Broadcaster" : "Listener", broadcasterPort);
-            Console.Title = ($"Broadcast port: {broadcasterPort}");
+            Console.WriteLine("Role: {0}, Port: {1}", isBroadcaster ? "Broadcaster" : "Listener", BroadcasterPort);
+            Console.Title = ($"Broadcast port: {BroadcasterPort}");
 #endif
             }
 
@@ -527,7 +650,7 @@ namespace P2PNet
 
                     foreach (PeerChannel channel in ActivePeerChannels)
                         {
-                        if (DateTime.Now - channel.lastIncomingReceived > TimeSpan.FromMinutes(1)) // No activity for 60 seconds ~ subject to change
+                        if (DateTime.Now - channel.lastIncomingReceived > TimeSpan.FromMinutes(PeerChannelCleanupDuration)) // No activity for 60 seconds ~ subject to change
                             {
                             peersToRemove.Add(channel);
                             }
@@ -541,7 +664,7 @@ namespace P2PNet
                     foreach (PeerChannel channel in peersToRemove)
                         {
                         bool success = await RemovePeer(channel);
-                        if (success)
+                        if (success == true)
                             {
 #if DEBUG
                             DebugMessage($"Removed peer for inactivity: {channel.peer.IP.ToString()} port {channel.peer.Port}", ConsoleColor.DarkCyan);
@@ -559,12 +682,13 @@ namespace P2PNet
 #if DEBUG
                         DebugMessage($"Trusting peer: {channel.peer.IP.ToString()} port {channel.peer.Port}", ConsoleColor.Cyan);
 #endif
-
                         }
                     }
-                catch
-                    {
-                    // nothing here yet TODO
+                catch (Exception ex)
+                {
+#if DEBUG
+                    DebugMessage($"Encountered an error: {ex}", MessageType.Critical);
+#endif
                     }
             });
             }

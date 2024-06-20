@@ -11,7 +11,7 @@ using static P2PNet.PeerNetwork;
 namespace P2PNet.DiscoveryChannels
 {
     /// <summary>
-    /// Conducts LAN casting to broadcast address to broaden network.
+    /// Conducts LAN casting to broadcast address to grow network.
     /// </summary>
     internal class LocalChannel : Discovery_Channel_Base
     {
@@ -26,9 +26,9 @@ namespace P2PNet.DiscoveryChannels
             UdpClient broadcaster = new UdpClient();
             broadcaster.AllowNatTraversal(true);
 
-            IPEndPoint broadcastEndPoint = new IPEndPoint(IPAddress.Broadcast, broadcasterPort);
+            IPEndPoint broadcastEndPoint = new IPEndPoint(IPAddress.Broadcast, BroadcasterPort);
             
-            IPEndPoint localEndPoint = new IPEndPoint(IPAddress.Loopback, broadcasterPort);
+            IPEndPoint localEndPoint = new IPEndPoint(IPAddress.Loopback, BroadcasterPort);
 
             while (true)
             {

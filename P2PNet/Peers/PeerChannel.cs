@@ -50,10 +50,8 @@ namespace P2PNet.Peers
 #if DEBUG
                 DebugMessage($"\t-- Ending peer connection with {peer.IP.ToString()} port {peer.Port}", ConsoleColor.DarkBlue);
 #endif
-                cancelSender.Cancel();
-                cancelReceiver.Cancel();
-                peer.Stream.Close();
-                peer.Client.Close();
+                BreakAndRemovePeer();
+
                 }
             }
 
@@ -62,13 +60,14 @@ namespace P2PNet.Peers
             while(IsTrustedPeer == false)
                 {
                 PureMessagePacket pingMessage = new PureMessagePacket();
-                pingMessage.Message = $"Ping from {publicip.ToString()}";
+                pingMessage.Message = $"Ping from {PublicIPV4Address.ToString()}";
                 string outgoing = Serialize<PureMessagePacket>(pingMessage);
                 WrapPacket(PacketType.PureMessage, ref outgoing);
                 outgoingData.Enqueue(outgoing);
                 Thread.Sleep(3000);
                 }
             }
+
         protected async void SendOutgoing(CancellationToken cancellationToken)
             {
             try
