@@ -60,27 +60,27 @@ namespace P2PNet.DicoveryChannels
 
         public static Queue<int> dutypackets = new Queue<int>();
         internal static Random randomizer = new Random();
-        private static System.Timers.Timer portRotationTimer;
         public readonly IdentifierPacket packet_ = new IdentifierPacket("IP", ListeningPort, PublicIPV4Address);
         public static CollectionSharePacket collectionpacket_;
 
         public static IPEndPoint listenerendpoint;
         public static IPEndPoint broadcasterendpoint;
 
-        public readonly DateTime channelopened_ = new DateTime(); // record time created
-        public static CancellationTokenSource task_canceltoken; // TODO: implement this
+        /// <summary>
+        /// The time when the channel was created.
+        /// </summary>
+        public DateTime ChannelCreatedTime { get; init; } = DateTime.Now; // record time created
+
+        public virtual async Task StartBroadcaster(CancellationToken cancellationToken) { }
+        internal CancellationTokenSource cancelBroadcaster;
+        public virtual async Task StartListener(CancellationToken cancellationToken) { }
+        public virtual async Task StartListener(CancellationToken cancellationToken, int port) { } // port-designated overload
+        internal CancellationTokenSource cancelListener;
 
         public Discovery_Channel_Base()
             {
-            channelopened_ = DateTime.Now; // log creation time
             collectionpacket_ = new CollectionSharePacket();
 
-            // Initialize timer on class load
-            portRotationTimer = new System.Timers.Timer();
-            portRotationTimer.Elapsed += RotatePort;
-            portRotationTimer.Interval = RandomizeInterval(); // Random initial interval
-            portRotationTimer.AutoReset = true; // Keep the timer running
-            portRotationTimer.Start();
             }
 
         internal void HandlePacket(string packet)
@@ -114,18 +114,7 @@ namespace P2PNet.DicoveryChannels
             {
             return randomizer.Next(3 * 60000, 5 * 60000); // 3-5 minutes in milliseconds
             }
-        private static void RotatePort(object sender, System.Timers.ElapsedEventArgs e)
-            {
-            int currentDesgPort = BroadcasterPort;
-            while (BroadcasterPort == currentDesgPort) // make sure we get a new port
-                {
-                BroadcasterPort = DesignatedPorts[randomizer.Next(DesignatedPorts.Count)];
-                }
-            portRotationTimer.Interval = RandomizeInterval();
-#if DEBUG
-            DebugMessage($"Rotated to new port: {BroadcasterPort}", MessageType.General);
-#endif
-            }
+
 
         public int CreateTimeVariation(int min, int max) { return randomizer.Next(min, max); }
         private string packet_serialized()

@@ -19,9 +19,22 @@ namespace P2PNet.DiscoveryChannels
         public MulticastChannel(IPAddress in_multicast_address) 
         {
             multicast_address = in_multicast_address;
+
         }
 
-        public async Task StartBroadcaster()
+        /// <summary>
+        /// Starts up the multicasting.
+        /// </summary>
+        public async void OpenMulticastChannel()
+            {
+            cancelBroadcaster = new CancellationTokenSource(); 
+            cancelListener = new CancellationTokenSource();
+
+            Task.Run(() => StartBroadcaster(cancelBroadcaster.Token));
+            Task.Run(() => StartListener(cancelListener.Token));
+            }
+
+        public override async Task StartBroadcaster(CancellationToken cancellationToken)
         {
             int timevariation = CreateTimeVariation(100, 500);
             UdpClient broadcaster = new UdpClient();
@@ -29,10 +42,9 @@ namespace P2PNet.DiscoveryChannels
             broadcaster.EnableBroadcast = true;
             broadcaster.MulticastLoopback = true;
             broadcasterendpoint = new IPEndPoint(multicast_address, MULTICAST_PORTS[0]);
-            while (true)
+            while (!cancellationToken.IsCancellationRequested)
             {
-                    // Send a sample message (replace with actual data)
-                    byte[] message = UniqueIdentifier();
+                    byte[] message = UniqueIdentifier(); // Turn unique identifier packet to byte[]
 #if DEBUG
                     DebugMessage($"Multicast channel broadcast:  Endpoint-{broadcasterendpoint.Address.ToString()} MCAddress-{multicast_address.Address.ToString()}");
 #endif
@@ -41,7 +53,7 @@ namespace P2PNet.DiscoveryChannels
             }
         }
 
-        public async Task StartListener()
+        public override async Task StartListener(CancellationToken cancellationToken)
         {
             UdpClient listener = new UdpClient();
             listener.JoinMulticastGroup(multicast_address);
@@ -52,7 +64,7 @@ namespace P2PNet.DiscoveryChannels
             listener.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
             listener.Client.Bind(endpoint);
 
-            while (true)
+            while (!cancellationToken.IsCancellationRequested)
             {
                 byte[] receivedData = listener.Receive(ref endpoint);
                 string packet = Encoding.UTF8.GetString(receivedData);

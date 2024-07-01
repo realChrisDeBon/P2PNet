@@ -34,9 +34,37 @@ namespace P2PNet
         public static List<int> DesignatedPorts { get; set; } = new List<int> { 8001, 8002, 8003 }; // Your designated ports
 
         /// <summary>
-        /// Gets or sets the broadcaster port designated for outbound sending.
+        /// Gets or sets the broadcaster port designated for outbound LAN discovery.
         /// </summary>
         public static int BroadcasterPort;
+
+        /// <summary>
+        /// Determines if the broadcaster port for LAN discovery will be rotated on a regular interval.
+        /// </summary>
+        public static bool RotateBroadcastPort
+            {
+            get { return runningPortRotate; }
+            set { runningPortRotate = value; InboundToggle_PortRotate(value); }
+            }
+        private static bool runningPortRotate = true;
+        private static System.Timers.Timer rotationTimer = new System.Timers.Timer();
+        private static void InboundToggle_PortRotate(bool status_)
+            {
+            if(status_ == true)
+                {
+                rotationTimer.Start();
+                rotationTimer.AutoReset = true;
+                } else
+                {
+                rotationTimer.Stop();
+                rotationTimer.AutoReset = false;
+                }
+            }
+
+        /// <summary>
+        /// The duration, in minutes, of how often the LAN broadcaster port will rotate.
+        /// </summary>
+        public static int BroadcastPortRotationDuration { get; set; } = 2;
 
         /// <summary>
         /// Gets the public IPv4 IP address.
@@ -69,11 +97,11 @@ namespace P2PNet
             set
                 {
                 runningListener = value;
-                InboundToggle(value);
+                InboundToggle_Listener(value);
                 }
             }
         private static  bool runningListener = true;
-        private static void InboundToggle(bool status_)
+        private static void InboundToggle_Listener(bool status_)
             {
             if(status_ == true)
                 {
@@ -188,15 +216,7 @@ namespace P2PNet
                 {
                 try
                     {
-                    if (channel_.DESIGNATED_PORT != designated_broadcast_port)
-                        {
-                        Task.Run(() => channel_.Listener(channel_.DESIGNATED_PORT));
-                        Task.Run(() => channel_.StartBroadcaster());
-                        }
-                    else
-                        {
-                        Task.Run(() => channel_.Listener(channel_.DESIGNATED_PORT));
-                        }
+                        channel_.OpenLocalChannel();
                     }
                 catch
                     {
@@ -228,8 +248,7 @@ namespace P2PNet
                 bool error_occurred = false;
                 try
                     {
-                    Task.Run(() => multicastChannel.StartListener());
-                    Task.Run(() => multicastChannel.StartBroadcaster());
+                    multicastChannel.OpenMulticastChannel();
                     }
                 catch
                     {
@@ -278,7 +297,11 @@ namespace P2PNet
 
             cleanupTimer.Elapsed += DiscernPeerChannels;
             cleanupTimer.Interval = PeerChannelCleanupDuration;
-            cleanupTimer.Stop(); // redundant coding at its finest
+            cleanupTimer.Start();
+
+            rotationTimer.Elapsed += RotatePorts;
+            rotationTimer.Interval = BroadcastPortRotationDuration;
+            rotationTimer.Start();
             }
 
         static async Task AcceptClientsAsync()
@@ -374,7 +397,9 @@ namespace P2PNet
                     {
                     PeerChannel peerChannel = new PeerChannel(peer);
                     ActivePeerChannels.Add(peerChannel);
+#if DEBUG || TRUSTLESS
                     DistributionHandler.AddTrustedPeer(peerChannel); // REMOVE AFTER DEBUGGING & TESTING
+#endif
                     peers.Add(peerChannel.peer);
                     KnownPeers = peers;
                     Thread peerThread = new Thread(peerChannel.OpenPeerChannel);
@@ -691,6 +716,19 @@ namespace P2PNet
 #endif
                     }
             });
+            }
+
+        // Rotate LAN broadcast port
+        private static void RotatePorts(object sender, System.Timers.ElapsedEventArgs e)
+            {
+            int currentDesgPort = BroadcasterPort;
+            while (BroadcasterPort == currentDesgPort) // make sure we get a new port
+                {
+                BroadcasterPort = DesignatedPorts[randomizer.Next(DesignatedPorts.Count)];
+                }
+#if DEBUG
+            DebugMessage($"Rotated to new port: {BroadcasterPort}", MessageType.General);
+#endif
             }
 
         #endregion
