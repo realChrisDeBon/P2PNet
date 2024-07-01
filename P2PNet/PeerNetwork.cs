@@ -296,11 +296,11 @@ namespace P2PNet
             listener = new TcpListener(IPAddress.Any, ListeningPort);
 
             cleanupTimer.Elapsed += DiscernPeerChannels;
-            cleanupTimer.Interval = PeerChannelCleanupDuration;
+            cleanupTimer.Interval = (PeerChannelCleanupDuration * 60000);
             cleanupTimer.Start();
 
             rotationTimer.Elapsed += RotatePorts;
-            rotationTimer.Interval = BroadcastPortRotationDuration;
+            rotationTimer.Interval = (BroadcastPortRotationDuration * 60000);
             rotationTimer.Start();
             }
 
@@ -663,6 +663,7 @@ namespace P2PNet
         // Cleanup likely-inactive peers
         private static void DiscernPeerChannels(object sender, System.Timers.ElapsedEventArgs e)
             {
+            cleanupTimer.Interval = (PeerChannelCleanupDuration * 60000);
 #if DEBUG
             DebugMessage("DISCERNING CHANNELS", ConsoleColor.Magenta);
 #endif
@@ -721,6 +722,7 @@ namespace P2PNet
         // Rotate LAN broadcast port
         private static void RotatePorts(object sender, System.Timers.ElapsedEventArgs e)
             {
+            rotationTimer.Interval = (BroadcastPortRotationDuration * 60000);
             int currentDesgPort = BroadcasterPort;
             while (BroadcasterPort == currentDesgPort) // make sure we get a new port
                 {
