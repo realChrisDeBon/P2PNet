@@ -1,4 +1,5 @@
-﻿#if DEBUG
+﻿#define WIDESCAN
+#if DEBUG
 global using static ConsoleDebugger.ConsoleDebugger;
 #endif
 using P2PNet.DiscoveryChannels;
