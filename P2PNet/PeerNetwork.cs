@@ -421,7 +421,7 @@ namespace P2PNet
                 {
 
                 channel.ClosePeerChannel();
-
+                ActivePeerChannels.Remove(channel);
                 }
             catch (Exception ex)
                 {

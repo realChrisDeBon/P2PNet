@@ -199,7 +199,6 @@ namespace P2PNet.Peers
         private void BreakAndRemovePeer()
             {
             TerminateChannel();
-            RemovePeer(this);
             }
         }
 }

@@ -52,6 +52,13 @@ namespace P2PNet.Peers
             cancelSender.Cancel();
             cancelReceiver.Cancel();
             cancelPacketHandler.Cancel();
+
+            UntrustPeer();
+
+            // Free up resources
+            incomingData.Clear();
+            outgoingData.Clear();
+            packetQueue.Clear();
             }
         virtual public void TerminateCurrentSender()
             {
