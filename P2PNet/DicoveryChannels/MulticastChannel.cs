@@ -19,7 +19,6 @@ namespace P2PNet.DiscoveryChannels
         public MulticastChannel(IPAddress in_multicast_address) 
         {
             multicast_address = in_multicast_address;
-
         }
 
         /// <summary>

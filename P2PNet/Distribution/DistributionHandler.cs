@@ -262,7 +262,6 @@ namespace P2PNet.Distribution
                 }
             }
 
-
         private static void DistributeData(DataTransmissionPacket outgoingpacket)
             {
             string outdata = Serialize<DataTransmissionPacket>(outgoingpacket);

@@ -15,12 +15,15 @@ namespace P2PNet.Peers
 {
     public class PeerChannel : Peer_Channel_Base
         {
-        public DateTime lastIncomingReceived = DateTime.Now;
+        /// <summary>
+        /// Gets the DateTime value of when the last piece of data or information was received from this peer.
+        /// </summary>
+        public DateTime LastIncomingDataReceived { get; internal set; } = DateTime.Now;
 
         public IPeer peer { get; set; }
 
-        private int retries = 0; // for retrying connections
-        public int goodpings { get; internal set; } = 0; // readonly
+        private int RETRIES = 0; // for retrying connections
+        public int GOODPINGS { get; internal set; } = 0; // readonly
         private const int MAX_RETRIES = 3;
 
         public PeerChannel(IPeer peer_)
@@ -30,18 +33,24 @@ namespace P2PNet.Peers
 
         public async void OpenPeerChannel()
             {
-            cancelSender = new CancellationTokenSource();
+            cancelSender = new CancellationTokenSource();        
             cancelReceiver = new CancellationTokenSource();
+
 #if DEBUG
-            DebugMessage($"Successfully opened channel with new peer: {peer.IP.ToString()}:{peer.Client.Client.LocalEndPoint.ToString()} port {peer.Port}:{peer.Client.Client.LocalEndPoint.ToString()}", ConsoleColor.Cyan);
+            DebugMessage($"Successfully opened channel with new peer: {peer.IP.ToString()}:{peer.Client.Client.RemoteEndPoint.ToString()} port {peer.Port}:{peer.Client.Client.RemoteEndPoint.ToString()}", ConsoleColor.Cyan);
 #endif
+
             peer.Client.ReceiveTimeout = 60000;
             peer.Client.SendTimeout = 20000;
 
             StartPacketHandling();
             receiveTask = Task.Run(() => ReadIncoming(cancelReceiver.Token));
             sendTask = Task.Run(() => SendOutgoing(cancelSender.Token));
-            Task.Run(() => CreatePing());
+
+            if (IncomingPeerTrustConfiguration.AllowDefaultCommunication == true)
+                {
+                Task.Run(() => CreatePing());
+                }
             }
         public void ClosePeerChannel()
             {
@@ -63,11 +72,15 @@ namespace P2PNet.Peers
                 pingMessage.Message = $"Ping from {PublicIPV4Address.ToString()}";
                 string outgoing = Serialize<PureMessagePacket>(pingMessage);
                 WrapPacket(PacketType.PureMessage, ref outgoing);
-                outgoingData.Enqueue(outgoing);
+                OutgoingDataQueue.Enqueue(outgoing);
                 Thread.Sleep(3000);
                 }
             }
 
+        /// <summary>
+        /// The default task for sending outgoing data and information to the network stream.
+        /// </summary>
+        /// <param name="cancellationToken">The cancellation token provided to the send outgoing task.</param>
         protected async void SendOutgoing(CancellationToken cancellationToken)
             {
             try
@@ -75,7 +88,7 @@ namespace P2PNet.Peers
                 NetworkStream stream = peer.Client.GetStream();
                 while (!cancellationToken.IsCancellationRequested)
                     {
-                    while (outgoingData.TryDequeue(out string message))
+                    while (OutgoingDataQueue.TryDequeue(out string message))
                         {
                         try
                             {
@@ -83,10 +96,7 @@ namespace P2PNet.Peers
 #if DEBUG
                             DebugMessage($"Sending: {message}", ConsoleColor.Cyan);
 #endif
-                //            lock (sendLock)
-                //                {
                                 stream.WriteAsync(buffer, 0, buffer.Length, cancellationToken);
-                //                }
                             }
                         catch (Exception e)
                             {
@@ -107,16 +117,16 @@ namespace P2PNet.Peers
 
             catch (ObjectDisposedException ex)
                 {
-                HandleException(ex, retries, MAX_RETRIES);
+                HandleException(ex, RETRIES, MAX_RETRIES);
                 
                 }
             catch (IOException ex) when (ex.InnerException is SocketException socket_ex)
                 {
-                HandleException(ex, retries, MAX_RETRIES);
+                HandleException(ex, RETRIES, MAX_RETRIES);
                 }
             catch (InvalidOperationException ex)
                 {
-                HandleException(ex, retries, MAX_RETRIES);
+                HandleException(ex, RETRIES, MAX_RETRIES);
                 }
             catch (Exception ex)
                 {
@@ -129,8 +139,13 @@ namespace P2PNet.Peers
                 }
             }
 
+        /// <summary>
+        /// The default task for reading incoming network stream data.
+        /// </summary>
+        /// <param name="cancellationToken">The cancellation token provided to the read incoming task.</param>
         public async void ReadIncoming(CancellationToken cancellationToken)
             {
+            int ReceiverErrors = 0;
             try
                 {
                 NetworkStream stream = peer.Client.GetStream();
@@ -142,17 +157,14 @@ namespace P2PNet.Peers
                         {
                         byte[] buffer = new byte[4096];
                         int bytesRead = 0;
-                        lock (receiveLock)
-                            {
-                            bytesRead = stream.Read(buffer, 0, buffer.Length);
-                            }
+
+                        bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length, cancellationToken);
 
                         if (bytesRead > 0)
                             {
                             string newData = Encoding.UTF8.GetString(buffer, 0, bytesRead);
-                            receivedData += newData;
-
-                            lastIncomingReceived = DateTime.Now;
+                            receivedData = receivedData + newData;
+                            LastIncomingDataReceived = DateTime.Now;
 
                             while (IsValidMessageFormat(receivedData))
                                 {
@@ -167,7 +179,9 @@ namespace P2PNet.Peers
                         }
                     catch (Exception e)
                         {
-                        BreakAndRemovePeer();
+                        // BreakAndRemovePeer();
+                        DebugMessage($"Encountered an error. Error code: {e.HResult} {e.Message}\n{e.Data}", MessageType.Critical);
+                        HandleException(e, RETRIES, MAX_RETRIES);
                         }
                     finally
                         {
@@ -183,11 +197,11 @@ namespace P2PNet.Peers
             }
         private void HandleException(Exception ex, int retries, int maxRetries)
             {
-            retries++;
+            RETRIES++;
 #if DEBUG
-            DebugMessage($"Exception in PeerChannel ({peer.IP.ToString()} port {peer.Port}) : {ex.Message} - Attempt {retries}/{maxRetries}", MessageType.Critical);
+            DebugMessage($"Exception in PeerChannel ({peer.IP.ToString()} port {peer.Port}) : {ex.Message} - Attempt {RETRIES}/{MAX_RETRIES}", MessageType.Critical);
 #endif
-            if (retries >= maxRetries)
+            if (RETRIES >= MAX_RETRIES)
                 {
                 BreakAndRemovePeer();
                 }

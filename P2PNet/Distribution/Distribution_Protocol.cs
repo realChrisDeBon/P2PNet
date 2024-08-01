@@ -148,7 +148,7 @@ namespace P2PNet.Distribution
         /// </list>
         /// </summary>
         /// <typeparam name="T">The Type of the object being serialized.</typeparam>
-        /// <param name="obj">The target objectt being serialized.</param>
+        /// <param name="obj">The target object being serialized.</param>
         /// <returns>Returns a JSON serialized string of the target object.</returns>
         public static string Serialize<T>(T obj)
             {
@@ -192,7 +192,6 @@ namespace P2PNet.Distribution
         #endregion
         }
 
-
         #region PACKET_CONTEXT
         [JsonSerializable(typeof(PureMessagePacket))]
         public partial class PureMessagePacketContext : JsonSerializerContext { }
@@ -205,8 +204,5 @@ namespace P2PNet.Distribution
 
         [JsonSerializable(typeof(DataTransmissionPacket))]
         public partial class DataTransmissionPacketContext : JsonSerializerContext { }
-        #endregion
-
-
-        
+        #endregion 
     }

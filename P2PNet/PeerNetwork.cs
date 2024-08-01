@@ -14,12 +14,11 @@ using System.Net.Sockets;
 using System.Threading.Channels;
 
 namespace P2PNet
-    {
+{
     public static class PeerNetwork
         {
 
         // Some public facing settings for better user-defined control
-
         static bool isBroadcaster = false;
         private static Random randomizer = new Random();
 
@@ -41,7 +40,7 @@ namespace P2PNet
         /// <summary>
         /// Determines if the broadcaster port for LAN discovery will be rotated on a regular interval.
         /// </summary>
-        public static bool RotateBroadcastPort
+        public static bool RunRotateBroadcastPort_Routine
             {
             get { return runningPortRotate; }
             set { runningPortRotate = value; InboundToggle_PortRotate(value); }
@@ -141,7 +140,6 @@ namespace P2PNet
                 }
             }
 
-
         /// <summary>
         /// Gets the listening port for inbound TCP peer connections.
         /// </summary>
@@ -152,7 +150,7 @@ namespace P2PNet
         /// Cleanup timer scans and removes peers that have been active for the duration
         /// set by <see cref="PeerChannelCleanupDuration"/>
         /// </summary>
-        public static bool RunCleanupTimer { get; set; } = true;
+        public static bool RunPeerCleanup_Routine { get; set; } = true;
         private static System.Timers.Timer cleanupTimer = new System.Timers.Timer();
 
         /// <summary>
@@ -166,7 +164,7 @@ namespace P2PNet
 
         /// <summary>
         /// Gets or sets the list of known peers.
-        /// KnownPeers do not necessarily have established trust to exchange extensive data and information.
+        /// KnownPeers do not necessarily have established trust to exchange extensive data and information, but do have an open PeerChannel.
         /// </summary>
         public static List<IPeer> KnownPeers
             {
@@ -187,7 +185,22 @@ namespace P2PNet
         /// <remarks>
         /// Inbound connections opened through <see cref="ListeningPort"/> will automatically be enqueued here. This allows you to implement any additional verification you may want in place before calling <see cref="AddPeer(IPeer, TcpClient)"/> and opening a PeerChannel
         /// </remarks>
-        public static Queue<GenericPeer> InboundConnectingPeers = new Queue<GenericPeer>();
+        private static volatile InboundConnectingPeersQueue InboundConnectingPeers = new InboundConnectingPeersQueue();
+
+        /// <summary>
+        /// Occurs when a new incoming peer connection attempt is detected.
+        /// Subscribers can use this event to handle new connections and pass incoming connections through your verification pipeline and/or <see cref="AddPeer(IPeer, TcpClient)"/>.
+        /// </summary>
+        public static event EventHandler<IncomingPeerEventArgs> IncomingPeerConnectionAttempt
+            {
+            add { InboundConnectingPeers.IncomingPeerConnectionAttempt += value; }
+            remove { InboundConnectingPeers.IncomingPeerConnectionAttempt -= value; }
+            }
+
+        /// <summary>
+        /// Gets the number of inbound peers that have been enqueued but not yet processed.
+        /// </summary>
+        public static int InboundPeerCount => InboundConnectingPeers.Count;
 
         /// <summary>
         /// All active <see cref="PeerChannel"/> connections are stored here. 
@@ -297,11 +310,33 @@ namespace P2PNet
 
             cleanupTimer.Elapsed += DiscernPeerChannels;
             cleanupTimer.Interval = (PeerChannelCleanupDuration * 60000);
-            cleanupTimer.Start();
 
             rotationTimer.Elapsed += RotatePorts;
             rotationTimer.Interval = (BroadcastPortRotationDuration * 60000);
-            rotationTimer.Start();
+            }
+
+        /// <summary>
+        /// Starts timed routines if their run value is true. These routines include:
+        /// <list type="bullet">
+        /// <item>
+        /// <description><see cref="RunRotateBroadcastPort_Routine"/></description>
+        /// </item>
+        /// <item>
+        /// <description><see cref="RunPeerCleanup_Routine"/></description>
+        /// </item>
+        /// </list>
+        /// </summary>
+        public static async Task StartRoutines()
+            {
+            if (RunRotateBroadcastPort_Routine == true)
+                {
+                rotationTimer.Start();
+                }
+
+            if (RunPeerCleanup_Routine == true)
+                {
+                cleanupTimer.Start();
+                }
             }
 
         static async Task AcceptClientsAsync()
@@ -312,19 +347,31 @@ namespace P2PNet
 
                 IPAddress peerIP = ((IPEndPoint)client.Client.RemoteEndPoint).Address;
                 // Check for existing peer
-                if (KnownPeers.Any(p => p.IP.Equals(peerIP)))
-                    {
+
+                    if (KnownPeers.Any(p => p.IP.Equals(peerIP)))
+                        {
 #if DEBUG
-                    DebugMessage("Duplicate connection attempt from existing peer. Ignoring.", MessageType.Warning);
+                        DebugMessage("Duplicate connection attempt from existing peer. Ignoring.", MessageType.Warning);
 #endif
-                    }
-                else
-                    {
-                    // Set inboud as GenericPeer - intentional gap before AddPeer to implement additional verifications as needed
-                    InboundConnectingPeers.Enqueue(new GenericPeer(((IPEndPoint)client.Client.RemoteEndPoint).Address, ((IPEndPoint)client.Client.RemoteEndPoint).Port));
+                        client.Dispose();
+                        }
+                    else if (InboundConnectingPeers.PeerIsQueued(peerIP.ToString()))
+                        {
+#if DEBUG
+                        DebugMessage("Duplicate connection attempt from existing peer. Ignoring.", MessageType.Warning);
+#endif
+                        }
+                    else
+                        {
+                        // Set inboud as GenericPeer - intentional gap before AddPeer to implement additional verifications as needed
+                        GenericPeer newPeer = new GenericPeer(((IPEndPoint)client.Client.RemoteEndPoint).Address, ((IPEndPoint)client.Client.RemoteEndPoint).Port);
+
+                        InboundConnectingPeers.Enqueue(newPeer);
+                        Task.Run(() => AddPeer(newPeer, client));
+                        }
                     }
                 }
-            }
+            
 
         /// <summary>
         /// Adds a peer to the <see cref="KnownPeers"/> list and establishes a connection if one is not provided.
@@ -506,7 +553,7 @@ namespace P2PNet
                 {
                 IPv6AddressFound = true; // this will signal to us later if IPv6 is usable or not
 #if DEBUG
-                DebugMessage($"IPv6 IP address: {PublicIPV6Address.ToString()}", ConsoleColor.Green);
+                DebugMessage($"IPv6 IP address: {PublicIPV6Address.ToString()}");
 #endif
                 }
             else
@@ -624,7 +671,7 @@ namespace P2PNet
         /// </summary>
         public static void BootDiscoveryChannels()
             {
-            if (RunCleanupTimer == true)
+            if (RunPeerCleanup_Routine == true)
                 {
                 cleanupTimer.Start();
                 } // startup the cleanup timer 
@@ -676,11 +723,11 @@ namespace P2PNet
 
                     foreach (PeerChannel channel in ActivePeerChannels)
                         {
-                        if (DateTime.Now - channel.lastIncomingReceived > TimeSpan.FromMinutes(PeerChannelCleanupDuration)) // No activity for 60 seconds ~ subject to change
+                        if (DateTime.Now - channel.LastIncomingDataReceived > TimeSpan.FromMinutes(PeerChannelCleanupDuration)) // No activity for 60 seconds ~ subject to change
                             {
                             peersToRemove.Add(channel);
                             }
-                        if (channel.goodpings > 2)
+                        if (channel.GOODPINGS > 2)
                             {
                             peersToTrust.Add(channel);
                             }
@@ -735,5 +782,37 @@ namespace P2PNet
 
         #endregion
 
+        #region Trust Definitions
+
+        /// <summary>
+        /// Handles trust and permissions in regards to incoming peer connections.
+        /// </summary>
+        public static class IncomingPeerTrustConfiguration
+            {
+            private static bool _allowDefaultCommunication = true;
+            private static bool _allowEnhancedPacketExchange = false;
+
+            /// <summary>
+            /// Gets or sets whether incoming peer connections will be trusted to establish initial communication by default.
+            /// This is the initial 'ping' pure message packet sent back and forth to ensure connection communicability.
+            /// </summary>
+            public static bool AllowDefaultCommunication
+                {
+                get => _allowDefaultCommunication;
+                set => _allowDefaultCommunication = value;
+                }
+
+            /// <summary>
+            /// Gets or sets whether incoming peer connections will be trusted to exchange all other packet types, like
+            /// data transmission packets, before being trusted peers.
+            /// </summary>
+            public static bool AllowEnhancedPacketExchange
+                {
+                get => _allowEnhancedPacketExchange;
+                set => _allowEnhancedPacketExchange = value;
+                }
+            }
+
+        #endregion
         }
     }

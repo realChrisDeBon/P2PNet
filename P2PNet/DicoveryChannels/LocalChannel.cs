@@ -56,7 +56,6 @@ namespace P2PNet.DiscoveryChannels
                     DebugMessage($"Local channel broadcast: {broadcastEndPoint.Address.ToString()} {localEndPoint.Address.ToString()}");
 #endif
                     }
-                    
                 Thread.Sleep(BroadcastRateControl.GetCurrentInterval());
             }
         }

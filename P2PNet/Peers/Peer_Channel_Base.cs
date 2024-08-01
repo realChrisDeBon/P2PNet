@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static P2PNet.PeerNetwork;
 
 namespace P2PNet.Peers
     {
@@ -25,13 +26,13 @@ namespace P2PNet.Peers
             { 10060, "Connection timed out. Connection attempt failed due to no response from connected party." }
         }; // TODO implement more pleasant exception handling
 
-        protected ConcurrentQueue<string> incomingData = new ConcurrentQueue<string>();
-        protected ConcurrentQueue<string> outgoingData = new ConcurrentQueue<string>();
+        protected ConcurrentQueue<string> IncomingDataQueue = new ConcurrentQueue<string>();
+        protected ConcurrentQueue<string> OutgoingDataQueue = new ConcurrentQueue<string>();
         protected ConcurrentQueue<PacketTypeRelay> packetQueue = new ConcurrentQueue<PacketTypeRelay>();
 
         public virtual void LoadOutgoingData(string outgoing)
             {
-            outgoingData.Enqueue(outgoing);
+            OutgoingDataQueue.Enqueue(outgoing);
             }
 
         internal Task sendTask;
@@ -47,7 +48,7 @@ namespace P2PNet.Peers
 
         protected bool IsTrustedPeer { get; set; } = false;
 
-        virtual public void TerminateChannel()
+        virtual protected void TerminateChannel()
             {
             cancelSender.Cancel();
             cancelReceiver.Cancel();
@@ -56,26 +57,41 @@ namespace P2PNet.Peers
             UntrustPeer();
 
             // Free up resources
-            incomingData.Clear();
-            outgoingData.Clear();
+            IncomingDataQueue.Clear();
+            OutgoingDataQueue.Clear();
             packetQueue.Clear();
             }
+        /// <summary>
+        /// Terminates the sender task.
+        /// </summary>
         virtual public void TerminateCurrentSender()
             {
             cancelSender.Cancel();
             }
+        /// <summary>
+        /// Terminates the receiver task.
+        /// </summary>
         virtual public void TerminateCurrentReceiver()
             {
             cancelReceiver.Cancel();
             }
+        /// <summary>
+        /// Terminates the packet handler task.
+        /// </summary>
         virtual public void TerminatePacketHandler()
             {
             cancelPacketHandler.Cancel();
             }
+        /// <summary>
+        /// Promote trust level of peer.
+        /// </summary>
         virtual public void TrustPeer()
             {
             IsTrustedPeer = true;
             }
+        /// <summary>
+        /// Demote trust level of peer.
+        /// </summary>
         virtual public void UntrustPeer()
             {
             IsTrustedPeer = false;
@@ -117,7 +133,6 @@ namespace P2PNet.Peers
                             break;
                         }
                     }
-
                 Thread.Sleep(75);
                 }
             }
@@ -125,8 +140,19 @@ namespace P2PNet.Peers
         // Placeholders
         protected virtual void HandleIdentityPacket(string data) { DebugMessage(data, ConsoleColor.Cyan); }
         protected virtual void HandleDisconnectPacket(string data) { DebugMessage(data, ConsoleColor.Cyan); }
-        protected virtual void HandlePeerGroupPacket(string data) { DebugMessage(data, ConsoleColor.Cyan); }
-        protected virtual void HandleDataTransmissionPacket(string data) { DebugMessage(data, ConsoleColor.Cyan); DistributionHandler.EnqueueIncomingDataPacket(data); }
+        protected virtual void HandlePeerGroupPacket(string data) {
+            if ((IsTrustedPeer == true) || (IncomingPeerTrustConfiguration.AllowEnhancedPacketExchange == true))
+                {
+                DebugMessage(data, ConsoleColor.Cyan);
+                }
+            }
+        protected virtual void HandleDataTransmissionPacket(string data) {
+            if ((IsTrustedPeer == true) || (IncomingPeerTrustConfiguration.AllowEnhancedPacketExchange == true))
+                {
+                DebugMessage(data, ConsoleColor.Cyan);
+                DistributionHandler.EnqueueIncomingDataPacket(data);
+                }
+            }
         protected virtual void HandlePureMessagePacket(string data) { DebugMessage(data, ConsoleColor.Cyan); }
 
         protected PacketTypeRelay ExtractWholeMessage(string receivedData)

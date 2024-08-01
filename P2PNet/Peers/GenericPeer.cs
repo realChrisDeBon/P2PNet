@@ -5,6 +5,7 @@ using System.Net.Sockets;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.Json.Serialization;
 
 namespace P2PNet.Peers
     {
@@ -26,5 +27,17 @@ namespace P2PNet.Peers
             Port = port;
             }
 
+        public PeerChannel GetPeerChannel()
+            {
+            foreach(PeerChannel channel_ in PeerNetwork.ActivePeerChannels)
+                {
+                if(channel_.peer == this)
+                    {
+                    return channel_;
+                    break;
+                    }
+                }
+            return null; // no channel found
+            }
         }
     }
