@@ -11,7 +11,7 @@ namespace P2PNet.NetworkPackets
     /// <summary>
     /// Represents a data transmission packet used for transmitting data throughout the peer network.
     /// </summary>
-    public class DataTransmissionPacket
+    public sealed class DataTransmissionPacket : INetworkPacket
         {
         /// <summary>
         /// Gets or sets the data contained in the packet.
@@ -30,7 +30,7 @@ namespace P2PNet.NetworkPackets
         /// </summary>
         /// <param name="data">The data payload within the packet.</param>
         /// <param name="dataType">Denotes the type of data contained within the data payload.</param>
-        /// <remarks>Upon instantiating an instance of the <see cref="DataTransmissionPacket"/> class, the <see cref="DataType"/> parameter is used to wrap the raw data with cooresponding tags so it can be parsed and more easily managed throughout its lifecycle.</remarks>
+        /// <remarks>Upon instantiating an instance of the <see cref="DataTransmissionPacket"/> class, the <see cref="DataType"/> parameter is used to wrap the raw data with corresponding tags so it can be parsed and more easily managed throughout its life cycle.</remarks>
         public DataTransmissionPacket(byte[] data, DataFormat dataType)
             {
                 {

@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace P2PNet.Peers
 {
-    public class PeerChannel : Peer_Channel_Base
+    public class PeerChannel : PeerChannel_Base
         {
         /// <summary>
         /// Gets the DateTime value of when the last piece of data or information was received from this peer.
@@ -172,6 +172,7 @@ namespace P2PNet.Peers
                                 if (!string.IsNullOrEmpty(receivedPacket.Data))
                                     {
                                     packetQueue.Enqueue(receivedPacket); // Add to the packet queue to be processed
+                                    OnDataReceived(newData); // event test
                                     }
                                 receivedData = ""; // wipe receivedData ~ ~ ~
                                 }
@@ -180,7 +181,7 @@ namespace P2PNet.Peers
                     catch (Exception e)
                         {
                         // BreakAndRemovePeer();
-                        DebugMessage($"Encountered an error. Error code: {e.HResult} {e.Message}\n{e.Data}", MessageType.Critical);
+                        DebugMessage($"Encountered an error. Error code: {(int)e.HResult} {e.Message}\n{e.Data}", MessageType.Critical);
                         HandleException(e, RETRIES, MAX_RETRIES);
                         }
                     finally

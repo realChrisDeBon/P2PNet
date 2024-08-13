@@ -11,7 +11,7 @@ namespace P2PNet.NetworkPackets
     /// <summary>
     /// Represents a simple human-readable message packet.
     /// </summary>
-    public class PureMessagePacket
+    public sealed class PureMessagePacket : INetworkPacket
         {
 
         /// <summary>

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,7 +10,7 @@ using static P2PNet.PeerNetwork;
 
 namespace P2PNet.Peers
     {
-    public abstract class Peer_Channel_Base
+    public abstract class PeerChannel_Base
         {
         internal readonly static Dictionary<int, string> ErrorCodeDescriptions = new Dictionary<int, string>()
         {
@@ -30,6 +31,10 @@ namespace P2PNet.Peers
         protected ConcurrentQueue<string> OutgoingDataQueue = new ConcurrentQueue<string>();
         protected ConcurrentQueue<PacketTypeRelay> packetQueue = new ConcurrentQueue<PacketTypeRelay>();
 
+        /// <summary>
+        /// Add the outgoing information to the broadcast queue.
+        /// </summary>
+        /// <param name="outgoing">The information to be queued for broadcast.</param>
         public virtual void LoadOutgoingData(string outgoing)
             {
             OutgoingDataQueue.Enqueue(outgoing);
@@ -41,6 +46,53 @@ namespace P2PNet.Peers
         internal Task receiveTask;
         internal CancellationTokenSource cancelReceiver;
         internal readonly object receiveLock = new object();
+            private EventHandler<DataReceivedEventArgs> _dataReceived;
+
+        /// <summary>
+        /// Occurs when a peer channel receives incoming data or information.
+        /// Subscribers can use this event to handle and process incoming data and information.
+        /// </summary>
+        /// <example>
+        /// <code>
+        ///    // Event is raised when a new known peer is discovered, regardless of point of origin
+        ///    private static void HandleNewKnownPeer(object sender, PeerNetwork.NewPeerEventArgs e)
+        ///    {
+        ///        // The peer channel's DataReceived event subscribed to HandleIncomingData function
+        ///        e.peerChannel.DataReceived += HandleIncomingData;
+        ///    {
+        ///    
+        ///    private static void HandleIncomingData(object? sender, Peer_Channel_Base.DataReceivedEventArgs e)
+        ///    {
+        ///        Console.WriteLine(e.Data); // incoming information received by the PeerChannel is printed to console
+        ///    {
+        /// 
+        /// </code>
+        /// </example>
+        public event EventHandler<DataReceivedEventArgs> DataReceived
+                {
+                add
+                    {
+                    _dataReceived += value;
+                    }
+                remove
+                    {
+                    _dataReceived -= value;
+                    }
+                }
+            protected virtual void OnDataReceived(string data)
+                {
+                _dataReceived?.Invoke(this, new DataReceivedEventArgs(data));
+                }
+        public delegate void DataReceivedEventHandler(object sender, DataReceivedEventArgs e);
+        public class DataReceivedEventArgs : EventArgs
+            {
+            public string Data { get; }
+
+            public DataReceivedEventArgs(string data)
+                {
+                Data = data;
+                }
+            }
 
         internal Task packetHandler;
         internal CancellationTokenSource cancelPacketHandler;

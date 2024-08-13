@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static P2PNet.PeerNetwork;
 
 namespace P2PNet.Peers
 {
@@ -18,14 +20,20 @@ namespace P2PNet.Peers
 
     internal class InboundConnectingPeersQueue
     {
-        private volatile Queue<GenericPeer> _queue = new Queue<GenericPeer>();
-
+        private volatile ConcurrentQueue<GenericPeer> _queue = new ConcurrentQueue<GenericPeer>();
+        
         public event EventHandler<IncomingPeerEventArgs> IncomingPeerConnectionAttempt;
 
         public void Enqueue(GenericPeer peer)
         {
+           if((IncomingPeerTrustConfiguration.IncomingPeerPlacement == IncomingPeerTrustConfiguration.IncomingPeerMode.QueueBased)||(IncomingPeerTrustConfiguration.IncomingPeerPlacement == IncomingPeerTrustConfiguration.IncomingPeerMode.QueueAndEventBased))
+                {
                 _queue.Enqueue(peer);
-                OnIncomingPeerConnectionAttempt(peer);
+                }
+            if ((IncomingPeerTrustConfiguration.IncomingPeerPlacement == IncomingPeerTrustConfiguration.IncomingPeerMode.EventBased) || (IncomingPeerTrustConfiguration.IncomingPeerPlacement == IncomingPeerTrustConfiguration.IncomingPeerMode.QueueAndEventBased))
+                {
+                Task.Run(() => { OnIncomingPeerConnectionAttempt(peer); });
+                }
         }
 
         public bool PeerIsQueued(string IPAddress)
@@ -43,7 +51,8 @@ namespace P2PNet.Peers
 
         public GenericPeer Dequeue()
         {
-            return _queue.Dequeue();
+                _queue.TryDequeue(out var peer);
+                return peer;
         }
 
         public int Count => _queue.Count;
@@ -53,5 +62,4 @@ namespace P2PNet.Peers
             IncomingPeerConnectionAttempt?.Invoke(this, new IncomingPeerEventArgs(peer));
         }
     }
-
 }

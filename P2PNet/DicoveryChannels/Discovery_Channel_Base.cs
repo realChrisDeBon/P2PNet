@@ -91,9 +91,9 @@ namespace P2PNet.DicoveryChannels
             if (identifierPacket != null)
                 {
 #if DEBUG
-                DebugMessage($"Packet received: {identifierPacket.Message} from {identifierPacket.ip}" + Environment.NewLine + $"\t\t\tSecret Port: {identifierPacket.Data}");
+                DebugMessage($"Packet received: {identifierPacket.Message} from {identifierPacket.IP}" + Environment.NewLine + $"\t\t\tSecret Port: {identifierPacket.Data}");
 #endif
-                IPeer newPeer = new GenericPeer(IPAddress.Parse(identifierPacket.ip), identifierPacket.Data);
+                IPeer newPeer = new GenericPeer(IPAddress.Parse(identifierPacket.IP), identifierPacket.Data);
                 PeerNetwork.AddPeer(newPeer);
                 }
             else if (collectionPacket != null)

@@ -204,5 +204,8 @@ namespace P2PNet.Distribution
 
         [JsonSerializable(typeof(DataTransmissionPacket))]
         public partial class DataTransmissionPacketContext : JsonSerializerContext { }
-        #endregion 
+
+        [JsonSerializable(typeof(DisconnectPacket))]
+        public partial class DisconnectPacketContext : JsonSerializerContext { }
+        #endregion
     }

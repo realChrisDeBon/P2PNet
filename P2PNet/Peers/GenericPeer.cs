@@ -6,6 +6,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.Json.Serialization;
+using P2PNet.Peers;
 
 namespace P2PNet.Peers
     {
@@ -27,6 +28,10 @@ namespace P2PNet.Peers
             Port = port;
             }
 
+        /// <summary>
+        /// Gets the PeerChannel associated with this GenericPeer.
+        /// </summary>
+        /// <returns>PeerChannel associated with this GenericPeer.</returns>
         public PeerChannel GetPeerChannel()
             {
             foreach(PeerChannel channel_ in PeerNetwork.ActivePeerChannels)
@@ -39,5 +44,6 @@ namespace P2PNet.Peers
                 }
             return null; // no channel found
             }
+
         }
     }

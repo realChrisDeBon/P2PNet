@@ -18,9 +18,10 @@ namespace P2PNet
     public static class PeerNetwork
         {
 
-        // Some public facing settings for better user-defined control
+        // Some non-public facing settings
         static bool isBroadcaster = false;
         private static Random randomizer = new Random();
+        private static bool localAddressesLoaded = false;
 
         /// <summary>
         /// Indicates whether to automatically throttle outbound broadcast rate when a new peer is discovered.
@@ -116,14 +117,24 @@ namespace P2PNet
         /// </summary>
         public static void BeginAcceptingInboundPeers()
             {
-            if (AcceptInboundPeers == true)
+            try
                 {
-                listener.Start();
-                Task.Run(() => AcceptClientsAsync());
-                } else
+                CheckIfProperInit();
+                if (AcceptInboundPeers == true)
+                    {
+                    listener.Start();
+                    Task.Run(() => AcceptClientsAsync());
+                    }
+                else
+                    {
+#if DEBUG
+                    DebugMessage("Attempt was made to start inbound listener while AcceptInboundPeers is false.", MessageType.Warning);
+#endif
+                    }
+                } catch (Exception ex)
                 {
 #if DEBUG
-                DebugMessage("Attempt was made to start inbound listener while AcceptInboundPeers is false.", MessageType.Warning);
+                DebugMessage($"{ex.StackTrace} {ex.Message}", MessageType.Critical);
 #endif
                 }
             }
@@ -179,13 +190,50 @@ namespace P2PNet
             }
 
         /// <summary>
-        /// Queue of inbound connecting peers that have not been assigned a peer channel.
-        /// Pass these peers through your verification pipeline and/or <see cref="AddPeer(IPeer, TcpClient)"/> once verified.
+        /// Occurs when a new KnownPeer is added.
+        /// Subscribers can use this event to handle all new peers and their peer channels, regardless of point of origin.
         /// </summary>
-        /// <remarks>
-        /// Inbound connections opened through <see cref="ListeningPort"/> will automatically be enqueued here. This allows you to implement any additional verification you may want in place before calling <see cref="AddPeer(IPeer, TcpClient)"/> and opening a PeerChannel
-        /// </remarks>
-        private static volatile InboundConnectingPeersQueue InboundConnectingPeers = new InboundConnectingPeersQueue();
+        /// <example>
+        /// <code>
+        ///    // Event is raised when a new known peer is discovered, regardless of point of origin
+        ///    private static void HandleNewKnownPeer(object sender, PeerNetwork.NewPeerEventArgs e)
+        ///    {
+        ///        // The peer channel's DataReceived event subscribed to HandleIncomingData function
+        ///        e.peerChannel.DataReceived += HandleIncomingData;
+        ///    {
+        ///    
+        ///    private static void HandleIncomingData(object? sender, Peer_Channel_Base.DataReceivedEventArgs e)
+        ///    {
+        ///        Console.WriteLine(e.Data); // incoming information is printed to console
+        ///    {
+        /// 
+        /// </code>
+        /// </example>
+        public static event EventHandler<NewPeerEventArgs> PeerAdded;
+
+            // Define the delegate for the event
+            public delegate void NewKnownPeerEventHandler(object sender, NewPeerEventArgs e);
+
+            // Define the event arguments class
+            public class NewPeerEventArgs : EventArgs
+                {
+                public PeerChannel peerChannel { get; }
+
+                public NewPeerEventArgs(PeerChannel PeerChannel)
+                    {
+                peerChannel = PeerChannel;
+                    }
+                }
+            // Protected method to raise the event
+            private static void OnPeerAdded(PeerChannel peerChannel)
+                {
+                PeerAdded?.Invoke(null, new NewPeerEventArgs(peerChannel));
+                }
+
+        /// <summary>
+        /// Queue of inbound connecting peers that have not been assigned a peer channel.
+        /// </summary>
+        private static InboundConnectingPeersQueue InboundConnectingPeers = new InboundConnectingPeersQueue();
 
         /// <summary>
         /// Occurs when a new incoming peer connection attempt is detected.
@@ -201,6 +249,23 @@ namespace P2PNet
         /// Gets the number of inbound peers that have been enqueued but not yet processed.
         /// </summary>
         public static int InboundPeerCount => InboundConnectingPeers.Count;
+
+        /// <summary>
+        /// Gets the first peer from inbound peer queue.
+        /// </summary>
+        public static GenericPeer DequeueInboundPeer()
+            {
+            return InboundConnectingPeers.Dequeue();
+                        // If it is EventBased queue will certainly be empty and unused. Otherwise there's a possible return.
+            if (IncomingPeerTrustConfiguration.IncomingPeerPlacement != IncomingPeerTrustConfiguration.IncomingPeerMode.EventBased)
+                {
+                return InboundConnectingPeers.Dequeue();
+                }
+#if DEBUG
+            DebugMessage("Cannot dequeue if IncomingPeerPlacement is not QueueBased or QueueAndEventBased", MessageType.Warning);
+#endif
+            return null;
+            }
 
         /// <summary>
         /// All active <see cref="PeerChannel"/> connections are stored here. 
@@ -267,7 +332,7 @@ namespace P2PNet
                     {
                     error_occurred = true;
 #if DEBUG
-                    DebugMessage($"\tCannot setup multicast channel on address: {multicastChannel.multicast_address.ToString()}", MessageType.Warning);
+                    DebugMessage($"\tCannot setup multi-cast channel on address: {multicastChannel.multicast_address.ToString()}", MessageType.Warning);
 #endif
                     badChannels.Enqueue(multicastChannel);
                     }
@@ -276,7 +341,7 @@ namespace P2PNet
                     if (error_occurred == false)
                         {
 #if DEBUG
-                        DebugMessage($"\tSetup multicast channel on address: {multicastChannel.multicast_address.ToString()}");
+                        DebugMessage($"\tSetup multi-cast channel on address: {multicastChannel.multicast_address.ToString()}");
 #endif
                         }
                     }
@@ -363,7 +428,7 @@ namespace P2PNet
                         }
                     else
                         {
-                        // Set inboud as GenericPeer - intentional gap before AddPeer to implement additional verifications as needed
+                        // Set inbound as GenericPeer - intentional gap before AddPeer to implement additional verifications as needed
                         GenericPeer newPeer = new GenericPeer(((IPEndPoint)client.Client.RemoteEndPoint).Address, ((IPEndPoint)client.Client.RemoteEndPoint).Port);
 
                         InboundConnectingPeers.Enqueue(newPeer);
@@ -371,14 +436,13 @@ namespace P2PNet
                         }
                     }
                 }
-            
 
         /// <summary>
         /// Adds a peer to the <see cref="KnownPeers"/> list and establishes a connection if one is not provided.
         /// A new peer channel will be automatically added to <see cref="ActivePeerChannels"/> with standard non-elevated permissions.
         /// </summary>
         /// <param name="peer">The peer to add.</param>
-        /// <param name="client">The TCP client associated with the peer.</param>
+        /// <param name="client">The TCP client associated with the peer. Default is null.</param>
         /// <returns>A task that represents the asynchronous operation.</returns>
         /// <remarks></remarks>
         public static async Task AddPeer(IPeer peer, TcpClient client = null)
@@ -394,14 +458,14 @@ namespace P2PNet
             else if (peer.IP.ToString() == PublicIPV4Address.ToString() && peer.Port == ListeningPort)
                 {
 #if DEBUG
-                DebugMessage("Listener broadcasted to iteself.");
+                DebugMessage("Listener broadcast to itself.");
 #endif
                 return;
                 }
             else
                 {
                 if (client == null)
-                    { 
+                    {
                     try
                         {
 
@@ -451,6 +515,9 @@ namespace P2PNet
                     KnownPeers = peers;
                     Thread peerThread = new Thread(peerChannel.OpenPeerChannel);
                     peerThread.Start();
+
+                    // Raise PeerAdded event
+                    Task.Run(() => { OnPeerAdded(peerChannel); });
                     return;
                     }
                 }
@@ -548,6 +615,7 @@ namespace P2PNet
         /// </summary>
         public static void LoadLocalAddresses()
             {
+            localAddressesLoaded = true; // tell the application that we have loaded the local information
             PublicIPV6Address = GetLocalIPv6Address();
             if(PublicIPV6Address != null)
                 {
@@ -635,7 +703,6 @@ namespace P2PNet
                 }
             // Ensure there's no duplicates
             multicast_addresses = multicast_addresses.Distinct().ToList();
-
             }
 
         /// <summary>
@@ -671,26 +738,36 @@ namespace P2PNet
         /// </summary>
         public static void BootDiscoveryChannels()
             {
-            if (RunPeerCleanup_Routine == true)
+            try
                 {
-                cleanupTimer.Start();
-                } // startup the cleanup timer 
+                CheckIfProperInit(); // make sure local sys info loaded proper
+                if (RunPeerCleanup_Routine == true)
+                    {
+                    cleanupTimer.Start();
+                    } // startup the cleanup timer 
 
-            RandomizeBroadcasterPort(); // randomize a broadcast port
+                RandomizeBroadcasterPort(); // randomize a broadcast port
 
-            foreach (int port in DesignatedPorts)
-                {
-                LocalChannel localChannel = new LocalChannel(port);
-                ActiveLocalChannels.Add(localChannel);
+                foreach (int port in DesignatedPorts)
+                    {
+                    LocalChannel localChannel = new LocalChannel(port);
+                    ActiveLocalChannels.Add(localChannel);
+                    }
+                InitiateLocalChannels(BroadcasterPort);
+
+                foreach (IPAddress multicaster in multicast_addresses)
+                    {
+                    MulticastChannel multicastChannel = new MulticastChannel(multicaster);
+                    ActiveMulticastChannels.Add(multicastChannel);
+                    }
+                InitializeMulticaseChannels();
                 }
-            InitiateLocalChannels(BroadcasterPort);
-
-            foreach (IPAddress multicaster in multicast_addresses)
+            catch (Exception e)
                 {
-                MulticastChannel multicastChannel = new MulticastChannel(multicaster);
-                ActiveMulticastChannels.Add(multicastChannel);
+#if DEBUG
+                DebugMessage($"{e.StackTrace} {e.Message}", MessageType.Warning);
+#endif
                 }
-            InitializeMulticaseChannels();
             }
 
         // Randomly selects a port from the designated port collection to focus on outbound broadcasting
@@ -780,6 +857,15 @@ namespace P2PNet
 #endif
             }
 
+        // Check if local address info init or not
+        private static void CheckIfProperInit()
+            {
+            if(localAddressesLoaded != true)
+                {
+                throw new Exception("Local system information unavailable. Make sure to initiate with LoadLocalAddresses() before beginning peer network actions.");
+                }
+            }
+
         #endregion
 
         #region Trust Definitions
@@ -789,8 +875,33 @@ namespace P2PNet
         /// </summary>
         public static class IncomingPeerTrustConfiguration
             {
+
+            /// <summary>
+            /// Values for <see cref="IncomingPeerPlacement"/>
+            /// <list type="bullet">
+            /// <item>
+            /// <term>QueueBased</term>
+            /// <description>The inbound peer will be directed to the inbound peer queue.</description>
+            /// </item>
+            /// <item>
+            /// <term>EventBased</term>
+            /// <description>An event is triggered and the peer is passed to the event args.</description>
+            /// </item>
+            /// <item>
+            /// <term>QueueAndEventBased</term>
+            /// <description>The peer is directed to the inbound peer queue, and an event is triggered where the peer is passed to the event args.</description>
+            /// </item>
+            /// </list>
+            /// </summary>
+            public enum IncomingPeerMode
+                {
+                QueueBased,
+                EventBased,
+                QueueAndEventBased
+                }
             private static bool _allowDefaultCommunication = true;
             private static bool _allowEnhancedPacketExchange = false;
+            private static IncomingPeerMode _howToHandleInboundPeed = IncomingPeerMode.EventBased;
 
             /// <summary>
             /// Gets or sets whether incoming peer connections will be trusted to establish initial communication by default.
@@ -810,6 +921,29 @@ namespace P2PNet
                 {
                 get => _allowEnhancedPacketExchange;
                 set => _allowEnhancedPacketExchange = value;
+                }
+
+            /// <summary>
+            /// Gets or sets the logic for handling inbound peers.
+            /// <list type="bullet">
+            /// <item>
+            /// <term>QueueBased</term>
+            /// <description>The inbound peer will be directed to the inbound peer queue.</description>
+            /// </item>
+            /// <item>
+            /// <term>EventBased</term>
+            /// <description>An event is triggered and the peer is passed to the event args.</description>
+            /// </item>
+            /// <item>
+            /// <term>QueueAndEventBased</term>
+            /// <description>The peer is directed to the inbound peer queue, and an event is triggered where the peer is passed to the event args.</description>
+            /// </item>
+            /// </list>
+            /// </summary>
+            public static IncomingPeerMode IncomingPeerPlacement
+                {
+                get => _howToHandleInboundPeed;
+                set => _howToHandleInboundPeed = value;
                 }
             }
 

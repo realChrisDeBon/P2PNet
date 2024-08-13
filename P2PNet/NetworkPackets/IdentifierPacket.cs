@@ -10,17 +10,26 @@ namespace P2PNet.NetworkPackets {
     /// <summary>
     /// Standard packet used to relay identifying information through out peer network.
     /// </summary>
-    public class IdentifierPacket
-    {
+    public sealed class IdentifierPacket : INetworkPacket
+        {
+        /// <summary>
+        /// Optional data or information to assist in establishing network connection.
+        /// </summary>
         public string Message { get; set; }
+        /// <summary>
+        /// Relevant data to assist in establishing network connection.
+        /// </summary>
         public int Data { get; set; }
-        public string ip { get; set; }
+        /// <summary>
+        /// IP address to broadcast.
+        /// </summary>
+        public string IP { get; set; }
         public IdentifierPacket() { }
         public IdentifierPacket(string message, int data, IPAddress ip_)
         {
             Message = message;
             Data = data;
-            ip = ip_.ToString();
+            IP = ip_.ToString();
         }
     }
 }
