@@ -179,9 +179,9 @@ namespace P2PNet.Distribution
 
                             // Add entry
                             _entries.Add(newentry);
-#if DEBUG
+
                             DebugMessage($"\nLoaded {totallen} bytes into memory.\n", ConsoleColor.Magenta);
-#endif
+
                             }
                         }
                     }
@@ -193,9 +193,9 @@ namespace P2PNet.Distribution
                     {
                     if (index < 0 || index >= _entries.Count)
                         {
-#if DEBUG
+
                         DebugMessage($"Index out of range.\n", MessageType.Warning);
-#endif
+
                         throw new ArgumentOutOfRangeException(nameof(index));
                         }
 
@@ -212,9 +212,9 @@ namespace P2PNet.Distribution
 
                     if (matchingEntry.StartPosition == 0) // Check if entry was found
                         {
-#if DEBUG
+
                         DebugMessage($"Entry in memory not found.\n", MessageType.Warning);
-#endif
+
                         }
 
                     return _data.Slice(matchingEntry.StartPosition, matchingEntry.Length).ToArray();
@@ -233,17 +233,17 @@ namespace P2PNet.Distribution
                 int startIndex = FindBlockStart(DataFormatTagMap[datatype].OpeningTag);
                 if (startIndex == -1)
                     {
-#if DEBUG
+
                     DebugMessage($"Tag not found.\n", MessageType.Warning);
-#endif
+
                     }
 
                 int endIndex = FindBlockEnd(startIndex + DataFormatTagMap[datatype].OpeningTag.Length);
                 if (endIndex == -1)
                     {
-#if DEBUG
+
                     DebugMessage($"Invalid data format: Missing TAGEND.\n", MessageType.Warning);
-#endif
+
                     }
 
                 return _data.Span.Slice(startIndex + DataFormatTagMap[datatype].OpeningTag.Length, endIndex - startIndex - DataFormatTagMap[datatype].OpeningTag.Length);

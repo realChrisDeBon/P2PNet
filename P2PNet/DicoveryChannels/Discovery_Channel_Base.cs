@@ -90,17 +90,17 @@ namespace P2PNet.DicoveryChannels
 
             if (identifierPacket != null)
                 {
-#if DEBUG
+
                 DebugMessage($"Packet received: {identifierPacket.Message} from {identifierPacket.IP}" + Environment.NewLine + $"\t\t\tSecret Port: {identifierPacket.Data}");
-#endif
+
                 IPeer newPeer = new GenericPeer(IPAddress.Parse(identifierPacket.IP), identifierPacket.Data);
                 PeerNetwork.AddPeer(newPeer);
                 }
             else if (collectionPacket != null)
                 {
-#if DEBUG
+
                 DebugMessage($"Packet received: {identifierPacket.Message}");
-#endif
+
                 PeerNetwork.ProcessPeerList(collectionPacket);
                 }
             }

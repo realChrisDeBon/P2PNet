@@ -36,9 +36,9 @@ namespace P2PNet.Peers
             cancelSender = new CancellationTokenSource();        
             cancelReceiver = new CancellationTokenSource();
 
-#if DEBUG
+
             DebugMessage($"Successfully opened channel with new peer: {peer.IP.ToString()}:{peer.Client.Client.RemoteEndPoint.ToString()} port {peer.Port}:{peer.Client.Client.RemoteEndPoint.ToString()}", ConsoleColor.Cyan);
-#endif
+
 
             peer.Client.ReceiveTimeout = 60000;
             peer.Client.SendTimeout = 20000;
@@ -56,9 +56,9 @@ namespace P2PNet.Peers
             {
             if ((cancelSender != null) && (cancelReceiver != null))
                 {
-#if DEBUG
+
                 DebugMessage($"\t-- Ending peer connection with {peer.IP.ToString()} port {peer.Port}", ConsoleColor.DarkBlue);
-#endif
+
                 BreakAndRemovePeer();
 
                 }
@@ -93,16 +93,16 @@ namespace P2PNet.Peers
                         try
                             {
                             byte[] buffer = Encoding.UTF8.GetBytes(message);
-#if DEBUG
+
                             DebugMessage($"Sending: {message}", ConsoleColor.Cyan);
-#endif
+
                                 stream.WriteAsync(buffer, 0, buffer.Length, cancellationToken);
                             }
                         catch (Exception e)
                             {
-#if DEBUG
+
                             DebugMessage(e.ToString(), MessageType.Critical);
-#endif
+
                             }
                         finally
                             {
@@ -199,9 +199,9 @@ namespace P2PNet.Peers
         private void HandleException(Exception ex, int retries, int maxRetries)
             {
             RETRIES++;
-#if DEBUG
+
             DebugMessage($"Exception in PeerChannel ({peer.IP.ToString()} port {peer.Port}) : {ex.Message} - Attempt {RETRIES}/{MAX_RETRIES}", MessageType.Critical);
-#endif
+
             if (RETRIES >= MAX_RETRIES)
                 {
                 BreakAndRemovePeer();

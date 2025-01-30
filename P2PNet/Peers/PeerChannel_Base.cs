@@ -179,9 +179,9 @@ namespace P2PNet.Peers
                             break;
                         default:
                             // BADPACKET somehow made it here
-#if DEBUG
+
                             DebugMessage("Bad packet recieved.", MessageType.Warning);
-#endif
+
                             break;
                         }
                     }

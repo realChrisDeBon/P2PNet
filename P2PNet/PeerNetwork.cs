@@ -1,6 +1,6 @@
-﻿#if DEBUG
+﻿
 global using static ConsoleDebugger.ConsoleDebugger;
-#endif
+
 using P2PNet.DiscoveryChannels;
 using P2PNet.Distribution;
 using P2PNet.NetworkPackets;
@@ -41,14 +41,14 @@ namespace P2PNet
         /// <summary>
         /// Determines if the broadcaster port for LAN discovery will be rotated on a regular interval.
         /// </summary>
-        public static bool RunRotateBroadcastPort_Routine
+        public static bool RunBroadcastPortRotationRoutine
             {
             get { return runningPortRotate; }
-            set { runningPortRotate = value; InboundToggle_PortRotate(value); }
+            set { runningPortRotate = value; SetBroadcastPortRotate(value); }
             }
         private static bool runningPortRotate = true;
         private static System.Timers.Timer rotationTimer = new System.Timers.Timer();
-        private static void InboundToggle_PortRotate(bool status_)
+        private static void SetBroadcastPortRotate(bool status_)
             {
             if(status_ == true)
                 {
@@ -97,11 +97,11 @@ namespace P2PNet
             set
                 {
                 runningListener = value;
-                InboundToggle_Listener(value);
+                SetInboundPeerAcceptancePolicy(value);
                 }
             }
         private static  bool runningListener = true;
-        private static void InboundToggle_Listener(bool status_)
+        private static void SetInboundPeerAcceptancePolicy(bool status_)
             {
             if(status_ == true)
                 {
@@ -127,15 +127,11 @@ namespace P2PNet
                     }
                 else
                     {
-#if DEBUG
                     DebugMessage("Attempt was made to start inbound listener while AcceptInboundPeers is false.", MessageType.Warning);
-#endif
                     }
                 } catch (Exception ex)
                 {
-#if DEBUG
                 DebugMessage($"{ex.StackTrace} {ex.Message}", MessageType.Critical);
-#endif
                 }
             }
         
@@ -261,9 +257,9 @@ namespace P2PNet
                 {
                 return InboundConnectingPeers.Dequeue();
                 }
-#if DEBUG
+
             DebugMessage("Cannot dequeue if IncomingPeerPlacement is not QueueBased or QueueAndEventBased", MessageType.Warning);
-#endif
+
             return null;
             }
 
@@ -299,17 +295,13 @@ namespace P2PNet
                 catch
                     {
                     error_occurred = true;
-#if DEBUG
                     DebugMessage($"\tCannot setup local broadcast channel.", MessageType.Warning);
-#endif
                     }
                 finally
                     {
                     if (error_occurred == false)
                         {
-#if DEBUG
                         DebugMessage($"\tSetup local channel on port: {channel_.DESIGNATED_PORT}");
-#endif
                         }
                     }
                 }
@@ -331,18 +323,14 @@ namespace P2PNet
                 catch
                     {
                     error_occurred = true;
-#if DEBUG
                     DebugMessage($"\tCannot setup multi-cast channel on address: {multicastChannel.multicast_address.ToString()}", MessageType.Warning);
-#endif
                     badChannels.Enqueue(multicastChannel);
                     }
                 finally
                     {
                     if (error_occurred == false)
                         {
-#if DEBUG
                         DebugMessage($"\tSetup multi-cast channel on address: {multicastChannel.multicast_address.ToString()}");
-#endif
                         }
                     }
                 }
@@ -384,7 +372,7 @@ namespace P2PNet
         /// Starts timed routines if their run value is true. These routines include:
         /// <list type="bullet">
         /// <item>
-        /// <description><see cref="RunRotateBroadcastPort_Routine"/></description>
+        /// <description><see cref="RunBroadcastPortRotationRoutine"/></description>
         /// </item>
         /// <item>
         /// <description><see cref="RunPeerCleanup_Routine"/></description>
@@ -393,7 +381,7 @@ namespace P2PNet
         /// </summary>
         public static async Task StartRoutines()
             {
-            if (RunRotateBroadcastPort_Routine == true)
+            if (RunBroadcastPortRotationRoutine == true)
                 {
                 rotationTimer.Start();
                 }
@@ -415,16 +403,12 @@ namespace P2PNet
 
                     if (KnownPeers.Any(p => p.IP.Equals(peerIP)))
                         {
-#if DEBUG
                         DebugMessage("Duplicate connection attempt from existing peer. Ignoring.", MessageType.Warning);
-#endif
                         client.Dispose();
                         }
                     else if (InboundConnectingPeers.PeerIsQueued(peerIP.ToString()))
                         {
-#if DEBUG
                         DebugMessage("Duplicate connection attempt from existing peer. Ignoring.", MessageType.Warning);
-#endif
                         }
                     else
                         {
@@ -450,16 +434,14 @@ namespace P2PNet
             List<IPeer> peers = KnownPeers;
             if ((KnownPeers.Any(p => p.IP.Equals(peer.IP))) || (KnownPeers.Any(p => p.Identifier.Equals(peer.Identifier))))
                 {
-#if DEBUG
+
                 DebugMessage("Duplicate connection attempt from existing peer. Ignoring.", MessageType.Warning);
-#endif
+
                 return;
                 }
             else if (peer.IP.ToString() == PublicIPV4Address.ToString() && peer.Port == ListeningPort)
                 {
-#if DEBUG
                 DebugMessage("Listener broadcast to itself.");
-#endif
                 return;
                 }
             else
@@ -481,9 +463,9 @@ namespace P2PNet
                         }
                     catch (Exception e)
                         {
-#if DEBUG
+
                         DebugMessage($"Issue opening trusted peer channel: {peer.IP.ToString()} @ port {peer.Port}\n{e.ToString()}", MessageType.Critical);
-#endif
+
                         return;
                         }
                     }
@@ -497,9 +479,9 @@ namespace P2PNet
                         }
                     catch (Exception e)
                         {
-#if DEBUG
+
                         DebugMessage($"Issue accepting incoming peer: {peer.IP.ToString()} @ port {peer.Port}", MessageType.Warning);
-#endif
+
                         return;
                         }
                     }
@@ -508,9 +490,8 @@ namespace P2PNet
                     {
                     PeerChannel peerChannel = new PeerChannel(peer);
                     ActivePeerChannels.Add(peerChannel);
-#if DEBUG || TRUSTLESS
                     DistributionHandler.AddTrustedPeer(peerChannel); // REMOVE AFTER DEBUGGING & TESTING
-#endif
+
                     peers.Add(peerChannel.peer);
                     KnownPeers = peers;
                     Thread peerThread = new Thread(peerChannel.OpenPeerChannel);
@@ -539,9 +520,9 @@ namespace P2PNet
                 }
             catch (Exception ex)
                 {
-#if DEBUG
+
                 DebugMessage($"Error removing peer: {ex.Message}", MessageType.Warning);
-#endif
+
                 return false;
                 }
             return flawless;
@@ -577,9 +558,9 @@ namespace P2PNet
             catch (Exception ex)
                 {
                 // Log the exception for debugging 
-#if DEBUG
+
                 DebugMessage($"Error elevating peer status: {ex.Message}", MessageType.Warning);
-#endif
+
                 return false;
                 }
             return flawless;
@@ -602,9 +583,9 @@ namespace P2PNet
                 }
             if (x > 0)
                 {
-#if DEBUG
+
                 DebugMessage($"Added {x} peers.");
-#endif
+
                 }
             }
 
@@ -620,15 +601,15 @@ namespace P2PNet
             if(PublicIPV6Address != null)
                 {
                 IPv6AddressFound = true; // this will signal to us later if IPv6 is usable or not
-#if DEBUG
+
                 DebugMessage($"IPv6 IP address: {PublicIPV6Address.ToString()}");
-#endif
+
                 }
             else
                 {
-#if DEBUG
+
                 DebugMessage("IPv6 IP address not found. IPv6 features will not be available.", MessageType.Warning);
-#endif
+
                 }
 
             // Get the first available network interface
@@ -670,10 +651,10 @@ namespace P2PNet
                 }
             else
                 {
-#if DEBUG
+
                 DebugMessage("No primary interface found.");
                 Thread.Sleep(1500);
-#endif
+
                 return; // accidently'd the internet
                 }
 
@@ -686,16 +667,16 @@ namespace P2PNet
                         {
 
                         IPInterfaceProperties adapterProperties = adapter.GetIPProperties();
-#if DEBUG
+
                         DebugMessage(adapter.GetPhysicalAddress().ToString());
                         DebugMessage($"{adapter.Name.ToString()}\t {adapter.NetworkInterfaceType.ToString()}");
                         DebugMessage($"Multicast supported: {adapter.SupportsMulticast}");
-#endif
+
                         foreach (MulticastIPAddressInformation address in adapterProperties.MulticastAddresses)
                             {
-#if DEBUG
+
                             DebugMessage($"Multicast address: {address.Address.ToString()}");
-#endif
+
                             multicast_addresses.Add(address.Address);
                             }
                         }
@@ -764,9 +745,9 @@ namespace P2PNet
                 }
             catch (Exception e)
                 {
-#if DEBUG
+
                 DebugMessage($"{e.StackTrace} {e.Message}", MessageType.Warning);
-#endif
+
                 }
             }
 
@@ -774,10 +755,10 @@ namespace P2PNet
         static void RandomizeBroadcasterPort()
             {
             BroadcasterPort = DesignatedPorts[randomizer.Next(DesignatedPorts.Count)];
-#if DEBUG
+
             Console.WriteLine("Role: {0}, Port: {1}", isBroadcaster ? "Broadcaster" : "Listener", BroadcasterPort);
             Console.Title = ($"Broadcast port: {BroadcasterPort}");
-#endif
+
             }
 
         #endregion
@@ -788,9 +769,9 @@ namespace P2PNet
         private static void DiscernPeerChannels(object sender, System.Timers.ElapsedEventArgs e)
             {
             cleanupTimer.Interval = (PeerChannelCleanupDuration * 60000);
-#if DEBUG
+
             DebugMessage("DISCERNING CHANNELS", ConsoleColor.Magenta);
-#endif
+
             Task.Run(async () =>
             {
                 try
@@ -816,9 +797,9 @@ namespace P2PNet
                         bool success = await RemovePeer(channel);
                         if (success == true)
                             {
-#if DEBUG
+
                             DebugMessage($"Removed peer for inactivity: {channel.peer.IP.ToString()} port {channel.peer.Port}", ConsoleColor.DarkCyan);
-#endif
+
                             channel.ClosePeerChannel();
                             }
                         }
@@ -829,16 +810,16 @@ namespace P2PNet
                             {
                             channel.TrustPeer();
                             }
-#if DEBUG
+
                         DebugMessage($"Trusting peer: {channel.peer.IP.ToString()} port {channel.peer.Port}", ConsoleColor.Cyan);
-#endif
+
                         }
                     }
                 catch (Exception ex)
                 {
-#if DEBUG
+
                     DebugMessage($"Encountered an error: {ex}", MessageType.Critical);
-#endif
+
                     }
             });
             }
@@ -852,9 +833,9 @@ namespace P2PNet
                 {
                 BroadcasterPort = DesignatedPorts[randomizer.Next(DesignatedPorts.Count)];
                 }
-#if DEBUG
+
             DebugMessage($"Rotated to new port: {BroadcasterPort}", MessageType.General);
-#endif
+
             }
 
         // Check if local address info init or not
