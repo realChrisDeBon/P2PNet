@@ -1,0 +1,36 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>P2P Bootstrap Server - Dashboard</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <h1>P2P Bootstrap Server Dashboard</h1>
+        <div class="header-buttons">
+            <button id="save-button">Save</button>
+            <button id="logout-button">Logout</button>
+        </div>
+    </header>
+
+    <!-- Navigation Bar -->
+    <div class="navbar">
+        <ul>
+            <li><a href="#" onclick="navigateTo('overview')">Overview</a></li>
+            <li><a href="#" onclick="navigateTo('settings')">Settings</a></li>
+            <li><a href="#" onclick="navigateTo('peers')">Peers</a></li>
+            <!-- Add more navigation items as needed -->
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="main-content">
+        <h2>Welcome to the Bootstrap Server Dashboard</h2>
+        <p>Select an option from the navigation menu to get started.</p>
+    </div>
+
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

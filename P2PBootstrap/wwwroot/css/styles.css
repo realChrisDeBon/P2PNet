@@ -1,0 +1,190 @@
+﻿/* Global Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #2C3E50; /* Dark Gray */
+    margin: 0;
+    color: #ECF0F1; /* Light Gray */
+}
+
+/* Header Styles */
+.header {
+    background-color: #34495E; /* Slightly Lighter Gray */
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #ECF0F1;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    z-index: 1000;
+}
+
+    .header h1 {
+        margin: 0;
+        font-size: 24px;
+    }
+
+    .header .header-buttons {
+        display: flex;
+        gap: 10px;
+    }
+
+        .header .header-buttons button {
+            padding: 8px 12px;
+            background-color: #3498DB; /* Blue Accent */
+            color: #ECF0F1;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+            .header .header-buttons button:hover {
+                background-color: #2980B9;
+            }
+
+/* Navigation Styles */
+.navbar {
+    width: 200px;
+    background-color: #34495E;
+    position: fixed;
+    top: 60px; /* Start below the header */
+    left: 0;
+    bottom: 0;
+    padding-top: 20px;
+    z-index: 500;
+}
+
+    .navbar ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+        .navbar ul li {
+            padding: 15px 20px;
+        }
+
+            .navbar ul li a {
+                color: #ECF0F1;
+                text-decoration: none;
+                display: block;
+            }
+
+                .navbar ul li a:hover {
+                    background-color: #3C5A73;
+                }
+
+/* Main Content Styles */
+.main-content {
+    margin-left: 200px; /* Width of the sidebar */
+    padding: 80px 20px 20px 20px; /* Top padding accounts for header */
+}
+
+h2 {
+    color: #ECF0F1;
+}
+
+/* Table Styles */
+#peers-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #a1a1a1; /* Gray background */
+    min-height: 200px; /* Fixed table height */
+    table-layout: fixed; /* Fixed table layout */
+}
+
+    #peers-table th,
+    #peers-table td {
+        border: 1px solid #ccc; /* Table lines */
+        padding: 10px;
+        text-align: left;
+    }
+
+    #peers-table th {
+        background-color: #808080; /* Slightly darker gray for headers */
+    }
+
+    #peers-table tbody tr.empty-row td {
+        height: 150px; /* Fixed row height */
+        text-align: center;
+        color: #888; /* Gray text for empty message */
+    }
+
+    /* Ensure tbody fills the min-height */
+    #peers-table tbody {
+        display: block;
+        min-height: 150px;
+    }
+
+        #peers-table thead,
+        #peers-table tbody tr {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+        }
+
+
+/* Optional: Adjust table when no data */
+.no-data-message {
+    text-align: center;
+    padding: 50px;
+    color: #BDC3C7;
+}
+
+
+
+/* Login Page Styles */
+.login-container {
+    width: 300px;
+    margin: 100px auto;
+    padding: 25px;
+    background-color: #34495E;
+    border: 1px solid #2C3E50;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    color: #ECF0F1;
+}
+
+    .login-container label {
+        display: block;
+        margin-top: 15px;
+        font-weight: bold;
+    }
+
+    .login-container input[type="text"],
+    .login-container input[type="password"] {
+        width: 100%;
+        padding: 8px;
+        margin-top: 5px;
+        box-sizing: border-box;
+        border: 1px solid #2C3E50;
+        background-color: #3C5A73;
+        color: #ECF0F1;
+    }
+
+    .login-container input::placeholder {
+        color: #BDC3C7;
+    }
+
+    .login-container button {
+        width: 100%;
+        padding: 10px;
+        margin-top: 20px;
+        background-color: #3498DB;
+        color: #ECF0F1;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+        .login-container button:hover {
+            background-color: #2980B9;
+        }
+
+.message {
+    color: red;
+    text-align: center;
+    margin-top: 15px;
+    font-weight: bold;
+}

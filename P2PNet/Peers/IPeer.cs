@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace P2PNet.Peers
@@ -11,12 +12,20 @@ namespace P2PNet.Peers
     /// <summary>
     /// Represents a peer with an IP address, port, TCP client, network stream, and identifier.
     /// </summary>
+    [JsonPolymorphic(TypeDiscriminatorPropertyName = "$type")]
+    [JsonDerivedType(typeof(GenericPeer), "GenericPeer")]
     public interface IPeer
     {
         /// <summary>
         /// Gets or sets the IP address of the peer.
         /// </summary>
+        [JsonIgnore]
         public IPAddress IP { get; set; }
+
+        public string Address { get; set; }
+
+        public string Id => string.IsNullOrEmpty(Address) ? string.Empty : BitConverter.ToString(new System.Security.Cryptography.SHA256Managed().ComputeHash(System.Text.Encoding.UTF8.GetBytes($"{Address}:{Port}"))).Replace("-", string.Empty);
+
 
         /// <summary>
         /// Gets or sets the port of the peer.
@@ -26,11 +35,13 @@ namespace P2PNet.Peers
         /// <summary>
         /// Gets or sets the TCP client associated with the peer.
         /// </summary>
+        [JsonIgnore]
         public TcpClient Client { get; set; }
 
         /// <summary>
         /// Gets or sets the network stream associated with the peer.
         /// </summary>
+        [JsonIgnore]
         public NetworkStream Stream { get; set; }
 
         /// <summary>
@@ -38,4 +49,5 @@ namespace P2PNet.Peers
         /// </summary>
         public string Identifier { get; set; }
     }
+
 }

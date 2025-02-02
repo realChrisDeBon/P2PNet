@@ -1,0 +1,29 @@
+# File: P2PBootstrap/P2PBootstrap.http
+
+@P2PBootstrap_HostAddress = http://localhost:5070
+
+### Heartbeat from Peer One
+
+PUT {{P2PBootstrap_HostAddress}}/api/Bootstrap/heartbeat
+Content-Type: application/json
+
+{
+  "Address": "192.168.1.10",
+  "Port": 5000,
+  "Identifier": "PeerOne"
+}
+
+###
+
+### Heartbeat from Peer Two
+
+PUT {{P2PBootstrap_HostAddress}}/api/Bootstrap/heartbeat
+Content-Type: application/json
+
+{
+  "Address": "192.168.1.11",
+  "Port": 5001,
+  "Identifier": "PeerTwo"
+}
+
+###

@@ -14,10 +14,33 @@ namespace P2PNet.DicoveryChannels.WAN
     /// </summary>
     public class BootstrapPeer : IPeer
         {
+        /// <summary>
+        /// Gets or sets the IP address of the peer.
+        /// </summary>
         public IPAddress IP { get; set; }
+        /// <summary>
+        /// Gets or sets the port of the peer.
+        /// </summary>
         public int Port { get; set; }
+        /// <summary>
+        /// Gets or sets the address for the peer.
+        /// </summary>
+        public string Address
+        {
+            get { return IP.ToString(); }
+            set { IP = IPAddress.Parse(value); }
+        }
+        /// <summary>
+        /// Gets or sets the TCP client associated with the peer.
+        /// </summary>
         public TcpClient Client { get; set; }
+        /// <summary>
+        /// Gets or sets the network stream associated with the peer.
+        /// </summary>
         public NetworkStream Stream { get; set; }
+        /// <summary>
+        /// Gets or sets the unique identifier for the peer.
+        /// </summary>
         public string Identifier { get; set; }
         public BootstrapPeer() { }
 

@@ -1,4 +1,5 @@
 ﻿using P2PNet.NetworkPackets;
+using P2PNet.Peers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -128,6 +129,10 @@ namespace P2PNet.Distribution
             { typeof(IdentifierPacket), new IdentifierPacketContext().GetTypeInfo(typeof(IdentifierPacket)) },
             { typeof(CollectionSharePacket), new CollectionSharePacketContext().GetTypeInfo(typeof(CollectionSharePacket)) },
             { typeof(DataTransmissionPacket), new DataTransmissionPacketContext().GetTypeInfo(typeof(DataTransmissionPacket)) },
+            { typeof(GenericPeer), new GenericPeerContext().GetTypeInfo(typeof(GenericPeer)) },
+            { typeof(List<GenericPeer>), new GenericPeerListContext().GetTypeInfo(typeof(List<GenericPeer>)) },
+            { typeof (IPeer), new IPeerContext().GetTypeInfo(typeof(IPeer)) },
+            { typeof (List<IPeer>), new IPeerListContext().GetTypeInfo(typeof(List<IPeer>)) },
         };
 
         /// <summary>
@@ -151,14 +156,14 @@ namespace P2PNet.Distribution
         /// <param name="obj">The target object being serialized.</param>
         /// <returns>Returns a JSON serialized string of the target object.</returns>
         public static string Serialize<T>(T obj)
-            {
+        {
             if (!_serializerContexts.TryGetValue(typeof(T), out var context))
-                {
+            {
                 throw new ArgumentException($"No serializer context found for type {typeof(T)}");
-                }
-
-            return System.Text.Json.JsonSerializer.Serialize(obj, context);
             }
+
+            return JsonSerializer.Serialize(obj, (JsonTypeInfo<T>)context);
+        }
 
         /// <summary>
         /// This implementation of JSON deserialization is used specifically for the following types:
@@ -181,18 +186,18 @@ namespace P2PNet.Distribution
         /// <param name="json">The serialized string representation of the Type.</param>
         /// <returns>Returns a Type of object from a JSON serialized string.</returns>
         public static T Deserialize<T>(string json)
-            {
+        {
             if (!_serializerContexts.TryGetValue(typeof(T), out var context))
-                {
+            {
                 throw new ArgumentException($"No serializer context found for type {typeof(T)}");
-                }
+            }
 
             return System.Text.Json.JsonSerializer.Deserialize<T>(json, (JsonTypeInfo<T>)context);
-            }
+        }
         #endregion
         }
 
-        #region PACKET_CONTEXT
+    #region PACKET_CONTEXT
         [JsonSerializable(typeof(PureMessagePacket))]
         public partial class PureMessagePacketContext : JsonSerializerContext { }
 
@@ -200,6 +205,8 @@ namespace P2PNet.Distribution
         public partial class IdentifierPacketContext : JsonSerializerContext { }
 
         [JsonSerializable(typeof(CollectionSharePacket))]
+        [JsonSerializable(typeof(IPeer))]
+        [JsonDerivedType(typeof(GenericPeer), "GenericPeer")]
         public partial class CollectionSharePacketContext : JsonSerializerContext { }
 
         [JsonSerializable(typeof(DataTransmissionPacket))]
@@ -207,5 +214,16 @@ namespace P2PNet.Distribution
 
         [JsonSerializable(typeof(DisconnectPacket))]
         public partial class DisconnectPacketContext : JsonSerializerContext { }
-        #endregion
-    }
+        [JsonSerializable(typeof(GenericPeer))]
+        public partial class GenericPeerContext : JsonSerializerContext { }
+
+        [JsonSerializable(typeof(List<GenericPeer>))]
+        public partial class GenericPeerListContext : JsonSerializerContext { }
+
+        [JsonSerializable(typeof(IPeer))]
+        public partial class IPeerContext : JsonSerializerContext { }
+
+        [JsonSerializable(typeof(List<IPeer>))]
+        public partial class IPeerListContext : JsonSerializerContext { }
+    #endregion
+}
