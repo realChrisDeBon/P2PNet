@@ -18,9 +18,22 @@ namespace Testing
             // Initialize any required resources before tests
         }
 
+        private bool IsNpcapAvailable()
+        {
+            string dllPath = Path.Combine(Environment.CurrentDirectory, "wpcap.dll");
+            return File.Exists(dllPath);
+        }
+
         [Test]
         public async Task PeerNetworkStartupTest()
         {
+            if (!IsNpcapAvailable())
+            {
+                Assert.Warn("Npcap DLL not found. Skipping network capture tests.");
+                Assert.Inconclusive("Npcap DLL not found. Skipping test.");
+                return;
+            }
+
             DebugMessage("Starting PeerNetwork tests.", MessageType.General);
 
             // Load local addresses
