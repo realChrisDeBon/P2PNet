@@ -21,7 +21,7 @@ namespace Testing
         [Test]
         public async Task PeerNetworkStartupTest()
         {
-            ConsoleDebugger.ConsoleDebugger.DebugMessage("Starting PeerNetwork tests.", ConsoleDebugger.ConsoleDebugger.MessageType.General);
+            DebugMessage("Starting PeerNetwork tests.", MessageType.General);
 
             // Load local addresses
             LoadLocalAddresses();
