@@ -5,7 +5,7 @@ VisualStudioVersion = 17.9.34723.18
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P2PNet", "P2PNet\P2PNet.csproj", "{5513BE3C-21CC-4F7B-BE6B-CD2A5955B67F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P2PWidescan", "P2PWidescan\P2PWidescan.csproj", "{B17DC68F-6AE7-47A3-A948-562BA0C11D47}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P2PNet.Widescan", "P2PWidescan\P2PNet.Widescan.csproj", "{B17DC68F-6AE7-47A3-A948-562BA0C11D47}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P2PBootstrap", "P2PBootstrap\P2PBootstrap.csproj", "{E30E8D11-91CC-4F2D-A396-57451EB5D0B2}"
 EndProject

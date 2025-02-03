@@ -16,6 +16,7 @@ Including PacketDotNet and SharpPcap as dependencies.</PackageReleaseNotes>
 	<PackageTags>p2pnet;p2p;peer-to-peer;</PackageTags>
 	<PackageIcon>p2pnet_logo.jpg-HD.png</PackageIcon>
 	<RepositoryUrl>https://github.com/realChrisDeBon/P2PNet</RepositoryUrl>
+	<NoWarn>$(NoWarn);CS0168,CS0219</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

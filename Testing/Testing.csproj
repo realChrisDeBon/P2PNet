@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\P2PWidescan\P2PWidescan.csproj" />
+    <ProjectReference Include="..\P2PWidescan\P2PNet.Widescan.csproj" />
   </ItemGroup>
 
 </Project>

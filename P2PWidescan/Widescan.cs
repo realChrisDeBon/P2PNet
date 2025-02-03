@@ -18,9 +18,8 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Net.Sockets;
 
-namespace P2PWidescan
+namespace P2PNet.Widescan
 {
-
     public enum HardwareMode
     {
         GPU,

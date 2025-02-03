@@ -1,11 +1,12 @@
 ﻿using static P2PNet.PeerNetwork;
-using static P2PWidescan.Widescan;
+using static P2PNet.Widescan.Widescan;
 using static ConsoleDebugger.ConsoleDebugger;
 
 using NUnit.Framework;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Diagnostics;
+using P2PNet.Widescan;
 
 namespace Testing
 {
@@ -66,7 +67,7 @@ namespace Testing
         public async Task WidescanTest()
         {
             // Set hardware mode
-            SetHardwareMode(P2PWidescan.HardwareMode.CPU);
+            SetHardwareMode(P2PNet.Widescan.HardwareMode.CPU);
 
             // Add address prefixes
             AddAddressPrefix("2001:0db8:85a3:0000");
