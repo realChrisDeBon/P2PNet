@@ -32,6 +32,11 @@ body {
         gap: 10px;
     }
 
+    .header .logo {
+        height: 75px;
+        margin-right: 20px;
+    }
+
         .header .header-buttons button {
             padding: 8px 12px;
             background-color: #3498DB; /* Blue Accent */

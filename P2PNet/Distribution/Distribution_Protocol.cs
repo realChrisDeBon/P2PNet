@@ -55,20 +55,20 @@ namespace P2PNet.Distribution
         #endregion
 
         #region Data protocol
-        public enum DataFormat
+        public enum DataPayloadFormat
             {
             File,
             Task,
             }
-        public readonly static Dictionary<DataFormat, MessageTags> DataFormatTagMap = new Dictionary<DataFormat, MessageTags>()
+        public readonly static Dictionary<DataPayloadFormat, MessageTags> DataFormatTagMap = new Dictionary<DataPayloadFormat, MessageTags>()
             {
-                { DataFormat.File, new MessageTags() { OpeningTag = "<File>", ClosingTag = "</File>" } },
-                { DataFormat.Task, new MessageTags() { OpeningTag = "<Task>", ClosingTag = "</Task>" } },
+                { DataPayloadFormat.File, new MessageTags() { OpeningTag = "<File>", ClosingTag = "</File>" } },
+                { DataPayloadFormat.Task, new MessageTags() { OpeningTag = "<Task>", ClosingTag = "</Task>" } },
             };
 
         /// <summary>
         /// Removes the <see cref="DataFormatTagMap"/> tags that are placed in the byte[] payload of the <see cref="DataTransmissionPacket"/>.
-        /// These tags are automatically placed upon instantiation in the constructor to helps identify and handle the payload throughout its lifecycle.
+        /// These tags are automatically placed upon instantiation in the constructor to help identify and handle the payload throughout its lifecycle.
         /// </summary>
         /// <param name="packet">The packet whose payloads needs extracting</param>
         /// <returns>The payload of the packet with the opening and closing data format tags removed (ie the raw data).</returns>

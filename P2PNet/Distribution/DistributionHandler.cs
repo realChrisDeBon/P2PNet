@@ -12,9 +12,9 @@ namespace P2PNet.Distribution
         {
         public int StartPosition { get; }
         public int Length { get; }
-        public DataFormat DataType { get; }
+        public DataPayloadFormat DataType { get; }
         public string AutoGenTags {get;}
-        public MemoryEntry(int position, int length, DataFormat datatype)
+        public MemoryEntry(int position, int length, DataPayloadFormat datatype)
             {
             StartPosition = position;
             Length = length;
@@ -70,7 +70,7 @@ namespace P2PNet.Distribution
         /// </summary>
         /// <param name="data">The raw data to queue.</param>
         /// <param name="dataType">The type of data being queued.</param>
-        public static void QueueDataForDistribution(byte[] data, DataFormat dataType)
+        public static void QueueDataForDistribution(byte[] data, DataPayloadFormat dataType)
             {
             outgoingDataQueue.Enqueue(new DataTransmissionPacket { Data = data, DataType = dataType });
             } // overload for raw data not wrapped in DTP
@@ -129,10 +129,10 @@ namespace P2PNet.Distribution
                     // Logic for handling the packet based on DataType
                     switch (packet.DataType)
                         {
-                        case DataFormat.File:
+                        case DataPayloadFormat.File:
                             MemoryHandler.LoadDataToMemory(packet);
                             break;
-                        case DataFormat.Task:
+                        case DataPayloadFormat.Task:
 
                             break;
                         }
@@ -204,7 +204,7 @@ namespace P2PNet.Distribution
                     }
                 }
 
-            public static async Task<byte[]> ReadDataFromMemory(DataFormat dataType, string dataTag)
+            public static async Task<byte[]> ReadDataFromMemory(DataPayloadFormat dataType, string dataTag)
                 {
                 lock (_lock)
                     {
@@ -228,7 +228,7 @@ namespace P2PNet.Distribution
                 _data = newMemory;
                 }
 
-            public static ReadOnlySpan<byte> Search(DataFormat datatype)
+            public static ReadOnlySpan<byte> Search(DataPayloadFormat datatype)
                 {
                 int startIndex = FindBlockStart(DataFormatTagMap[datatype].OpeningTag);
                 if (startIndex == -1)
@@ -280,7 +280,7 @@ namespace P2PNet.Distribution
         public static async Task DistributeFileAsync(string filePath)
             {
             DataTransmissionPacket outgoingpacket = new DataTransmissionPacket();
-            outgoingpacket.DataType = DataFormat.File;
+            outgoingpacket.DataType = DataPayloadFormat.File;
             outgoingpacket.Data = await File.ReadAllBytesAsync(filePath);
             QueueDataForDistribution(outgoingpacket);
             }

@@ -1,9 +1,9 @@
-// File: Program.cs
 global using static P2PNet.PeerNetwork;
 global using P2PNet.Distribution;
 global using static P2PNet.Distribution.Distribution_Protocol;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Configuration;
 using P2PNet;
 using P2PNet.Distribution;
 using P2PNet.NetworkPackets;
@@ -15,12 +15,19 @@ namespace P2PBootstrap
 {
     public class Program
     {
+        // get the appsettings.json file imported
+        public static IConfiguration AppSettings;
+        public const string ConfigFile = "appsettings.json";
 
         public static void Main(string[] args)
         {
+            var config = new ConfigurationBuilder()
+                .SetBasePath(AppContext.BaseDirectory)
+                .AddJsonFile(ConfigFile, optional: false, reloadOnChange: true);
+
+            AppSettings = config.Build();
 
             var builder = WebApplication.CreateBuilder(args);
-
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
