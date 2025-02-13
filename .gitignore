@@ -361,3 +361,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/P2PBootstrap/input.txt
+/P2PBootstrap/wwwroot/package-lock.json
+/P2PBootstrap/output.txt
