@@ -1,6 +1,10 @@
 global using static P2PNet.PeerNetwork;
-global using P2PNet.Distribution;
 global using static P2PNet.Distribution.Distribution_Protocol;
+global using static ConsoleDebugger.ConsoleDebugger;
+global using static P2PBootstrap.GlobalConfig;
+global using static P2PBootstrap.Database.DatabaseService;
+global using P2PNet.Distribution;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -10,14 +14,18 @@ using P2PNet.NetworkPackets;
 using P2PNet.Peers;
 using System.Text.Json.Serialization;
 using System.Text.Json.Serialization.Metadata;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Configuration;
+using P2PBootstrap.CLI;
+using System.IO;
+using System.Text.Json;
+using P2PBootstrap.Database;
 
 namespace P2PBootstrap
 {
     public class Program
     {
-        // get the appsettings.json file imported
-        public static IConfiguration AppSettings;
-        public const string ConfigFile = "appsettings.json";
 
         public static void Main(string[] args)
         {
@@ -50,23 +58,20 @@ namespace P2PBootstrap
                 return Results.Content(serialized, "application/json");
             });
 
-
             KnownPeers.Add(new GenericPeer() { Address = "127.0.0.1", Port = 5000 });
 
             string test = Serialize(new CollectionSharePacket(100, KnownPeers));
             Console.WriteLine(test);
 
-           
+            Task.Run(() => { Parser.Initialize(); });
+            Task.Run(() => { InitializeDatabase(); });
+
             app.Run();
         }
 
-    }
-
-    [JsonSerializable(typeof(CollectionSharePacket))]
-    [JsonSerializable(typeof(IPeer))]
-    [JsonSerializable(typeof(GenericPeer))]
-    [JsonDerivedType(typeof(GenericPeer), typeDiscriminator: "GenericPeer")]
-    internal partial class AppJsonSerializerContext : JsonSerializerContext
-    {
+        private class InputModel
+        {
+            public string Input { get; set; }
+        }
     }
 }

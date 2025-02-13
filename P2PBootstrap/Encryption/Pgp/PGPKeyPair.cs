@@ -1,6 +1,7 @@
-﻿using System.Text.Json.Serialization;
+﻿using P2PBootstrap.Encryption.Pgp.Keys;
+using System.Text.Json.Serialization;
 
-namespace P2PBootstrap.Encryption.Pgp.Keys
+namespace P2PBootstrap.Encryption.Pgp
     {
     [Serializable]
     public class KeyPair : IKeyPair
