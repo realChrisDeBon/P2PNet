@@ -25,8 +25,7 @@
   </ItemGroup>
 
 	<Target Name="PostBuild" BeforeTargets="PostBuildEvent">
-		<Exec Command="cd wwwroot" />
-		<Exec Command="npm install" />
+		<Exec Command="cd wwwroot &amp;&amp; npm install" />
 	</Target>
 
 	<ItemGroup>
