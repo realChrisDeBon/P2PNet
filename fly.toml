@@ -1,0 +1,3 @@
+[build]
+  dockerfile = "./P2PBootstrap/Dockerfile"
+  context = "."
