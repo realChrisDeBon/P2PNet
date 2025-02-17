@@ -13,6 +13,25 @@ namespace P2PBootstrap.Database.Tables
             Columns.Add(column);
         }
 
+        public string GetInsertCommand(string value, string targetColumnName)
+        {
+            var targetColumn = Columns.FirstOrDefault(c => c.ColumnName == targetColumnName);
+            if (targetColumn == null)
+            {
+                throw new ArgumentException($"Column '{targetColumnName}' does not exist in the table '{TableName}'.");
+            }
+
+            // should prevent SQL injection
+            string escapedValue = value.Replace("'", "''");
+
+            // SQL insert command
+            StringBuilder commandBuilder = new StringBuilder();
+            commandBuilder.Append($"INSERT INTO {TableName} ({targetColumnName}) VALUES ('{escapedValue}');");
+
+            return commandBuilder.ToString();
+        }
+
+
         public string GetCreateTableCommand()
         {
             StringBuilder commandBuilder = new StringBuilder();
