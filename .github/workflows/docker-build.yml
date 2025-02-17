@@ -1,4 +1,4 @@
-name: Build and Publish Docker Image
+name: Docker Image
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
       - 'P2PBootstrap/**'
 
 jobs:
-  build:
+  dockerbuild:
     runs-on: ubuntu-latest
 
     steps:
