@@ -6,6 +6,7 @@
 
 ![passing](https://github.com/realChrisDeBon/P2PNet/actions/workflows/dotnet.yml/badge.svg) ![version](https://img.shields.io/badge/Version-.Net_8-purple)
 
+[![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)](http://ghcr.io/realchrisdebon/p2pnet/p2pbootstrap)
 
 P2PNet facilitates peer-to-peer networking with an array of components and options for setting up your network. Initial peer discovery can be initiated in the LAN, and facilitated over a WAN utilizing various methods such as bootstrapping and IPv6 ICMP blasting (widescan). The PeerNetwork will be able to use a range of interoperable WAN and LAN discovery mechanisms to expand and grow the network. Implementing the P2PNet library, you will be able to integrate your own verification steps and protocols to validate discovered peer members before establishing an enhanced connection that will facilitate the exchange of data and information.
 
