@@ -129,19 +129,13 @@ function loadPeers() {
             console.error('Error fetching peers:', error);
         });
 }
+
 // In dashboard.js
+// Terminal functionality
 document.addEventListener('DOMContentLoaded', async () => {
     const terminalContainer = document.getElementById('terminal-container');
     const term = new Terminal({ cursorBlink: true });
     term.open(terminalContainer);
-
-    // Load and initialize sql.js
-    const sqlPromise = initSqlJs({ locateFile: file => `node_modules/sql.js/dist/${file}` });
-
-    // Fetch the database file
-    const dataPromise = fetch('local_database.db').then(res => res.arrayBuffer());
-    const [SQL, buf] = await Promise.all([sqlPromise, dataPromise])
-    const db = new SQL.Database(new Uint8Array(buf));
 
     // Prompt
     term.write('> ');
@@ -149,11 +143,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     term.onKey(e => {
         if (e.key == '\r') {
-            // Insert command into LogsCLI table
-            db.run(`INSERT INTO LogsCLI (StrCommand) VALUES (?);`, [lineBuffer]);
-
-            // Fetch and display the inserted command
-            const result = db.exec(`SELECT * FROM LogsCLI WHERE StrCommand = ?;`, [lineBuffer]);
+            // Send command to the server
+            fetch('/api/parser/input', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'text/plain'
+                },
+                body: lineBuffer
+            });
 
             term.writeln('');              // Move to a new line
             term.write('> ');              // Reprompt
@@ -172,11 +169,26 @@ document.addEventListener('DOMContentLoaded', async () => {
             lineBuffer += e.key;
             term.write(e.key);
         }
+    });
 
+    // Polling function to get output from the server
+    async function pollOutput() {
+        try {
+            const response = await fetch('/api/parser/output');
+            if (response.ok) {
+                const output = await response.text();
+                if (output) {
+                    term.writeln(output);
+                    term.write('> ');
+                }
+            }
+        } catch (error) {
+            console.error('Error fetching output:', error);
+        }
+    }
 
-    })
-
-
+    // Start polling every 100ms
+    setInterval(pollOutput, 100);
 });
 
 // Function to perform action on peer

@@ -4,7 +4,7 @@ namespace P2PBootstrap.Database
 {
     public static class DatabaseService
     {
-        private static string DbFilePath => Path.Combine(AppContext.BaseDirectory,"wwwroot/", AppSettings["Database:DbFilename"]);
+        private static string DbFilePath => Path.Combine(AppContext.BaseDirectory, AppSettings["Database:DbFilename"]);
         private static string ConnectionString = $"Data Source={DbFilePath}";
         private static SqliteConnection connection;
 
@@ -14,6 +14,7 @@ namespace P2PBootstrap.Database
 
         public static void InitializeDatabase()
         {
+
             // open database connection
             connection = new SqliteConnection(ConnectionString);
             connection.Open();

@@ -1,30 +1,30 @@
-# See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
-
-# These ARGs allow for swapping out the base used to make the final image when debugging from VS
-ARG LAUNCHING_FROM_VS
-# This sets the base image for final, but only if LAUNCHING_FROM_VS has been defined
-ARG FINAL_BASE_IMAGE=${LAUNCHING_FROM_VS:+aotdebug}
-
-# This stage is used when running from VS in fast mode (Default for Debug configuration)
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
-USER $APP_UID
-WORKDIR /app
-EXPOSE 8080
-
-
 # This stage is used to build the service project
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 # Install clang/zlib1g-dev dependencies for publishing to native
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
-    clang zlib1g-dev
+    clang zlib1g-dev \
+    curl
+
+# Install Node.js
+RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash - \
+    && apt-get install -y nodejs
+
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["NuGet.config", "."]
+
+# Copy the project files and restore dependencies
 COPY ["P2PBootstrap/P2PBootstrap.csproj", "P2PBootstrap/"]
 RUN dotnet restore "./P2PBootstrap/P2PBootstrap.csproj"
+
+# Copy the entire project and install JavaScript dependencies
 COPY . .
 WORKDIR "/src/P2PBootstrap"
+RUN npm install --prefix wwwroot
+RUN node wwwroot/install-dependencies.js
+
+# Build the project
 RUN dotnet build "./P2PBootstrap.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage

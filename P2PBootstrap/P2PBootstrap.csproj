@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <InvariantGlobalization>true</InvariantGlobalization>
@@ -24,7 +24,11 @@
     <Folder Include="Networking\" />
   </ItemGroup>
 
-	<Target Name="PostBuild" BeforeTargets="PostBuildEvent">
+	<Target Name="PreBuild" BeforeTargets="Build">
+		<Exec Command="node &quot;wwwroot/install-dependencies.js&quot;" />
+	</Target>
+
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
 		<Exec Command="cd wwwroot &amp;&amp; npm install" />
 	</Target>
 
@@ -33,6 +37,7 @@
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 	</ItemGroup>
+
 
 	<ItemGroup>
 	  <None Update="appsettings.json">
