@@ -8,6 +8,9 @@ namespace P2PBootstrap.Database
         private static string ConnectionString = $"Data Source={DbFilePath}";
         private static SqliteConnection connection;
 
+        // some useful public properties for reference
+        public static string AdminConsoleLog => "StrCommand";
+
         public static bool DbRunning { get; set; } = true;
 
         public static Table_LogsCLI LogsCLI_table { get; set; } = new Table_LogsCLI();
@@ -45,6 +48,15 @@ namespace P2PBootstrap.Database
             using (var command = new SqliteCommand(LogsCLI_table.GetCreateTableCommand(), connection))
             {
                 command.ExecuteNonQuery();
+            }
+        }
+
+        public static void ExecuteTableCommand(string command)
+        {
+            DebugMessage($"Executing database command: {command}", MessageType.General);
+            using (var cmd = new SqliteCommand(command, connection))
+            {
+                    cmd.ExecuteNonQuery();
             }
         }
     }

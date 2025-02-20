@@ -41,16 +41,17 @@ namespace P2PBootstrap.Encryption.Pgp
 
         }
 
-        public static void GeneratePGPKeyPair(string seedphrase)
+        public static bool GeneratePGPKeyPair(string seedphrase, out string message)
         {
                 if ((seedphrase.Length > 128) || (seedphrase.Length < 8))
                 {
-                    DebugMessage("PGP seedphrase must be between 8 and 128 character.", MessageType.Warning);
-                    return;
+                    message = "PGP seedphrase must be between 8 and 128 character.";
+                    DebugMessage(message, MessageType.Warning);
+                    return false;
                 }
                 else
                 {
-                ;
+                
                 // Determine unique file names
                 string publicKeyFile = Path.Combine(KeysDirectory, "public.asc");
                 string privateKeyFile = Path.Combine(KeysDirectory, "private.asc");
@@ -73,8 +74,15 @@ namespace P2PBootstrap.Encryption.Pgp
                     {
                         string passphrase = Convert.ToBase64String(pbkdf2.GetBytes(32)); // 32 bytes for a strong key
 
+                    try {
                         // Generate Keys 
                         localPGP.GenerateKey(pubKeyPath, privKeyPath, username, passphrase, emitVersion: false);
+                    }
+                    catch (Exception ex) {
+                        message = "PGP key generation failed: " + ex.Message;
+                        DebugMessage(message, MessageType.Critical);
+                        return false;
+                    }
 
                         // load all keys into memory
                         LoadPGPKeysFromDirectory();
@@ -92,6 +100,9 @@ namespace P2PBootstrap.Encryption.Pgp
                         notepad.Start();
                         Thread.Sleep(2000);
                         File.Delete(tempFile); // Delete temporary file
+                        message = $"PGP key pair generated successfully. Save this passphrase:{passphrase}";
+                        DebugMessage("PGP key pair generated successfully.", MessageType.General);
+                        return true;
                     }
 
                 }

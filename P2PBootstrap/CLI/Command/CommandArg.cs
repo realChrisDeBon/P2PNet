@@ -1,6 +1,8 @@
-﻿namespace P2PBootstrap.CLI.Command.ICommand
+﻿using P2PBootstrap.CLI.Command.ICommand;
+
+namespace P2PBootstrap.CLI.Command
 {
-    public interface ICommandArg
+    public class CommandArg : ICommandArg
     {
         public string Arg { get; set; }
         public string Description { get; set; }

@@ -23,6 +23,7 @@ using System.Text.Json;
 using P2PBootstrap.Database;
 using Microsoft.Extensions.FileProviders;
 using ConsoleDebugger;
+using P2PBootstrap.Encryption;
 
 namespace P2PBootstrap
 {
@@ -102,6 +103,7 @@ namespace P2PBootstrap
             Console.WriteLine(test);
 
             Task.Run(() => { Parser.Initialize(); });
+            Task.Run(() => { EncryptionService.Initialize(); });
             Task.Run(() => { InitializeDatabase(); });
 
             app.Run();

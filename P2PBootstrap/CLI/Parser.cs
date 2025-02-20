@@ -1,4 +1,7 @@
-﻿using System.IO;
+﻿using P2PBootstrap.CLI.Command;
+using P2PBootstrap.CLI.Command.CommandImplementations;
+using P2PBootstrap.CLI.Command.ICommand;
+using System.IO;
 
 namespace P2PBootstrap.CLI
 {
@@ -8,13 +11,13 @@ namespace P2PBootstrap.CLI
         public static Queue<string> InputQueue = new Queue<string>();
         public static Queue<string> OutputQueue = new Queue<string>();
         private static int lastProcessedLine = 0;
+        public static Dictionary<string, ICommand> Commands = new Dictionary<string, ICommand>()
+        {
+            {"key", new Key_cmd() },
+        };
 
         public static void Initialize()
         {
-            if (ParserRunning == true)
-            {
-                ParserRunning = true;
-            }
 
             while (ParserRunning == true)
             {
@@ -33,10 +36,37 @@ namespace P2PBootstrap.CLI
 
         public static string ProcessInput(string input)
         {
-            
+            // add input to DB log table
+            Task.Run(() => { ExecuteTableCommand(LogsCLI_table.RunInsertCommand(input, AdminConsoleLog)); });
 
-            DebugMessage($"Admin console input: {input}", MessageType.General);
-            return $"Processed: {input}";
+            CommandResponse cr = ProcessCommand(input);
+
+            return $"{cr.Response}";
         }
+
+        public static CommandResponse ProcessCommand(string command)
+        {
+            var args = command.Split(' ');
+            if (args.Length == 0)
+            {
+                return new CommandResponse { Response = "No command provided.", Success = false };
+            }
+
+            var commandKey = args[0];
+            if (Commands.ContainsKey(commandKey))
+            {
+                var commandArgs = new List<ICommandArg>
+                {
+                    new CommandArg { Arg = string.Join(' ', args.Skip(1)) }
+                };
+                CommandResponse cr = Commands[commandKey].ExecuteCommand(commandArgs);
+                return cr;
+            }
+            else
+            {
+                return new CommandResponse { Response = $"Unknown command: {commandKey}", Success = false };
+            }
+        }
+
     }
 }
