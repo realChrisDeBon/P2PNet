@@ -37,12 +37,12 @@ namespace P2PBootstrap.CLI.Command.CommandImplementations
             }
 
             var arg = args[0];
-            var commandResponse = new CommandResponse();
+
 
             if (arg != null && Args.ContainsKey(arg.Arg))
             {
                 var commandArg = Args[arg.Arg];
-                commandResponse = commandArg.CommandArgDelegate?.Invoke(arg.Arg);
+                var commandResponse = commandArg.CommandArgDelegate?.Invoke(arg.Arg);
                 return commandResponse;
             }
             else

@@ -196,12 +196,12 @@ namespace P2PNet
         ///    {
         ///        // The peer channel's DataReceived event subscribed to HandleIncomingData function
         ///        e.peerChannel.DataReceived += HandleIncomingData;
-        ///    {
+        ///    }
         ///    
         ///    private static void HandleIncomingData(object? sender, Peer_Channel_Base.DataReceivedEventArgs e)
         ///    {
         ///        Console.WriteLine(e.Data); // incoming information is printed to console
-        ///    {
+        ///    }
         /// 
         /// </code>
         /// </example>
@@ -253,7 +253,7 @@ namespace P2PNet
             {
             return InboundConnectingPeers.Dequeue();
                         // If it is EventBased queue will certainly be empty and unused. Otherwise there's a possible return.
-            if (IncomingPeerTrustConfiguration.IncomingPeerPlacement != IncomingPeerTrustConfiguration.IncomingPeerMode.EventBased)
+            if (IncomingPeerTrustPolicy.IncomingPeerPlacement != IncomingPeerTrustPolicy.IncomingPeerMode.EventBased)
                 {
                 return InboundConnectingPeers.Dequeue();
                 }
@@ -849,14 +849,13 @@ namespace P2PNet
 
         #endregion
 
-        #region Trust Definitions
+        #region Trust Policies
 
         /// <summary>
         /// Handles trust and permissions in regards to incoming peer connections.
         /// </summary>
-        public static class IncomingPeerTrustConfiguration
+        public static class IncomingPeerTrustPolicy
             {
-
             /// <summary>
             /// Values for <see cref="IncomingPeerPlacement"/>
             /// <list type="bullet">
@@ -928,6 +927,43 @@ namespace P2PNet
                 }
             }
 
-        #endregion
+        /// <summary>
+        /// Handles trust and permissions in regards to bootstrap connections.
+        /// </summary>
+        public static class BootstrapTrustPolicy
+        {
+            private static bool _allowBootstrapAuthorityConnection = false;
+            private static bool _allowBootstrapTrustlessConnection = false;
+
+            /// <summary>
+            /// Gets or sets whether bootstrap authority connections are allowed.
+            /// When enabled, the client can connect to bootstrap servers able to issue command tasks that are signed with authority certificates.
+            /// This signed command tasks will be executed by the client and are used to control the network.
+            /// </summary>
+            public static bool AllowBootstrapAuthorityConnection
+            {
+                get => _allowBootstrapAuthorityConnection;
+                set => _allowBootstrapAuthorityConnection = value;
+            }
+
+            /// <summary>
+            /// Gets or sets whether bootstrap trustless connections are allowed.
+            /// When enabled, the client can connect to bootstrap servers able to serve a static endpoint for giving new peers the peer list.
+            /// This can be disabled to enforce bootstrap authority.
+            /// </summary>
+            public static bool AllowBootstrapTrustlessConnection
+            {
+                get => _allowBootstrapTrustlessConnection;
+                set => _allowBootstrapTrustlessConnection = value;
+            }
+
         }
+        public enum BootstrapTrustPolicyType
+        {
+            Trustless,
+            Authority
+        }
+
+        #endregion
+    }
     }

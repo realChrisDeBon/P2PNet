@@ -193,13 +193,13 @@ namespace P2PNet.Peers
         protected virtual void HandleIdentityPacket(string data) { DebugMessage(data, ConsoleColor.Cyan); }
         protected virtual void HandleDisconnectPacket(string data) { DebugMessage(data, ConsoleColor.Cyan); }
         protected virtual void HandlePeerGroupPacket(string data) {
-            if ((IsTrustedPeer == true) || (IncomingPeerTrustConfiguration.AllowEnhancedPacketExchange == true))
+            if ((IsTrustedPeer == true) || (IncomingPeerTrustPolicy.AllowEnhancedPacketExchange == true))
                 {
                 DebugMessage(data, ConsoleColor.Cyan);
                 }
             }
         protected virtual void HandleDataTransmissionPacket(string data) {
-            if ((IsTrustedPeer == true) || (IncomingPeerTrustConfiguration.AllowEnhancedPacketExchange == true))
+            if ((IsTrustedPeer == true) || (IncomingPeerTrustPolicy.AllowEnhancedPacketExchange == true))
                 {
                 DebugMessage(data, ConsoleColor.Cyan);
                 DistributionHandler.EnqueueIncomingDataPacket(data);

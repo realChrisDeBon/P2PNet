@@ -42,7 +42,7 @@ namespace P2PBootstrap.Database
             }
         }
 
-        public static void InitializeTables()
+        private static void InitializeTables()
         {
             // InitializeDatabase tables
             using (var command = new SqliteCommand(LogsCLI_table.GetCreateTableCommand(), connection))
@@ -59,5 +59,48 @@ namespace P2PBootstrap.Database
                     cmd.ExecuteNonQuery();
             }
         }
+
+        public static void UpdateMostRecentLogProcessed(bool processed)
+        {
+            // Find the most recent entry by ID
+            string findMostRecentEntryQuery = "SELECT MAX(ID) FROM LogsCLI";
+            int mostRecentEntryId = -1;
+            try
+            {
+                using (var findCommand = new SqliteCommand(findMostRecentEntryQuery, connection))
+                {
+                    var result = findCommand.ExecuteScalar();
+                    if (result != null && int.TryParse(result.ToString(), out int id))
+                    {
+                        mostRecentEntryId = id;
+                    }
+                    else
+                    {
+                        DebugMessage("Error finding most recent entry in LogsCLI.", MessageType.Warning);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                DebugMessage($"Error finding most recent entry in LogsCLI: {ex.Message}", MessageType.Warning);
+            }
+
+            if (mostRecentEntryId != -1)
+            {
+                // Update the Processed column for the most recent entry
+                string updateQuery = $"UPDATE LogsCLI SET Processed = @Processed WHERE ID = @ID";
+                using (var updateCommand = new SqliteCommand(updateQuery, connection))
+                {
+                    updateCommand.Parameters.AddWithValue("@Processed", 1);
+                    updateCommand.Parameters.AddWithValue("@ID", mostRecentEntryId);
+                    updateCommand.ExecuteNonQuery();
+                }
+            }
+            else
+            {
+                DebugMessage("No entries found in LogsCLI_Table.", MessageType.Warning);
+            }
+        }
+
     }
 }

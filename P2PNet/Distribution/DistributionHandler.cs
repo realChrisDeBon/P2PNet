@@ -44,7 +44,7 @@ namespace P2PNet.Distribution
 
 
         private static Timer _timer;
-        private static Timer queueChecker;
+        private static Timer _queueChecker;
 
 
         /// <summary>
@@ -103,10 +103,10 @@ namespace P2PNet.Distribution
             _timer.AutoReset = true;
             _timer.Enabled = true;
 
-            queueChecker = new System.Timers.Timer(500); // 10 seconds
-            queueChecker.Elapsed += HandleIncomingDataPackets;
-            queueChecker.AutoReset = true;
-            queueChecker.Enabled = true;
+            _queueChecker = new System.Timers.Timer(500); // 10 seconds
+            _queueChecker.Elapsed += HandleIncomingDataPackets;
+            _queueChecker.AutoReset = true;
+            _queueChecker.Enabled = true;
             }
          
         internal static void OnTimedEvent(System.Object source, ElapsedEventArgs e)

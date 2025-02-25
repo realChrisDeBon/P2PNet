@@ -71,12 +71,37 @@ namespace P2PBootstrap
 
             app.UseRouting();
 
-            // Endpoint to Get Peers
-            app.MapGet("/api/Bootstrap/peers", () =>
+            if(GlobalConfig.TrustPolicy == BootstrapTrustPolicyType.Trustless)
             {
-                string serialized = Serialize(new CollectionSharePacket(100, KnownPeers));
-                return Results.Content(serialized, "application/json");
-            });
+                // Endpoint to Get Peers
+                app.MapGet("/api/Bootstrap/peers", () =>
+                {
+                    string serialized = Serialize(new CollectionSharePacket(100, KnownPeers));
+                    return Results.Content(serialized, "application/json");
+                });
+            }
+            else
+            {
+                // Endpoint to Get Peers -- returns 
+                app.MapPut("/api/Bootstrap/peers", () =>
+                {
+                    DataTransmissionPacket packet = new DataTransmissionPacket()
+                    {
+                        DataType = DataPayloadFormat.Task,
+                        Data = new NetworkTask()
+                        {
+                            TaskType = TaskType.SendPublicKey,
+                            TaskData = new Dictionary<string, string>()
+                            {
+                                { "PublicKey", AppSettings["Encryption:PublicKey"] },
+                                { "Peers", Serialize(new CollectionSharePacket(100, KnownPeers)) }
+                            }
+                        }.ToByte(),
+                    };
+                    return Results.Content("Trusted", "text/plain");
+                });
+            }
+            
 
             app.MapGet("/api/parser/output", () =>
             {
@@ -86,8 +111,6 @@ namespace P2PBootstrap
                 }
                 return Results.NoContent();
             });
-
-
             app.MapPut("/api/parser/input", async (HttpContext context) =>
             {
                 using var reader = new StreamReader(context.Request.Body);
@@ -95,12 +118,6 @@ namespace P2PBootstrap
                 Parser.InputQueue.Enqueue(input);
                 return Results.Ok();
             });
-
-
-            KnownPeers.Add(new GenericPeer() { Address = "127.0.0.1", Port = 5000 });
-
-            string test = Serialize(new CollectionSharePacket(100, KnownPeers));
-            Console.WriteLine(test);
 
             Task.Run(() => { Parser.Initialize(); });
             Task.Run(() => { EncryptionService.Initialize(); });

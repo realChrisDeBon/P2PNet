@@ -41,6 +41,13 @@ namespace P2PBootstrap.CLI
 
             CommandResponse cr = ProcessCommand(input);
 
+            if(cr.Success == true)
+            {
+                DebugMessage(cr.Success.ToString(), MessageType.Warning);
+                UpdateMostRecentLogProcessed(true);
+                return $"{cr.Response}";
+            }
+
             return $"{cr.Response}";
         }
 

@@ -47,7 +47,7 @@ namespace P2PNet.Peers
             receiveTask = Task.Run(() => ReadIncoming(cancelReceiver.Token));
             sendTask = Task.Run(() => SendOutgoing(cancelSender.Token));
 
-            if (IncomingPeerTrustConfiguration.AllowDefaultCommunication == true)
+            if (IncomingPeerTrustPolicy.AllowDefaultCommunication == true)
                 {
                 Task.Run(() => CreatePing());
                 }
