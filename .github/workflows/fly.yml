@@ -11,6 +11,32 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: superfly/flyctl-actions/setup-flyctl@master
+      
+      - name: Create deployment
+        id: create_deployment
+        uses: actions/deployments@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          environment: production
+
       - run: flyctl deploy --remote-only
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+      - name: Set deployment status to success
+        if: success()
+        uses: actions/deployments@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          environment: production
+          status: success
+          deployment_id: ${{ steps.create_deployment.outputs.deployment_id }}
+
+      - name: Set deployment status to failure
+        if: failure()
+        uses: actions/deployments@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          environment: production
+          status: failure
+          deployment_id: ${{ steps.create_deployment.outputs.deployment_id }}
