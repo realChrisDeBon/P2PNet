@@ -7,6 +7,7 @@ using PgpCore;
 using Org.BouncyCastle.Bcpg.OpenPgp;
 using P2PBootstrap.Encryption.Pgp.Keys;
 using System.Text;
+using Microsoft.Extensions.Primitives;
 
 
 namespace P2PBootstrap.Encryption.Pgp
@@ -15,7 +16,7 @@ namespace P2PBootstrap.Encryption.Pgp
         {
         private static PGP localPGP = new PGP();
         private static string KeysDirectory { get; set; } = Path.Combine(AppContext.BaseDirectory, AppSettings["Configuration:KeysDirectory"]);
-        private static KeyPair ActiveKeyPair { get; set; } = new KeyPair();
+        private static KeyPair ActiveKeyPair => GlobalConfig.ActiveKeys;
         private static List<PGPKeyInfo> _pgpKeys = new List<PGPKeyInfo>();
         private static bool PublicKeySet, PrivateKeySet = false;
 
@@ -39,9 +40,29 @@ namespace P2PBootstrap.Encryption.Pgp
                 Directory.CreateDirectory(KeysDirectory);
             }
 
-        }
+            if (GlobalConfig.TrustPolicy == BootstrapTrustPolicyType.Authority)
+            {
+                string publicKeyPath = Path.Combine(KeysDirectory, AppSettings["Configuration:AuthorityKey:PublicKey"]);
+                string privateKeyPath = Path.Combine(KeysDirectory, AppSettings["Configuration:AuthorityKey:PrivateKey"]);
 
-        public static bool GeneratePGPKeyPair(string seedphrase, out string message)
+                // Check if the public and private key files exist
+                if (!File.Exists(publicKeyPath) || !File.Exists(privateKeyPath))
+                {
+                    // Generate PGP key pair if the keys do not exist
+                    string message;
+                    bool success = GeneratePGPKeyPair("default-seedphrase", out message, "public", "private");
+                    if (!success)
+                    {
+                        DebugMessage($"Failed to generate PGP key pair: {message}", MessageType.Critical);
+                        return;
+                    }
+                }
+
+                LoadPGPKeysFromDirectory();
+                GlobalConfig.SetTargetKeys();
+            }
+        }
+        public static bool GeneratePGPKeyPair(string seedphrase, out string message, string pub = "public", string priv = "private")
         {
                 if ((seedphrase.Length > 128) || (seedphrase.Length < 8))
                 {
@@ -53,13 +74,13 @@ namespace P2PBootstrap.Encryption.Pgp
                 {
                 
                 // Determine unique file names
-                string publicKeyFile = Path.Combine(KeysDirectory, "public.asc");
-                string privateKeyFile = Path.Combine(KeysDirectory, "private.asc");
+                string publicKeyFile = Path.Combine(KeysDirectory, $"{pub}.asc");
+                string privateKeyFile = Path.Combine(KeysDirectory, $"{priv}.asc");
                 int index = 1;
                 while (File.Exists(publicKeyFile) && File.Exists(privateKeyFile))
                 {
-                    publicKeyFile = Path.Combine(KeysDirectory, $"public({index}).asc");
-                    privateKeyFile = Path.Combine(KeysDirectory, $"private({index}).asc");
+                    publicKeyFile = Path.Combine(KeysDirectory, $"{pub}({index}).asc");
+                    privateKeyFile = Path.Combine(KeysDirectory, $"{priv}({index}).asc");
                     index++;
                 }
 
@@ -106,8 +127,6 @@ namespace P2PBootstrap.Encryption.Pgp
                     }
 
                 }
-            
-
         }
 
         public static void LoadPGPKeysFromDirectory()
@@ -163,7 +182,7 @@ namespace P2PBootstrap.Encryption.Pgp
                         // message signed
                     }
                 }
-                return Task.FromResult(false);
+            return Task.FromResult(false);
 
         }
 
