@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using System.Diagnostics;
 using P2PNet.Widescan;
+using P2PNet;
 
 namespace Testing
 {
@@ -17,6 +18,7 @@ namespace Testing
         public void Setup()
         {
             // Initialize any required resources before tests
+            
         }
         
         private bool IsNpcapAvailable()
@@ -44,10 +46,7 @@ namespace Testing
             AcceptInboundPeers = true;
 
             // Boot discovery channels
-            BootDiscoveryChannels();
-
-            // Start routines if any
-            await StartRoutines();
+            StartBroadcastingLAN();
 
             // Assert that the public IP addresses are not null
             Xunit.Assert.NotNull(PublicIPV4Address);

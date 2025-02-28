@@ -1,4 +1,4 @@
-﻿
+﻿global using static P2PNet.Routines.NetworkRoutines<string, P2PNet.Routines.IRoutine>;
 global using static ConsoleDebugger.ConsoleDebugger;
 
 using P2PNet.DiscoveryChannels;
@@ -12,6 +12,7 @@ using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Threading.Channels;
+using P2PNet.Routines;
 
 namespace P2PNet
 {
@@ -22,6 +23,7 @@ namespace P2PNet
         static bool isBroadcaster = false;
         private static Random randomizer = new Random();
         private static bool localAddressesLoaded = false;
+        private static bool runningLANdiscovery = false;
 
         /// <summary>
         /// Indicates whether to automatically throttle outbound broadcast rate when a new peer is discovered.
@@ -37,34 +39,6 @@ namespace P2PNet
         /// Gets or sets the broadcaster port designated for outbound LAN discovery.
         /// </summary>
         public static int BroadcasterPort;
-
-        /// <summary>
-        /// Determines if the broadcaster port for LAN discovery will be rotated on a regular interval.
-        /// </summary>
-        public static bool RunBroadcastPortRotationRoutine
-            {
-            get { return runningPortRotate; }
-            set { runningPortRotate = value; SetBroadcastPortRotate(value); }
-            }
-        private static bool runningPortRotate = true;
-        private static System.Timers.Timer rotationTimer = new System.Timers.Timer();
-        private static void SetBroadcastPortRotate(bool status_)
-            {
-            if(status_ == true)
-                {
-                rotationTimer.Start();
-                rotationTimer.AutoReset = true;
-                } else
-                {
-                rotationTimer.Stop();
-                rotationTimer.AutoReset = false;
-                }
-            }
-
-        /// <summary>
-        /// The duration, in minutes, of how often the LAN broadcaster port will rotate.
-        /// </summary>
-        public static int BroadcastPortRotationDuration { get; set; } = 2;
 
         /// <summary>
         /// Gets the public IPv4 IP address.
@@ -152,19 +126,6 @@ namespace P2PNet
         /// </summary>
         public static int ListeningPort { get; private set; }
 
-        /// <summary>
-        /// Get or set whether or not the cleanup timer will run on a regular interval.
-        /// Cleanup timer scans and removes peers that have been active for the duration
-        /// set by <see cref="PeerChannelCleanupDuration"/>
-        /// </summary>
-        public static bool RunPeerCleanup_Routine { get; set; } = true;
-        private static System.Timers.Timer cleanupTimer = new System.Timers.Timer();
-
-        /// <summary>
-        /// The duration, in minutes, of how often a cleanup of peer channels will run.
-        /// This scan checks for likely inactive or disconnected peers, and removes them.
-        /// </summary>
-        public static int PeerChannelCleanupDuration { get; set; } = 2;
 
         #region Connection Collections
         private static volatile List<IPeer> activePeers_ = new List<IPeer>();
@@ -276,69 +237,6 @@ namespace P2PNet
         private static List<IPAddress> multicast_addresses = new List<IPAddress>();
         #endregion
 
-        private static void InitiateLocalChannels(int designated_broadcast_port)
-            {
-            if (AcceptInboundPeers == true)
-                {
-                listener.Start();
-                Task.Run(() => AcceptClientsAsync());
-                }
-
-            Queue<LocalChannel> badChannels = new Queue<LocalChannel>();
-            bool error_occurred = false;
-            foreach (LocalChannel channel_ in ActiveLocalChannels)
-                {
-                try
-                    {
-                        channel_.OpenLocalChannel();
-                    }
-                catch
-                    {
-                    error_occurred = true;
-                    DebugMessage($"\tCannot setup local broadcast channel.", MessageType.Warning);
-                    }
-                finally
-                    {
-                    if (error_occurred == false)
-                        {
-                        DebugMessage($"\tSetup local channel on port: {channel_.DESIGNATED_PORT}");
-                        }
-                    }
-                }
-            while (badChannels.Count > 0)
-                {
-                ActiveLocalChannels.Remove(badChannels.Dequeue());
-                }
-            }
-        private static void InitializeMulticastChannels()
-            {
-            Queue<MulticastChannel> badChannels = new Queue<MulticastChannel>();
-            foreach (MulticastChannel multicastChannel in ActiveMulticastChannels)
-                {
-                bool error_occurred = false;
-                try
-                    {
-                    multicastChannel.OpenMulticastChannel();
-                    }
-                catch
-                    {
-                    error_occurred = true;
-                    DebugMessage($"\tCannot setup multi-cast channel on address: {multicastChannel.multicast_address.ToString()}", MessageType.Warning);
-                    badChannels.Enqueue(multicastChannel);
-                    }
-                finally
-                    {
-                    if (error_occurred == false)
-                        {
-                        DebugMessage($"\tSetup multi-cast channel on address: {multicastChannel.multicast_address.ToString()}");
-                        }
-                    }
-                }
-            while (badChannels.Count > 0)
-                {
-                ActiveMulticastChannels.Remove(badChannels.Dequeue());
-                }
-            }
 
         /// <summary>
         /// Throttles the broadcasting down.
@@ -361,35 +259,11 @@ namespace P2PNet
             ListeningPort = randomizer.Next(8051, 9000); // setup a port for listening
             listener = new TcpListener(IPAddress.Any, ListeningPort);
 
-            cleanupTimer.Elapsed += DiscernPeerChannels;
-            cleanupTimer.Interval = (PeerChannelCleanupDuration * 60000);
-
-            rotationTimer.Elapsed += RotatePorts;
-            rotationTimer.Interval = (BroadcastPortRotationDuration * 60000);
-            }
-
-        /// <summary>
-        /// Starts timed routines if their run value is true. These routines include:
-        /// <list type="bullet">
-        /// <item>
-        /// <description><see cref="RunBroadcastPortRotationRoutine"/></description>
-        /// </item>
-        /// <item>
-        /// <description><see cref="RunPeerCleanup_Routine"/></description>
-        /// </item>
-        /// </list>
-        /// </summary>
-        public static async Task StartRoutines()
-            {
-            if (RunBroadcastPortRotationRoutine == true)
-                {
-                rotationTimer.Start();
-                }
-
-            if (RunPeerCleanup_Routine == true)
-                {
-                cleanupTimer.Start();
-                }
+            InitializeRoutines();
+        
+            TryStartRoutine("RotateBroadcastPort");
+            TryStartRoutine("PeerCleanupRoutine");
+        
             }
 
         static async Task AcceptClientsAsync()
@@ -583,9 +457,7 @@ namespace P2PNet
                 }
             if (x > 0)
                 {
-
                 DebugMessage($"Added {x} peers.");
-
                 }
             }
 
@@ -717,15 +589,11 @@ namespace P2PNet
         /// <summary>
         /// Begin LAN broadcast and discovery.
         /// </summary>
-        public static void BootDiscoveryChannels()
+        public static void StartBroadcastingLAN()
             {
             try
                 {
                 CheckIfProperInit(); // make sure local sys info loaded proper
-                if (RunPeerCleanup_Routine == true)
-                    {
-                    cleanupTimer.Start();
-                    } // startup the cleanup timer 
 
                 RandomizeBroadcasterPort(); // randomize a broadcast port
 
@@ -742,7 +610,9 @@ namespace P2PNet
                     ActiveMulticastChannels.Add(multicastChannel);
                     }
                 InitializeMulticastChannels();
-                }
+
+                runningLANdiscovery = true; // toggle flag
+            }
             catch (Exception e)
                 {
 
@@ -751,92 +621,100 @@ namespace P2PNet
                 }
             }
 
+        /// <summary>
+        /// Stops all LAN broadcast.
+        /// </summary>
+        public static void StopBroadcastingLAN()
+        {
+            if(runningLANdiscovery == true)
+            {
+                foreach (LocalChannel localChannel in ActiveLocalChannels)
+                {
+                    localChannel.cancelBroadcaster.Cancel();
+                    localChannel.cancelListener.Cancel();
+                }
+                foreach (MulticastChannel multicastChannel in ActiveMulticastChannels)
+                {
+                    multicastChannel.cancelBroadcaster.Cancel();
+                    multicastChannel.cancelListener.Cancel();
+                }
+                runningLANdiscovery = false; // toggle flag
+            }
+        }
+
+        private static void InitiateLocalChannels(int designated_broadcast_port)
+        {
+            if (AcceptInboundPeers == true)
+            {
+                listener.Start();
+                Task.Run(() => AcceptClientsAsync());
+            }
+
+            Queue<LocalChannel> badChannels = new Queue<LocalChannel>();
+            bool error_occurred = false;
+            foreach (LocalChannel channel_ in ActiveLocalChannels)
+            {
+                try
+                {
+                    channel_.OpenLocalChannel();
+                }
+                catch
+                {
+                    error_occurred = true;
+                    DebugMessage($"\tCannot setup local broadcast channel.", MessageType.Warning);
+                }
+                finally
+                {
+                    if (error_occurred == false)
+                    {
+                        DebugMessage($"\tSetup local channel on port: {channel_.DESIGNATED_PORT}");
+                    }
+                }
+            }
+            while (badChannels.Count > 0)
+            {
+                ActiveLocalChannels.Remove(badChannels.Dequeue());
+            }
+        }
+        private static void InitializeMulticastChannels()
+        {
+            Queue<MulticastChannel> badChannels = new Queue<MulticastChannel>();
+            foreach (MulticastChannel multicastChannel in ActiveMulticastChannels)
+            {
+                bool error_occurred = false;
+                try
+                {
+                    multicastChannel.OpenMulticastChannel();
+                }
+                catch
+                {
+                    error_occurred = true;
+                    DebugMessage($"\tCannot setup multi-cast channel on address: {multicastChannel.multicast_address.ToString()}", MessageType.Warning);
+                    badChannels.Enqueue(multicastChannel);
+                }
+                finally
+                {
+                    if (error_occurred == false)
+                    {
+                        DebugMessage($"\tSetup multi-cast channel on address: {multicastChannel.multicast_address.ToString()}");
+                    }
+                }
+            }
+            while (badChannels.Count > 0)
+            {
+                ActiveMulticastChannels.Remove(badChannels.Dequeue());
+            }
+        }
+
         // Randomly selects a port from the designated port collection to focus on outbound broadcasting
         static void RandomizeBroadcasterPort()
             {
             BroadcasterPort = DesignatedPorts[randomizer.Next(DesignatedPorts.Count)];
 
             Console.WriteLine("Role: {0}, Port: {1}", isBroadcaster ? "Broadcaster" : "Listener", BroadcasterPort);
-            Console.Title = ($"Broadcast port: {BroadcasterPort}");
-
             }
 
         #endregion
-
-        #region Routines
-
-        // Cleanup likely-inactive peers
-        private static void DiscernPeerChannels(object sender, System.Timers.ElapsedEventArgs e)
-            {
-            cleanupTimer.Interval = (PeerChannelCleanupDuration * 60000);
-
-            DebugMessage("DISCERNING CHANNELS", ConsoleColor.Magenta);
-
-            Task.Run(async () =>
-            {
-                try
-                    {
-                    List<PeerChannel> peersToRemove = new List<PeerChannel>();
-                    List<PeerChannel> peersToTrust = new List<PeerChannel>();
-
-                    foreach (PeerChannel channel in ActivePeerChannels)
-                        {
-                        if (DateTime.Now - channel.LastIncomingDataReceived > TimeSpan.FromMinutes(PeerChannelCleanupDuration)) // No activity for 60 seconds ~ subject to change
-                            {
-                            peersToRemove.Add(channel);
-                            }
-                        if (channel.GOODPINGS > 2)
-                            {
-                            peersToTrust.Add(channel);
-                            }
-                        }
-
-                    // Remove inactive PeerChannels from ActivePeerChannels
-                    foreach (PeerChannel channel in peersToRemove)
-                        {
-                        bool success = await RemovePeer(channel);
-                        if (success == true)
-                            {
-
-                            DebugMessage($"Removed peer for inactivity: {channel.peer.IP.ToString()} port {channel.peer.Port}", ConsoleColor.DarkCyan);
-
-                            channel.ClosePeerChannel();
-                            }
-                        }
-                    foreach (PeerChannel channel in peersToTrust)
-                        {
-                        bool success = await ElevatePeerPermission(channel);
-                        if (success == true)
-                            {
-                            channel.TrustPeer();
-                            }
-
-                        DebugMessage($"Trusting peer: {channel.peer.IP.ToString()} port {channel.peer.Port}", ConsoleColor.Cyan);
-
-                        }
-                    }
-                catch (Exception ex)
-                {
-
-                    DebugMessage($"Encountered an error: {ex}", MessageType.Critical);
-
-                    }
-            });
-            }
-
-        // Rotate LAN broadcast port
-        private static void RotatePorts(object sender, System.Timers.ElapsedEventArgs e)
-            {
-            rotationTimer.Interval = (BroadcastPortRotationDuration * 60000);
-            int currentDesgPort = BroadcasterPort;
-            while (BroadcasterPort == currentDesgPort) // make sure we get a new port
-                {
-                BroadcasterPort = DesignatedPorts[randomizer.Next(DesignatedPorts.Count)];
-                }
-
-            DebugMessage($"Rotated to new port: {BroadcasterPort}", MessageType.General);
-
-            }
 
         // Check if local address info init or not
         private static void CheckIfProperInit()
@@ -846,8 +724,6 @@ namespace P2PNet
                 throw new Exception("Local system information unavailable. Make sure to initiate with LoadLocalAddresses() before beginning peer network actions.");
                 }
             }
-
-        #endregion
 
         #region Trust Policies
 
@@ -933,7 +809,9 @@ namespace P2PNet
         public static class BootstrapTrustPolicy
         {
             private static bool _allowBootstrapAuthorityConnection = false;
-            private static bool _allowBootstrapTrustlessConnection = false;
+            private static bool _allowBootstrapTrustlessConnection = true;
+            private static bool _mustBeAuthority = false;
+            private static bool _firstSingleLockingAuthority = false;
 
             /// <summary>
             /// Gets or sets whether bootstrap authority connections are allowed.
@@ -955,6 +833,34 @@ namespace P2PNet
             {
                 get => _allowBootstrapTrustlessConnection;
                 set => _allowBootstrapTrustlessConnection = value;
+            }
+
+            /// <summary>
+            /// Gets or sets whether bootstrap servers must establish an authority connection.
+            /// </summary>
+            public static bool MustBeAuthority
+            {
+                get => _mustBeAuthority;
+                set => _mustBeAuthority = value;
+            }
+
+            /// <summary>
+            /// If true, the first authority connection will be the only authority connection.
+            /// No other authority connections will be allowed.
+            /// Setting this value to true will also set <see cref="MustBeAuthority"/> and <see cref="AllowBootstrapAuthorityConnection"/> to true.
+            /// </summary>
+            public static bool FirstSingleLockingAuthority
+            {
+                get => _firstSingleLockingAuthority;
+                set 
+                { 
+                    _firstSingleLockingAuthority = value; 
+                    if(value == true)
+                    {
+                        _mustBeAuthority = true;
+                        _allowBootstrapAuthorityConnection = true;
+                    }
+                }
             }
 
         }
