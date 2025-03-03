@@ -365,3 +365,7 @@ FodyWeavers.xsd
 /P2PBootstrap/wwwroot/package-lock.json
 /P2PBootstrap/output.txt
 /P2PBootstrap/log
+/P2PBootstrap/package-lock.json
+/api
+/_site/favicon.ico
+/_site/logo.svg
