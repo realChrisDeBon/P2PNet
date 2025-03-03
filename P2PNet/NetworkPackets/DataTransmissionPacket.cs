@@ -1,16 +1,18 @@
-﻿using static P2PNet.Distribution.Distribution_Protocol;
+﻿using static P2PNet.Distribution.DistributionProtocol;
 using P2PNet.NetworkPackets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using P2PNet.Distribution.NetworkTasks;
 
 namespace P2PNet.NetworkPackets
     {
     /// <summary>
-    /// Represents a data transmission packet used for transmitting data throughout the peer network.
+    /// Represents a data transmission packet used for transmitting data throughout the peer-to-peer network.
     /// </summary>
+    /// <remarks>This packet can be used to transmit <see cref="NetworkTask"/> and files throughout the network.</remarks>
     public sealed class DataTransmissionPacket : INetworkPacket
         {
         /// <summary>

@@ -1,4 +1,4 @@
-# P2PNet
+﻿# P2PNet
 
 <p align="center">
     <img src="https://github.com/realChrisDeBon/P2PNet/assets/97779307/36f3441a-2905-476e-ac6a-c5fa8a9112b0" width="175" height="175" alt="p2pnet logo">

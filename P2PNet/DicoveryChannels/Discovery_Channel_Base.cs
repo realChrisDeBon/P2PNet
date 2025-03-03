@@ -9,7 +9,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-using static P2PNet.Distribution.Distribution_Protocol;
+using static P2PNet.Distribution.DistributionProtocol;
 using static P2PNet.Distribution.DistributionHandler;
 using static P2PNet.PeerNetwork;
 

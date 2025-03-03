@@ -1,5 +1,5 @@
 global using static P2PNet.PeerNetwork;
-global using static P2PNet.Distribution.Distribution_Protocol;
+global using static P2PNet.Distribution.DistributionProtocol;
 global using static ConsoleDebugger.ConsoleDebugger;
 global using static P2PBootstrap.GlobalConfig;
 global using static P2PBootstrap.Database.DatabaseService;
@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
 using P2PNet;
-using P2PNet.Distribution;
 using P2PNet.NetworkPackets;
 using P2PNet.Peers;
 using System.Text.Json.Serialization;
@@ -24,6 +23,7 @@ using P2PBootstrap.Database;
 using Microsoft.Extensions.FileProviders;
 using ConsoleDebugger;
 using P2PBootstrap.Encryption;
+using P2PNet.Distribution.NetworkTasks;
 
 namespace P2PBootstrap
 {

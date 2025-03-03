@@ -60,6 +60,7 @@ namespace P2PNet
 
         /// <summary>
         /// Gets or sets whether a designated TCP port will be actively listening for and accepting inbound TCP peer connections.
+        /// Setting this value will automatically start or stop acceptance of inbound peers.
         /// The default is true, but you may want to toggle this for server instances that serve different network purposes.
         /// </summary>
         public static bool AcceptInboundPeers 

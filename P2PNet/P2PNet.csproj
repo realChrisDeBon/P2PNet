@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 	<IsPackable>true</IsPackable>
@@ -33,7 +33,7 @@ Including PacketDotNet and SharpPcap as dependencies.</PackageReleaseNotes>
   </ItemGroup>
 
   <ItemGroup>
-    <Using Include="P2PNet.Distribution.Distribution_Protocol">
+    <Using Include="P2PNet.Distribution.DistributionProtocol">
       <Static>True</Static>
     </Using>
     <Using Include="System.Timers.Timer">

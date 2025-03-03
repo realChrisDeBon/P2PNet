@@ -13,6 +13,9 @@ using System.Threading.Tasks;
 
 namespace P2PNet.Peers
 {
+    /// <summary>
+    /// Represents a communication channel with a peer in the P2P network.
+    /// </summary>
     public class PeerChannel : PeerChannel_Base
         {
         /// <summary>
@@ -20,17 +23,27 @@ namespace P2PNet.Peers
         /// </summary>
         public DateTime LastIncomingDataReceived { get; internal set; } = DateTime.Now;
 
+        /// <summary>
+        /// Gets or sets the peer associated with this channel.
+        /// </summary>
         public IPeer peer { get; set; }
 
         private int RETRIES = 0; // for retrying connections
         public int GOODPINGS { get; internal set; } = 0; // readonly
         private const int MAX_RETRIES = 3;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PeerChannel"/> class with the specified peer.
+        /// </summary>
+        /// <param name="peer_">The peer to associate with this channel.</param>
         public PeerChannel(IPeer peer_)
             {
             peer = peer_;
             }
 
+        /// <summary>
+        /// Opens the communication channel with the peer and starts handling incoming and outgoing data.
+        /// </summary>
         public async void OpenPeerChannel()
             {
             cancelSender = new CancellationTokenSource();        
@@ -52,6 +65,10 @@ namespace P2PNet.Peers
                 Task.Run(() => CreatePing());
                 }
             }
+
+        /// <summary>
+        /// Closes the communication channel with the peer and terminates all associated tasks.
+        /// </summary>
         public void ClosePeerChannel()
             {
             if ((cancelSender != null) && (cancelReceiver != null))

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace P2PNet.NetworkPackets
 {
     /// <summary>
-    /// Standard packet used to relay a collection of peer-identifying information through out a network.
+    /// Standard packet used to relay a collection of peers on the network using peer-identifying information.
     /// </summary>
     public class CollectionSharePacket : INetworkPacket
         {
