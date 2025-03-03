@@ -15,9 +15,11 @@ P2PNet facilitates peer-to-peer networking with an array of components for setti
 ### Bootstrap Server Container
 
 Docker image for launching an instance of a bootstrap server.
+
 [![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)](http://ghcr.io/realchrisdebon/p2pnet/p2pbootstrap)
 
 ### Documentation
 
 Technical overview and API documentation available down below.
+
 [![view - Documentation](https://img.shields.io/badge/view-Documentation-blue?style=for-the-badge)](/docs/ "Go to project documentation")
