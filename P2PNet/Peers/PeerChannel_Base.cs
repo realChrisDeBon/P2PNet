@@ -1,4 +1,5 @@
 ﻿using P2PNet.Distribution;
+using P2PNet.Distribution.P2PNet.Distribution;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -59,12 +60,12 @@ namespace P2PNet.Peers
         ///    {
         ///        // The peer channel's DataReceived event subscribed to HandleIncomingData function
         ///        e.peerChannel.DataReceived += HandleIncomingData;
-        ///    {
+        ///    }
         ///    
         ///    private static void HandleIncomingData(object? sender, Peer_Channel_Base.DataReceivedEventArgs e)
         ///    {
         ///        Console.WriteLine(e.Data); // incoming information received by the PeerChannel is printed to console
-        ///    {
+        ///    }
         /// 
         /// </code>
         /// </example>
@@ -189,23 +190,35 @@ namespace P2PNet.Peers
                 }
             }
 
-        // Placeholders
-        protected virtual void HandleIdentityPacket(string data) { DebugMessage(data, ConsoleColor.Cyan); }
-        protected virtual void HandleDisconnectPacket(string data) { DebugMessage(data, ConsoleColor.Cyan); }
-        protected virtual void HandlePeerGroupPacket(string data) {
-            if ((IsTrustedPeer == true) || (IncomingPeerTrustPolicy.AllowEnhancedPacketExchange == true))
-                {
-                DebugMessage(data, ConsoleColor.Cyan);
-                }
+        // default delegate implementation using PacketHandleProtocol
+        #region Packet Handling
+        protected virtual void HandleIdentityPacket(string data)
+        {
+            PacketHandleProtocol.HandleIdentityPacketAction?.Invoke(data);
+        }
+        protected virtual void HandleDisconnectPacket(string data)
+        {
+            PacketHandleProtocol.HandleDisconnectPacketAction?.Invoke(data);
+        }
+        protected virtual void HandlePeerGroupPacket(string data)
+        {
+            if (IsTrustedPeer || IncomingPeerTrustPolicy.AllowEnhancedPacketExchange)
+            {
+                PacketHandleProtocol.HandlePeerGroupPacketAction?.Invoke(data);
             }
-        protected virtual void HandleDataTransmissionPacket(string data) {
-            if ((IsTrustedPeer == true) || (IncomingPeerTrustPolicy.AllowEnhancedPacketExchange == true))
-                {
-                DebugMessage(data, ConsoleColor.Cyan);
-                DistributionHandler.EnqueueIncomingDataPacket(data);
-                }
+        }
+        protected virtual void HandleDataTransmissionPacket(string data)
+        {
+            if (IsTrustedPeer || IncomingPeerTrustPolicy.AllowEnhancedPacketExchange)
+            {
+                PacketHandleProtocol.HandleDataTransmissionPacketAction?.Invoke(data);
             }
-        protected virtual void HandlePureMessagePacket(string data) { DebugMessage(data, ConsoleColor.Cyan); }
+        }
+        protected virtual void HandlePureMessagePacket(string data)
+        {
+            PacketHandleProtocol.HandlePureMessagePacketAction?.Invoke(data);
+        }
+        #endregion
 
         protected PacketTypeRelay ExtractWholeMessage(string receivedData)
             {

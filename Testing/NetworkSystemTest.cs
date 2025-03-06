@@ -23,7 +23,7 @@ namespace Testing
         
         private bool IsNpcapAvailable()
         {
-            string dllPath = Path.Combine(Environment.CurrentDirectory, "wpcap.dll");
+            string dllPath = Path.Combine(Environment.SpecialFolder.SystemX86.ToString(), "wpcap.dll");
             return File.Exists(dllPath);
         }
 

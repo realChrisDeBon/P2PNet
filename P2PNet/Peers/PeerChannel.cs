@@ -29,6 +29,10 @@ namespace P2PNet.Peers
         public IPeer peer { get; set; }
 
         private int RETRIES = 0; // for retrying connections
+        /// <summary>
+        /// Gets the number of good pings received from the peer.
+        /// This value is incremented each time a ping is received from the peer, 
+        /// </summary>
         public int GOODPINGS { get; internal set; } = 0; // readonly
         private const int MAX_RETRIES = 3;
 

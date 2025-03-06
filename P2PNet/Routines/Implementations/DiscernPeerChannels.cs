@@ -38,7 +38,7 @@ namespace P2PNet.Routines.Implementations
 
         private static void RoutineFunction(object sender, System.Timers.ElapsedEventArgs e)
         {
-            DebugMessage("DISCERNING CHANNELS", ConsoleColor.Magenta);
+            DebugMessage("Cleaning up peer channels.", ConsoleColor.Magenta);
 
             Task.Run(async () =>
             {
