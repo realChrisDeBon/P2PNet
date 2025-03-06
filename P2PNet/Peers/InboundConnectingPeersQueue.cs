@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using static P2PNet.PeerNetwork;
@@ -36,7 +37,7 @@ namespace P2PNet.Peers
                 }
         }
 
-        public bool PeerIsQueued(string IPAddress)
+        public bool PeerIsQueued(string IPAddress, string Identifier = null)
             {
             // Check if a peer with the same IP already exists in the queue
             foreach (var existingPeer in _queue)
@@ -48,6 +49,25 @@ namespace P2PNet.Peers
                 }
             return false;
             }
+        public bool PeerIsQueued(IPAddress IPAddress, string Identifier = null)
+        {
+            // Check if a peer with the same IP already exists in the queue
+            foreach (var existingPeer in _queue)
+            {
+                if (existingPeer.IP == IPAddress)
+                {
+                    return true;
+                }
+                if(Identifier != null)
+                {
+                    if (existingPeer.Identifier == Identifier)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
 
         public GenericPeer Dequeue()
         {
