@@ -22,4 +22,4 @@ Docker image for launching an instance of a bootstrap server.
 
 Technical overview and API documentation available down below.
 
-[![view - Documentation](https://img.shields.io/badge/view-Documentation-blue?style=for-the-badge)](/docs/ "Go to project documentation")
+[![view - Documentation](https://img.shields.io/badge/view-Documentation-blue?style=for-the-badge)](https://realchrisdebon.github.io/P2PNet/)
