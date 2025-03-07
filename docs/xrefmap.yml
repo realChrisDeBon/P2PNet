@@ -5555,3 +5555,6 @@ references:
 - uid: p2pnetworkbasics
   name: p2pnetworkbasics
   href: misc/p2pnetwork.html
+- uid: peersinfo
+  name: peersinfo
+  href: misc/peers.html

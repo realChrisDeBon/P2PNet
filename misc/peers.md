@@ -1,5 +1,5 @@
 ---
-uid: p2pnethome
+uid: peersinfo
 ---
 ### Peers
 
@@ -21,5 +21,7 @@ Once the connection is established, a `PeerChannel` is created to manage the com
 
 There are some trust policies under `IncomingPeerTrustPolicy` that can slighly modify the initial behavior of the established `PeerChannel`
 
+1. `AllowDefaultCommunication` - as the name implies, allows default communication between peers to exchange `PureMessagePackets`. Default is **true**.
+2. `AllowEnhancedPacketExchange` - determines if peers will be trusted to exchange all other packet types, such as `DataTransmissionPackets`, which contain binary data such as files and network-related tasks. Default is **false**.
 
-![Peer Lifecycle](./peerlifecycle.png)
+![Peer Lifecycle](peerlifecycle.png)
