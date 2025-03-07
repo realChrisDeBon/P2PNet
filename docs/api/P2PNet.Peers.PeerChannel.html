@@ -224,7 +224,7 @@ Class PeerChannel  <a class="header-action link-secondary" title="View source" h
 
   <h3 id="P2PNet_Peers_PeerChannel__ctor_P2PNet_Peers_IPeer_" data-uid="P2PNet.Peers.PeerChannel.#ctor(P2PNet.Peers.IPeer)">
   PeerChannel(IPeer)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/docs/P2PNet/Peers/PeerChannel.cs/#L39"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/docs/P2PNet/Peers/PeerChannel.cs/#L43"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="P2PNet.Peers.PeerChannel.html">PeerChannel</a> class with the specified peer.</p>
@@ -261,10 +261,12 @@ Class PeerChannel  <a class="header-action link-secondary" title="View source" h
 
   <h3 id="P2PNet_Peers_PeerChannel_GOODPINGS" data-uid="P2PNet.Peers.PeerChannel.GOODPINGS">
   GOODPINGS
-  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/docs/P2PNet/Peers/PeerChannel.cs/#L32"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/docs/P2PNet/Peers/PeerChannel.cs/#L36"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets the number of good pings received from the peer.
+This value is incremented each time a ping is received from the peer,</p>
+</div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
@@ -360,7 +362,7 @@ Class PeerChannel  <a class="header-action link-secondary" title="View source" h
 
   <h3 id="P2PNet_Peers_PeerChannel_ClosePeerChannel" data-uid="P2PNet.Peers.PeerChannel.ClosePeerChannel">
   ClosePeerChannel()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/docs/P2PNet/Peers/PeerChannel.cs/#L72"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/docs/P2PNet/Peers/PeerChannel.cs/#L76"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Closes the communication channel with the peer and terminates all associated tasks.</p>
@@ -387,7 +389,7 @@ Class PeerChannel  <a class="header-action link-secondary" title="View source" h
 
   <h3 id="P2PNet_Peers_PeerChannel_CreatePing" data-uid="P2PNet.Peers.PeerChannel.CreatePing">
   CreatePing()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/docs/P2PNet/Peers/PeerChannel.cs/#L84"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/docs/P2PNet/Peers/PeerChannel.cs/#L88"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -413,7 +415,7 @@ Class PeerChannel  <a class="header-action link-secondary" title="View source" h
 
   <h3 id="P2PNet_Peers_PeerChannel_OpenPeerChannel" data-uid="P2PNet.Peers.PeerChannel.OpenPeerChannel">
   OpenPeerChannel()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/docs/P2PNet/Peers/PeerChannel.cs/#L47"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/docs/P2PNet/Peers/PeerChannel.cs/#L51"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Opens the communication channel with the peer and starts handling incoming and outgoing data.</p>
@@ -440,7 +442,7 @@ Class PeerChannel  <a class="header-action link-secondary" title="View source" h
 
   <h3 id="P2PNet_Peers_PeerChannel_ReadIncoming_System_Threading_CancellationToken_" data-uid="P2PNet.Peers.PeerChannel.ReadIncoming(System.Threading.CancellationToken)">
   ReadIncoming(CancellationToken)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/docs/P2PNet/Peers/PeerChannel.cs/#L163"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/docs/P2PNet/Peers/PeerChannel.cs/#L167"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The default task for reading incoming network stream data.</p>
@@ -473,7 +475,7 @@ Class PeerChannel  <a class="header-action link-secondary" title="View source" h
 
   <h3 id="P2PNet_Peers_PeerChannel_SendOutgoing_System_Threading_CancellationToken_" data-uid="P2PNet.Peers.PeerChannel.SendOutgoing(System.Threading.CancellationToken)">
   SendOutgoing(CancellationToken)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/docs/P2PNet/Peers/PeerChannel.cs/#L101"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/docs/P2PNet/Peers/PeerChannel.cs/#L105"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The default task for sending outgoing data and information to the network stream.</p>

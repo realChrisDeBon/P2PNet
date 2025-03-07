@@ -365,7 +365,12 @@ namespace P2PNet
                     {
                     PeerChannel peerChannel = new PeerChannel(peer);
                     ActivePeerChannels.Add(peerChannel);
-                    DistributionHandler.AddTrustedPeer(peerChannel); // REMOVE AFTER DEBUGGING & TESTING
+
+                    if(IncomingPeerTrustPolicy.AllowEnhancedPacketExchange == true)
+                    {
+                        peerChannel.TrustPeer();
+                        DistributionHandler.AddTrustedPeer(peerChannel);
+                    }
 
                     peers.Add(peerChannel.peer);
                     KnownPeers = peers;

@@ -866,6 +866,34 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.Distribution.P2PNet.Distribution.PacketHandleProtocol.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.Distribution.P2PNet.Distribution.PacketHandleProtocol.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.Distribution.P2PNet.Distribution.PacketHandleProtocol",
+      "Summary": "<p sourcefile=\"api/P2PNet.Distribution.P2PNet.Distribution.PacketHandleProtocol.yml\" sourcestartlinenumber=\"1\">Provides protocol actions for handling different types of packets received by <xref href=\"P2PNet.Peers.PeerChannel\" data-throw-if-not-resolved=\"false\"></xref> instances.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.Distribution.P2PNet.Distribution.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.Distribution.P2PNet.Distribution.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.Distribution.P2PNet.Distribution",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/P2PNet.Distribution.PureMessagePacketContext.yml",
       "output": {
         ".html": {
@@ -1413,6 +1441,16 @@
       "output": {
         ".html": {
           "relative_path": "misc/p2pnetwork.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "misc/peers.md",
+      "output": {
+        ".html": {
+          "relative_path": "misc/peers.html"
         }
       },
       "version": ""
