@@ -72,11 +72,11 @@ namespace P2PNet
             set
                 {
                 runningListener = value;
-                SetInboundPeerAcceptancePolicy(value);
+                SetInboundPeerAcceptance(value);
                 }
             }
         private static  bool runningListener = true;
-        private static void SetInboundPeerAcceptancePolicy(bool status_)
+        private static void SetInboundPeerAcceptance(bool status_)
             {
             if(status_ == true)
                 {
@@ -133,8 +133,11 @@ namespace P2PNet
 
         /// <summary>
         /// Gets or sets the list of known peers.
-        /// KnownPeers do not necessarily have established trust to exchange extensive data and information, but do have an open PeerChannel.
         /// </summary>
+        /// <remarks>
+        /// KnownPeers do not necessarily have established trust to exchange extensive data and information, but do have an open PeerChannel in the <see cref="PeerNetwork.ActivePeerChannels"/>.
+        /// This is mostly to store and manage known peers for future reference and potential connection.
+        /// </remarks>
         public static List<IPeer> KnownPeers
             {
             get
@@ -148,7 +151,7 @@ namespace P2PNet
             }
 
         /// <summary>
-        /// Occurs when a new KnownPeer is added.
+        /// Occurs when a new peer is added and passes the received data from the subsequent PeerChannel in an event.
         /// Subscribers can use this event to handle all new peers and their peer channels, regardless of point of origin.
         /// </summary>
         /// <example>
@@ -160,7 +163,7 @@ namespace P2PNet
         ///        e.peerChannel.DataReceived += HandleIncomingData;
         ///    }
         ///    
-        ///    private static void HandleIncomingData(object? sender, Peer_Channel_Base.DataReceivedEventArgs e)
+        ///    private static void HandleIncomingData(object? sender, PeerChannelBase.DataReceivedEventArgs e)
         ///    {
         ///        Console.WriteLine(e.Data); // incoming information is printed to console
         ///    }
@@ -191,6 +194,11 @@ namespace P2PNet
         /// <summary>
         /// Queue of inbound connecting peers that have not been assigned a peer channel.
         /// </summary>
+        /// <remarks>
+        /// This will only become populated if the <see cref="PeerNetwork.IncomingPeerTrustPolicy.IncomingPeerPlacement"/> value includes queue-based placement.
+        /// This allows for additional verification and handling of incoming peers before they are assigned a peer channel.
+        /// For idle action, consider using <see cref="PeerNetwork.IncomingPeerTrustPolicy.IncomingPeerMode.EventBased"/> and ignoring the event to prevent excessive memory usage.
+        /// </remarks>
         private static InboundConnectingPeersQueue InboundConnectingPeers = new InboundConnectingPeersQueue();
 
         /// <summary>
@@ -228,13 +236,9 @@ namespace P2PNet
         /// <summary>
         /// All active <see cref="PeerChannel"/> connections are stored here. 
         /// </summary>
-        /// <remarks>
-        /// Inbound connections opened through <see cref="ListeningPort"/> will automatically be enqueued here. This allows you to implement any additional verification you may want in place before calling <see cref="AddPeer(IPeer, TcpClient)"/> and opening a PeerChannel
-        /// </remarks>
         public static volatile List<PeerChannel> ActivePeerChannels = new List<PeerChannel>();
         private static List<LocalChannel> ActiveLocalChannels = new List<LocalChannel>();
         private static List<MulticastChannel> ActiveMulticastChannels = new List<MulticastChannel>();
-
         private static List<IPAddress> multicast_addresses = new List<IPAddress>();
         #endregion
 
@@ -274,8 +278,15 @@ namespace P2PNet
                 TcpClient client = await listener.AcceptTcpClientAsync();
 
                 IPAddress peerIP = ((IPEndPoint)client.Client.RemoteEndPoint).Address;
-                // Check for existing peer
 
+                // Immediately filter out blocked IPs
+                    if (PeerNetwork.IncomingPeerTrustPolicy.BlockedIPs.Contains(peerIP))
+                    {
+                        DebugMessage($"Blocked IP attempted to connect: {peerIP.ToString()}. Ignoring.", MessageType.Warning);
+                        client.Dispose();
+                        continue;
+                    }
+                    // Check for existing peer
                     if (KnownPeers.Any(p => p.IP.Equals(peerIP)))
                         {
                         DebugMessage("Duplicate connection attempt from existing peer. Ignoring.", MessageType.Warning);
@@ -368,8 +379,7 @@ namespace P2PNet
 
                     if(IncomingPeerTrustPolicy.AllowEnhancedPacketExchange == true)
                     {
-                        peerChannel.TrustPeer();
-                        DistributionHandler.AddTrustedPeer(peerChannel);
+                        ElevatePeerPermission(peerChannel);
                     }
 
                     peers.Add(peerChannel.peer);
@@ -385,7 +395,7 @@ namespace P2PNet
             }
 
         /// <summary>
-        /// Terminates a peer connection and removes it from <see cref="KnownPeers"/> and <see cref="ActivePeerChannels"/>.
+        /// Terminates a peer connection and removes it from <see cref="PeerNetwork.KnownPeers"/> and <see cref="PeerNetwork.ActivePeerChannels"/>.
         /// </summary>
         /// <param name="channel">The peer channel to remove.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains a boolean indicating success or failure.</returns>
@@ -418,22 +428,12 @@ namespace P2PNet
             bool flawless = true;
             try
                 {
-
-                DistributionHandler.AddTrustedPeer(channel);
+                channel.TrustPeer();              
                 
                 if (AutoThrottleOnConnect == true)
                     {
                     ThrottleBroadcastingDown();
                     }
-                foreach (PeerChannel potentialpeer in ActivePeerChannels)
-                    {
-                    if (channel.peer.IP.ToString() == potentialpeer.peer.IP.ToString())
-                        {
-                        // Filter out unnecessary duplicate connections
-                        bool removalAttempt = await RemovePeer(potentialpeer);
-                        }
-                    }
-
                 }
             catch (Exception ex)
                 {
@@ -763,7 +763,10 @@ namespace P2PNet
                 }
             private static bool _allowDefaultCommunication = true;
             private static bool _allowEnhancedPacketExchange = false;
+            private static bool _runDefaultTrustProtocol = true;
             private static IncomingPeerMode _howToHandleInboundPeed = IncomingPeerMode.EventBased;
+            private static List<IPAddress> _blockedIPs = new List<IPAddress>();
+            private static List<string> _blockedIdentifiers = new List<string>();
 
             /// <summary>
             /// Gets or sets whether incoming peer connections will be trusted to establish initial communication by default.
@@ -784,6 +787,25 @@ namespace P2PNet
                 get => _allowEnhancedPacketExchange;
                 set => _allowEnhancedPacketExchange = value;
                 }
+
+            /// <summary>
+            /// Gets or sets the list of blocked IP addresses.
+            /// </summary>
+            /// <remarks>This will prevent peers with the specified IP addresses from connecting.</remarks>
+            public static List<IPAddress> BlockedIPs
+            {
+                get => _blockedIPs;
+                set => _blockedIPs = value;
+            }
+            /// <summary>
+            /// Gets or sets the list of blocked peer identifiers.
+            /// </summary>
+            /// <remarks>This is useful in authority mode or when peer identifiers are managed to be unique to machine/IP address.</remarks>
+            public static List<string> BlockedIdentifiers
+            {
+                get => _blockedIdentifiers;
+                set => _blockedIdentifiers = value;
+            }
 
             /// <summary>
             /// Gets or sets the logic for handling inbound peers.
@@ -807,7 +829,51 @@ namespace P2PNet
                 get => _howToHandleInboundPeed;
                 set => _howToHandleInboundPeed = value;
                 }
+
+            /// <summary>
+            /// Gets or sets whether the default trust protocol will be run when a new peer channel is opened.
+            /// </summary>
+            /// <remarks>The peer channel will invoke <see cref="PeerNetwork.IncomingPeerTrustPolicy.DefaultTrustProtocol"/> Action delegate and pass a reference to itself.</remarks>
+            public static bool RunDefaultTrustProtocol
+            {
+                get => _runDefaultTrustProtocol;
+                set => _runDefaultTrustProtocol = value;
             }
+            public static Action<PeerChannel> DefaultTrustProtocol { get; set; } = DefaultPingHandler;
+            private static async void DefaultPingHandler(PeerChannel peerChannel)
+            {
+                int successfulPings = 0;
+                const int requiredPings = 3;
+
+                EventHandler<PeerChannelBase.DataReceivedEventArgs> dataReceivedHandler = null;
+                dataReceivedHandler = (sender, e) =>
+                {
+                    if (e.Data.Contains("Ping from"))
+                    {
+                        successfulPings++;
+                        if (successfulPings >= requiredPings)
+                        {
+                            peerChannel.TrustPeer();
+                            peerChannel.DataReceived -= dataReceivedHandler;
+                        }
+                    }
+                };
+
+                peerChannel.DataReceived += dataReceivedHandler;
+
+                while (!peerChannel.IsTrustedPeer)
+                {
+                    PureMessagePacket pingMessage = new PureMessagePacket
+                    {
+                        Message = $"Ping from {PeerNetwork.PublicIPV4Address}"
+                    };
+                    string outgoing = Serialize(pingMessage);
+                    WrapPacket(PacketType.PureMessage, ref outgoing);
+                    peerChannel.LoadOutgoingData(outgoing);
+                    await Task.Delay(3000);
+                }
+            }
+        }
 
         /// <summary>
         /// Handles trust and permissions in regards to bootstrap connections.
