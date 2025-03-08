@@ -89,7 +89,7 @@
 
 
   <h1 id="P2PNet_Distribution_DistributionHandler" data-uid="P2PNet.Distribution.DistributionHandler" class="text-break">
-Class DistributionHandler  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/docs/P2PNet/Distribution/DistributionHandler.cs/#L28"><i class="bi bi-code-slash"></i></a>
+Class DistributionHandler  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/docs/P2PNet/Distribution/DistributionHandler.cs/#L14"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -156,7 +156,7 @@ Class DistributionHandler  <a class="header-action link-secondary" title="View s
 
   <h3 id="P2PNet_Distribution_DistributionHandler_incomingDataQueue" data-uid="P2PNet.Distribution.DistributionHandler.incomingDataQueue">
   incomingDataQueue
-  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/docs/P2PNet/Distribution/DistributionHandler.cs/#L43"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/docs/P2PNet/Distribution/DistributionHandler.cs/#L38"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Queue for incoming data packets to be processed.</p>
@@ -187,7 +187,7 @@ Class DistributionHandler  <a class="header-action link-secondary" title="View s
 
   <h3 id="P2PNet_Distribution_DistributionHandler_outgoingDataQueue" data-uid="P2PNet.Distribution.DistributionHandler.outgoingDataQueue">
   outgoingDataQueue
-  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/docs/P2PNet/Distribution/DistributionHandler.cs/#L38"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/docs/P2PNet/Distribution/DistributionHandler.cs/#L33"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Queue for outgoing data packets to be distributed to trusted peers.</p>
@@ -219,44 +219,11 @@ Class DistributionHandler  <a class="header-action link-secondary" title="View s
 </h2>
 
 
-  <a id="P2PNet_Distribution_DistributionHandler_AddTrustedPeer_" data-uid="P2PNet.Distribution.DistributionHandler.AddTrustedPeer*"></a>
-
-  <h3 id="P2PNet_Distribution_DistributionHandler_AddTrustedPeer_P2PNet_Peers_PeerChannel_" data-uid="P2PNet.Distribution.DistributionHandler.AddTrustedPeer(P2PNet.Peers.PeerChannel)">
-  AddTrustedPeer(PeerChannel)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/docs/P2PNet/Distribution/DistributionHandler.cs/#L54"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Adds a peer channel to the list of trusted peer channels.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static void AddTrustedPeer(PeerChannel peerChannel)</code></pre>
-  </div>
-
-  <h4 class="section">Parameters</h4>
-  <dl class="parameters">
-    <dt><code>peerChannel</code> <a class="xref" href="P2PNet.Peers.PeerChannel.html">PeerChannel</a></dt>
-    <dd><p>The peer channel to add.</p>
-</dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-
-
   <a id="P2PNet_Distribution_DistributionHandler_DistributeFileAsync_" data-uid="P2PNet.Distribution.DistributionHandler.DistributeFileAsync*"></a>
 
   <h3 id="P2PNet_Distribution_DistributionHandler_DistributeFileAsync_System_String_" data-uid="P2PNet.Distribution.DistributionHandler.DistributeFileAsync(System.String)">
   DistributeFileAsync(string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/docs/P2PNet/Distribution/DistributionHandler.cs/#L280"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/docs/P2PNet/Distribution/DistributionHandler.cs/#L179"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Distributes a file asynchronously by reading its contents and queuing it for distribution.</p>
@@ -295,7 +262,7 @@ Class DistributionHandler  <a class="header-action link-secondary" title="View s
 
   <h3 id="P2PNet_Distribution_DistributionHandler_EnqueueIncomingDataPacket_P2PNet_NetworkPackets_DataTransmissionPacket_" data-uid="P2PNet.Distribution.DistributionHandler.EnqueueIncomingDataPacket(P2PNet.NetworkPackets.DataTransmissionPacket)">
   EnqueueIncomingDataPacket(DataTransmissionPacket)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/docs/P2PNet/Distribution/DistributionHandler.cs/#L83"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/docs/P2PNet/Distribution/DistributionHandler.cs/#L68"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Enqueues an incoming data packet for processing.</p>
@@ -334,7 +301,7 @@ Class DistributionHandler  <a class="header-action link-secondary" title="View s
 
   <h3 id="P2PNet_Distribution_DistributionHandler_EnqueueIncomingDataPacket_System_String_" data-uid="P2PNet.Distribution.DistributionHandler.EnqueueIncomingDataPacket(System.String)">
   EnqueueIncomingDataPacket(string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/docs/P2PNet/Distribution/DistributionHandler.cs/#L93"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/docs/P2PNet/Distribution/DistributionHandler.cs/#L78"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Enqueues a serialized incoming data packet for processing.</p>
@@ -373,7 +340,7 @@ Class DistributionHandler  <a class="header-action link-secondary" title="View s
 
   <h3 id="P2PNet_Distribution_DistributionHandler_QueueDataForDistribution_P2PNet_NetworkPackets_DataTransmissionPacket_" data-uid="P2PNet.Distribution.DistributionHandler.QueueDataForDistribution(P2PNet.NetworkPackets.DataTransmissionPacket)">
   QueueDataForDistribution(DataTransmissionPacket)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/docs/P2PNet/Distribution/DistributionHandler.cs/#L63"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/docs/P2PNet/Distribution/DistributionHandler.cs/#L48"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Queues a data packet for distribution.</p>
@@ -406,7 +373,7 @@ Class DistributionHandler  <a class="header-action link-secondary" title="View s
 
   <h3 id="P2PNet_Distribution_DistributionHandler_QueueDataForDistribution_System_Byte___P2PNet_Distribution_DistributionProtocol_DataPayloadFormat_" data-uid="P2PNet.Distribution.DistributionHandler.QueueDataForDistribution(System.Byte[],P2PNet.Distribution.DistributionProtocol.DataPayloadFormat)">
   QueueDataForDistribution(byte[], DataPayloadFormat)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/docs/P2PNet/Distribution/DistributionHandler.cs/#L73"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/docs/P2PNet/Distribution/DistributionHandler.cs/#L58"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Queues raw data for distribution by wrapping it in a data transmission packet.</p>

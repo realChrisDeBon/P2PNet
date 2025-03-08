@@ -157,7 +157,7 @@ Class PeerNetwork.IncomingPeerTrustPolicy  <a class="header-action link-secondar
 
   <h3 id="P2PNet_PeerNetwork_IncomingPeerTrustPolicy_AllowDefaultCommunication" data-uid="P2PNet.PeerNetwork.IncomingPeerTrustPolicy.AllowDefaultCommunication">
   AllowDefaultCommunication
-  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/docs/P2PNet/PeerNetwork.cs/#L772"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/docs/P2PNet/PeerNetwork.cs/#L775"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets whether incoming peer connections will be trusted to establish initial communication by default.
@@ -190,7 +190,7 @@ This is the initial 'ping' pure message packet sent back and forth to ensure con
 
   <h3 id="P2PNet_PeerNetwork_IncomingPeerTrustPolicy_AllowEnhancedPacketExchange" data-uid="P2PNet.PeerNetwork.IncomingPeerTrustPolicy.AllowEnhancedPacketExchange">
   AllowEnhancedPacketExchange
-  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/docs/P2PNet/PeerNetwork.cs/#L782"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/docs/P2PNet/PeerNetwork.cs/#L785"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets whether incoming peer connections will be trusted to exchange all other packet types, like
@@ -219,11 +219,112 @@ data transmission packets, before being trusted peers.</p>
 
 
 
+  <a id="P2PNet_PeerNetwork_IncomingPeerTrustPolicy_BlockedIPs_" data-uid="P2PNet.PeerNetwork.IncomingPeerTrustPolicy.BlockedIPs*"></a>
+
+  <h3 id="P2PNet_PeerNetwork_IncomingPeerTrustPolicy_BlockedIPs" data-uid="P2PNet.PeerNetwork.IncomingPeerTrustPolicy.BlockedIPs">
+  BlockedIPs
+  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/docs/P2PNet/PeerNetwork.cs/#L795"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the list of blocked IP addresses.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static List&lt;IPAddress&gt; BlockedIPs { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.net.ipaddress">IPAddress</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+  <h4 class="section" id="P2PNet_PeerNetwork_IncomingPeerTrustPolicy_BlockedIPs_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>This will prevent peers with the specified IP addresses from connecting.</p>
+</div>
+
+
+
+
+  <a id="P2PNet_PeerNetwork_IncomingPeerTrustPolicy_BlockedIdentifiers_" data-uid="P2PNet.PeerNetwork.IncomingPeerTrustPolicy.BlockedIdentifiers*"></a>
+
+  <h3 id="P2PNet_PeerNetwork_IncomingPeerTrustPolicy_BlockedIdentifiers" data-uid="P2PNet.PeerNetwork.IncomingPeerTrustPolicy.BlockedIdentifiers">
+  BlockedIdentifiers
+  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/docs/P2PNet/PeerNetwork.cs/#L804"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the list of blocked peer identifiers.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static List&lt;string&gt; BlockedIdentifiers { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+  <h4 class="section" id="P2PNet_PeerNetwork_IncomingPeerTrustPolicy_BlockedIdentifiers_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>This is useful in authority mode or when peer identifiers are managed to be unique to machine/IP address.</p>
+</div>
+
+
+
+
+  <a id="P2PNet_PeerNetwork_IncomingPeerTrustPolicy_DefaultTrustProtocol_" data-uid="P2PNet.PeerNetwork.IncomingPeerTrustPolicy.DefaultTrustProtocol*"></a>
+
+  <h3 id="P2PNet_PeerNetwork_IncomingPeerTrustPolicy_DefaultTrustProtocol" data-uid="P2PNet.PeerNetwork.IncomingPeerTrustPolicy.DefaultTrustProtocol">
+  DefaultTrustProtocol
+  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/docs/P2PNet/PeerNetwork.cs/#L842"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Action&lt;PeerChannel&gt; DefaultTrustProtocol { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="P2PNet.Peers.PeerChannel.html">PeerChannel</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="P2PNet_PeerNetwork_IncomingPeerTrustPolicy_IncomingPeerPlacement_" data-uid="P2PNet.PeerNetwork.IncomingPeerTrustPolicy.IncomingPeerPlacement*"></a>
 
   <h3 id="P2PNet_PeerNetwork_IncomingPeerTrustPolicy_IncomingPeerPlacement" data-uid="P2PNet.PeerNetwork.IncomingPeerTrustPolicy.IncomingPeerPlacement">
   IncomingPeerPlacement
-  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/docs/P2PNet/PeerNetwork.cs/#L805"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/docs/P2PNet/PeerNetwork.cs/#L827"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the logic for handling inbound peers.</p>
@@ -248,6 +349,41 @@ data transmission packets, before being trusted peers.</p>
 
 
 
+
+
+
+
+  <a id="P2PNet_PeerNetwork_IncomingPeerTrustPolicy_RunDefaultTrustProtocol_" data-uid="P2PNet.PeerNetwork.IncomingPeerTrustPolicy.RunDefaultTrustProtocol*"></a>
+
+  <h3 id="P2PNet_PeerNetwork_IncomingPeerTrustPolicy_RunDefaultTrustProtocol" data-uid="P2PNet.PeerNetwork.IncomingPeerTrustPolicy.RunDefaultTrustProtocol">
+  RunDefaultTrustProtocol
+  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/docs/P2PNet/PeerNetwork.cs/#L837"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets whether the default trust protocol will be run when a new peer channel is opened.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool RunDefaultTrustProtocol { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+  <h4 class="section" id="P2PNet_PeerNetwork_IncomingPeerTrustPolicy_RunDefaultTrustProtocol_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>The peer channel will invoke <a class="xref" href="P2PNet.PeerNetwork.IncomingPeerTrustPolicy.html#P2PNet_PeerNetwork_IncomingPeerTrustPolicy_DefaultTrustProtocol">DefaultTrustProtocol</a> Action delegate and pass a reference to itself.</p>
+</div>
 
 
 

@@ -102,7 +102,7 @@ Class PeerChannel  <a class="header-action link-secondary" title="View source" h
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class PeerChannel : PeerChannel_Base</code></pre>
+    <pre><code class="lang-csharp hljs">public class PeerChannel : PeerChannelBase</code></pre>
   </div>
 
 
@@ -112,7 +112,7 @@ Class PeerChannel  <a class="header-action link-secondary" title="View source" h
     <dt>Inheritance</dt>
     <dd>
       <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
-      <div><a class="xref" href="P2PNet.Peers.PeerChannel_Base.html">PeerChannel_Base</a></div>
+      <div><a class="xref" href="P2PNet.Peers.PeerChannelBase.html">PeerChannelBase</a></div>
       <div><span class="xref">PeerChannel</span></div>
     </dd>
   </dl>
@@ -123,70 +123,94 @@ Class PeerChannel  <a class="header-action link-secondary" title="View source" h
     <dt>Inherited Members</dt>
     <dd>
     <div>
-      <a class="xref" href="P2PNet.Peers.PeerChannel_Base.html#P2PNet_Peers_PeerChannel_Base_IncomingDataQueue">PeerChannel_Base.IncomingDataQueue</a>
+      <a class="xref" href="P2PNet.Peers.PeerChannelBase.html#P2PNet_Peers_PeerChannelBase_IncomingDataQueue">PeerChannelBase.IncomingDataQueue</a>
     </div>
     <div>
-      <a class="xref" href="P2PNet.Peers.PeerChannel_Base.html#P2PNet_Peers_PeerChannel_Base_OutgoingDataQueue">PeerChannel_Base.OutgoingDataQueue</a>
+      <a class="xref" href="P2PNet.Peers.PeerChannelBase.html#P2PNet_Peers_PeerChannelBase_OutgoingDataQueue">PeerChannelBase.OutgoingDataQueue</a>
     </div>
     <div>
-      <a class="xref" href="P2PNet.Peers.PeerChannel_Base.html#P2PNet_Peers_PeerChannel_Base_packetQueue">PeerChannel_Base.packetQueue</a>
+      <a class="xref" href="P2PNet.Peers.PeerChannelBase.html#P2PNet_Peers_PeerChannelBase_packetQueue">PeerChannelBase.packetQueue</a>
     </div>
     <div>
-      <a class="xref" href="P2PNet.Peers.PeerChannel_Base.html#P2PNet_Peers_PeerChannel_Base_LoadOutgoingData_System_String_">PeerChannel_Base.LoadOutgoingData(string)</a>
+      <a class="xref" href="P2PNet.Peers.PeerChannelBase.html#P2PNet_Peers_PeerChannelBase_CustomData">PeerChannelBase.CustomData</a>
     </div>
     <div>
-      <a class="xref" href="P2PNet.Peers.PeerChannel_Base.html#P2PNet_Peers_PeerChannel_Base_DataReceived">PeerChannel_Base.DataReceived</a>
+      <a class="xref" href="P2PNet.Peers.PeerChannelBase.html#P2PNet_Peers_PeerChannelBase_AddProperties_System_String_System_Type_">PeerChannelBase.AddProperties(string, Type)</a>
     </div>
     <div>
-      <a class="xref" href="P2PNet.Peers.PeerChannel_Base.html#P2PNet_Peers_PeerChannel_Base_OnDataReceived_System_String_">PeerChannel_Base.OnDataReceived(string)</a>
+      <a class="xref" href="P2PNet.Peers.PeerChannelBase.html#P2PNet_Peers_PeerChannelBase_TryGetProperty_System_String_">PeerChannelBase.TryGetProperty(string)</a>
     </div>
     <div>
-      <a class="xref" href="P2PNet.Peers.PeerChannel_Base.html#P2PNet_Peers_PeerChannel_Base_IsTrustedPeer">PeerChannel_Base.IsTrustedPeer</a>
+      <a class="xref" href="P2PNet.Peers.PeerChannelBase.html#P2PNet_Peers_PeerChannelBase_LoadOutgoingData_System_String_">PeerChannelBase.LoadOutgoingData(string)</a>
     </div>
     <div>
-      <a class="xref" href="P2PNet.Peers.PeerChannel_Base.html#P2PNet_Peers_PeerChannel_Base_TerminateChannel">PeerChannel_Base.TerminateChannel()</a>
+      <a class="xref" href="P2PNet.Peers.PeerChannelBase.html#P2PNet_Peers_PeerChannelBase_LoadOutgoingData_P2PNet_NetworkPackets_DataTransmissionPacket_">PeerChannelBase.LoadOutgoingData(DataTransmissionPacket)</a>
     </div>
     <div>
-      <a class="xref" href="P2PNet.Peers.PeerChannel_Base.html#P2PNet_Peers_PeerChannel_Base_TerminateCurrentSender">PeerChannel_Base.TerminateCurrentSender()</a>
+      <a class="xref" href="P2PNet.Peers.PeerChannelBase.html#P2PNet_Peers_PeerChannelBase_LoadOutgoingData_P2PNet_NetworkPackets_PureMessagePacket_">PeerChannelBase.LoadOutgoingData(PureMessagePacket)</a>
     </div>
     <div>
-      <a class="xref" href="P2PNet.Peers.PeerChannel_Base.html#P2PNet_Peers_PeerChannel_Base_TerminateCurrentReceiver">PeerChannel_Base.TerminateCurrentReceiver()</a>
+      <a class="xref" href="P2PNet.Peers.PeerChannelBase.html#P2PNet_Peers_PeerChannelBase_LoadOutgoingData_P2PNet_NetworkPackets_CollectionSharePacket_">PeerChannelBase.LoadOutgoingData(CollectionSharePacket)</a>
     </div>
     <div>
-      <a class="xref" href="P2PNet.Peers.PeerChannel_Base.html#P2PNet_Peers_PeerChannel_Base_TerminatePacketHandler">PeerChannel_Base.TerminatePacketHandler()</a>
+      <a class="xref" href="P2PNet.Peers.PeerChannelBase.html#P2PNet_Peers_PeerChannelBase_LoadOutgoingData_P2PNet_NetworkPackets_DisconnectPacket_">PeerChannelBase.LoadOutgoingData(DisconnectPacket)</a>
     </div>
     <div>
-      <a class="xref" href="P2PNet.Peers.PeerChannel_Base.html#P2PNet_Peers_PeerChannel_Base_TrustPeer">PeerChannel_Base.TrustPeer()</a>
+      <a class="xref" href="P2PNet.Peers.PeerChannelBase.html#P2PNet_Peers_PeerChannelBase_DataReceived">PeerChannelBase.DataReceived</a>
     </div>
     <div>
-      <a class="xref" href="P2PNet.Peers.PeerChannel_Base.html#P2PNet_Peers_PeerChannel_Base_UntrustPeer">PeerChannel_Base.UntrustPeer()</a>
+      <a class="xref" href="P2PNet.Peers.PeerChannelBase.html#P2PNet_Peers_PeerChannelBase_OnDataReceived_System_String_">PeerChannelBase.OnDataReceived(string)</a>
     </div>
     <div>
-      <a class="xref" href="P2PNet.Peers.PeerChannel_Base.html#P2PNet_Peers_PeerChannel_Base_StartPacketHandling">PeerChannel_Base.StartPacketHandling()</a>
+      <a class="xref" href="P2PNet.Peers.PeerChannelBase.html#P2PNet_Peers_PeerChannelBase__isTrustedPeer">PeerChannelBase._isTrustedPeer</a>
     </div>
     <div>
-      <a class="xref" href="P2PNet.Peers.PeerChannel_Base.html#P2PNet_Peers_PeerChannel_Base_PacketHandler_System_Threading_CancellationToken_">PeerChannel_Base.PacketHandler(CancellationToken)</a>
+      <a class="xref" href="P2PNet.Peers.PeerChannelBase.html#P2PNet_Peers_PeerChannelBase_IsTrustedPeer">PeerChannelBase.IsTrustedPeer</a>
     </div>
     <div>
-      <a class="xref" href="P2PNet.Peers.PeerChannel_Base.html#P2PNet_Peers_PeerChannel_Base_HandleIdentityPacket_System_String_">PeerChannel_Base.HandleIdentityPacket(string)</a>
+      <a class="xref" href="P2PNet.Peers.PeerChannelBase.html#P2PNet_Peers_PeerChannelBase_TerminateChannel">PeerChannelBase.TerminateChannel()</a>
     </div>
     <div>
-      <a class="xref" href="P2PNet.Peers.PeerChannel_Base.html#P2PNet_Peers_PeerChannel_Base_HandleDisconnectPacket_System_String_">PeerChannel_Base.HandleDisconnectPacket(string)</a>
+      <a class="xref" href="P2PNet.Peers.PeerChannelBase.html#P2PNet_Peers_PeerChannelBase_TerminateCurrentSender">PeerChannelBase.TerminateCurrentSender()</a>
     </div>
     <div>
-      <a class="xref" href="P2PNet.Peers.PeerChannel_Base.html#P2PNet_Peers_PeerChannel_Base_HandlePeerGroupPacket_System_String_">PeerChannel_Base.HandlePeerGroupPacket(string)</a>
+      <a class="xref" href="P2PNet.Peers.PeerChannelBase.html#P2PNet_Peers_PeerChannelBase_TerminateCurrentReceiver">PeerChannelBase.TerminateCurrentReceiver()</a>
     </div>
     <div>
-      <a class="xref" href="P2PNet.Peers.PeerChannel_Base.html#P2PNet_Peers_PeerChannel_Base_HandleDataTransmissionPacket_System_String_">PeerChannel_Base.HandleDataTransmissionPacket(string)</a>
+      <a class="xref" href="P2PNet.Peers.PeerChannelBase.html#P2PNet_Peers_PeerChannelBase_TerminatePacketHandler">PeerChannelBase.TerminatePacketHandler()</a>
     </div>
     <div>
-      <a class="xref" href="P2PNet.Peers.PeerChannel_Base.html#P2PNet_Peers_PeerChannel_Base_HandlePureMessagePacket_System_String_">PeerChannel_Base.HandlePureMessagePacket(string)</a>
+      <a class="xref" href="P2PNet.Peers.PeerChannelBase.html#P2PNet_Peers_PeerChannelBase_TrustPeer">PeerChannelBase.TrustPeer()</a>
     </div>
     <div>
-      <a class="xref" href="P2PNet.Peers.PeerChannel_Base.html#P2PNet_Peers_PeerChannel_Base_ExtractWholeMessage_System_String_">PeerChannel_Base.ExtractWholeMessage(string)</a>
+      <a class="xref" href="P2PNet.Peers.PeerChannelBase.html#P2PNet_Peers_PeerChannelBase_UntrustPeer">PeerChannelBase.UntrustPeer()</a>
     </div>
     <div>
-      <a class="xref" href="P2PNet.Peers.PeerChannel_Base.html#P2PNet_Peers_PeerChannel_Base_IsValidMessageFormat_System_String_">PeerChannel_Base.IsValidMessageFormat(string)</a>
+      <a class="xref" href="P2PNet.Peers.PeerChannelBase.html#P2PNet_Peers_PeerChannelBase_StartPacketHandling">PeerChannelBase.StartPacketHandling()</a>
+    </div>
+    <div>
+      <a class="xref" href="P2PNet.Peers.PeerChannelBase.html#P2PNet_Peers_PeerChannelBase_PacketHandler_System_Threading_CancellationToken_">PeerChannelBase.PacketHandler(CancellationToken)</a>
+    </div>
+    <div>
+      <a class="xref" href="P2PNet.Peers.PeerChannelBase.html#P2PNet_Peers_PeerChannelBase_HandleIdentityPacket_System_String_">PeerChannelBase.HandleIdentityPacket(string)</a>
+    </div>
+    <div>
+      <a class="xref" href="P2PNet.Peers.PeerChannelBase.html#P2PNet_Peers_PeerChannelBase_HandleDisconnectPacket_System_String_">PeerChannelBase.HandleDisconnectPacket(string)</a>
+    </div>
+    <div>
+      <a class="xref" href="P2PNet.Peers.PeerChannelBase.html#P2PNet_Peers_PeerChannelBase_HandlePeerGroupPacket_System_String_">PeerChannelBase.HandlePeerGroupPacket(string)</a>
+    </div>
+    <div>
+      <a class="xref" href="P2PNet.Peers.PeerChannelBase.html#P2PNet_Peers_PeerChannelBase_HandleDataTransmissionPacket_System_String_">PeerChannelBase.HandleDataTransmissionPacket(string)</a>
+    </div>
+    <div>
+      <a class="xref" href="P2PNet.Peers.PeerChannelBase.html#P2PNet_Peers_PeerChannelBase_HandlePureMessagePacket_System_String_">PeerChannelBase.HandlePureMessagePacket(string)</a>
+    </div>
+    <div>
+      <a class="xref" href="P2PNet.Peers.PeerChannelBase.html#P2PNet_Peers_PeerChannelBase_ExtractWholeMessage_System_String_">PeerChannelBase.ExtractWholeMessage(string)</a>
+    </div>
+    <div>
+      <a class="xref" href="P2PNet.Peers.PeerChannelBase.html#P2PNet_Peers_PeerChannelBase_IsValidMessageFormat_System_String_">PeerChannelBase.IsValidMessageFormat(string)</a>
     </div>
     <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
@@ -224,7 +248,7 @@ Class PeerChannel  <a class="header-action link-secondary" title="View source" h
 
   <h3 id="P2PNet_Peers_PeerChannel__ctor_P2PNet_Peers_IPeer_" data-uid="P2PNet.Peers.PeerChannel.#ctor(P2PNet.Peers.IPeer)">
   PeerChannel(IPeer)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/docs/P2PNet/Peers/PeerChannel.cs/#L43"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/docs/P2PNet/Peers/PeerChannel.cs/#L38"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="P2PNet.Peers.PeerChannel.html">PeerChannel</a> class with the specified peer.</p>
@@ -255,39 +279,6 @@ Class PeerChannel  <a class="header-action link-secondary" title="View source" h
 
   <h2 class="section" id="properties">Properties
 </h2>
-
-
-  <a id="P2PNet_Peers_PeerChannel_GOODPINGS_" data-uid="P2PNet.Peers.PeerChannel.GOODPINGS*"></a>
-
-  <h3 id="P2PNet_Peers_PeerChannel_GOODPINGS" data-uid="P2PNet.Peers.PeerChannel.GOODPINGS">
-  GOODPINGS
-  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/docs/P2PNet/Peers/PeerChannel.cs/#L36"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Gets the number of good pings received from the peer.
-This value is incremented each time a ping is received from the peer,</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int GOODPINGS { get; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
 
 
   <a id="P2PNet_Peers_PeerChannel_LastIncomingDataReceived_" data-uid="P2PNet.Peers.PeerChannel.LastIncomingDataReceived*"></a>
@@ -362,7 +353,7 @@ This value is incremented each time a ping is received from the peer,</p>
 
   <h3 id="P2PNet_Peers_PeerChannel_ClosePeerChannel" data-uid="P2PNet.Peers.PeerChannel.ClosePeerChannel">
   ClosePeerChannel()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/docs/P2PNet/Peers/PeerChannel.cs/#L76"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/docs/P2PNet/Peers/PeerChannel.cs/#L71"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Closes the communication channel with the peer and terminates all associated tasks.</p>
@@ -385,37 +376,11 @@ This value is incremented each time a ping is received from the peer,</p>
 
 
 
-  <a id="P2PNet_Peers_PeerChannel_CreatePing_" data-uid="P2PNet.Peers.PeerChannel.CreatePing*"></a>
-
-  <h3 id="P2PNet_Peers_PeerChannel_CreatePing" data-uid="P2PNet.Peers.PeerChannel.CreatePing">
-  CreatePing()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/docs/P2PNet/Peers/PeerChannel.cs/#L88"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected void CreatePing()</code></pre>
-  </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
   <a id="P2PNet_Peers_PeerChannel_OpenPeerChannel_" data-uid="P2PNet.Peers.PeerChannel.OpenPeerChannel*"></a>
 
   <h3 id="P2PNet_Peers_PeerChannel_OpenPeerChannel" data-uid="P2PNet.Peers.PeerChannel.OpenPeerChannel">
   OpenPeerChannel()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/docs/P2PNet/Peers/PeerChannel.cs/#L51"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/docs/P2PNet/Peers/PeerChannel.cs/#L46"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Opens the communication channel with the peer and starts handling incoming and outgoing data.</p>
@@ -442,7 +407,7 @@ This value is incremented each time a ping is received from the peer,</p>
 
   <h3 id="P2PNet_Peers_PeerChannel_ReadIncoming_System_Threading_CancellationToken_" data-uid="P2PNet.Peers.PeerChannel.ReadIncoming(System.Threading.CancellationToken)">
   ReadIncoming(CancellationToken)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/docs/P2PNet/Peers/PeerChannel.cs/#L167"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/docs/P2PNet/Peers/PeerChannel.cs/#L149"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The default task for reading incoming network stream data.</p>
@@ -475,7 +440,7 @@ This value is incremented each time a ping is received from the peer,</p>
 
   <h3 id="P2PNet_Peers_PeerChannel_SendOutgoing_System_Threading_CancellationToken_" data-uid="P2PNet.Peers.PeerChannel.SendOutgoing(System.Threading.CancellationToken)">
   SendOutgoing(CancellationToken)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/docs/P2PNet/Peers/PeerChannel.cs/#L105"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/docs/P2PNet/Peers/PeerChannel.cs/#L87"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The default task for sending outgoing data and information to the network stream.</p>

@@ -1174,6 +1174,48 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.Peers.PeerChannelBase.DataReceivedEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.Peers.PeerChannelBase.DataReceivedEventArgs.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.Peers.PeerChannelBase.DataReceivedEventArgs",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.Peers.PeerChannelBase.DataReceivedEventHandler.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.Peers.PeerChannelBase.DataReceivedEventHandler.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.Peers.PeerChannelBase.DataReceivedEventHandler",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.Peers.PeerChannelBase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.Peers.PeerChannelBase.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.Peers.PeerChannelBase",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/P2PNet.Peers.PeerChannel_Base.DataReceivedEventArgs.yml",
       "output": {
         ".html": {
