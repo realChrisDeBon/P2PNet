@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace P2PNet.Distribution
     {
     /// <summary>
-    /// The DistributionProtocol provides uniformity with data exchange, packet formatting, and other functions within the peer-to-peer network.
+    /// The DistributionProtocol provides uniformity with data exchange, packet formatting, and other functions within the P2P network.
     /// This should be included as a static reference.
     /// </summary>
     public static class DistributionProtocol
@@ -207,9 +207,8 @@ namespace P2PNet.Distribution
         #endregion
         }
 
-    /// <summary>
-    /// This region keeps the packet objects and classes AOT compliant for JSON serialization.
-    /// </summary>
+
+    // This region keeps the packet objects and classes AOT compliant for JSON serialization.
     #region PACKET_CONTEXT
         [JsonSerializable(typeof(PureMessagePacket))]
         public partial class PureMessagePacketContext : JsonSerializerContext { }

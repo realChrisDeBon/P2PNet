@@ -770,8 +770,8 @@ namespace P2PNet
 
             /// <summary>
             /// Gets or sets whether incoming peer connections will be trusted to establish initial communication by default.
-            /// This is the initial 'ping' pure message packet sent back and forth to ensure connection communicability.
             /// </summary>
+            /// <remarks>This determines communicability of <see cref="PureMessagePacket"/> and <see cref="DisconnectPacket"/> through the PeerChannel.</remarks>
             public static bool AllowDefaultCommunication
                 {
                 get => _allowDefaultCommunication;
