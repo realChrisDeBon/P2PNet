@@ -47,6 +47,11 @@ namespace P2PNet.Distribution
             PureMessage,
             BADPACKET
             }
+        /// <summary>
+        /// Wraps the packet data with the appropriate tags for transmission through the network. This helps the receiving peer identify the packet type and data.
+        /// </summary>
+        /// <param name="packetType">The type of packet being readied for transmissiion through the network.</param>
+        /// <param name="data">This should be the JSON serialized string of the packet before transmission.</param>
         public static void WrapPacket(PacketType packetType, ref string data)
             {
             string header = PacketTagMap[packetType].OpeningTag;
@@ -60,16 +65,19 @@ namespace P2PNet.Distribution
             {
             File,
             Task,
+            MiscData
             }
         public readonly static Dictionary<DataPayloadFormat, MessageTags> DataFormatTagMap = new Dictionary<DataPayloadFormat, MessageTags>()
             {
                 { DataPayloadFormat.File, new MessageTags() { OpeningTag = "<File>", ClosingTag = "</File>" } },
                 { DataPayloadFormat.Task, new MessageTags() { OpeningTag = "<Task>", ClosingTag = "</Task>" } },
+                { DataPayloadFormat.MiscData, new MessageTags() { OpeningTag = "<MiscData>", ClosingTag = "</MiscData>" } }
             };
 
         /// <summary>
-        /// Removes the <see cref="DataFormatTagMap"/> tags that are placed in the byte[] payload of the <see cref="DataTransmissionPacket"/>.
+        /// Removes the <see cref="DistributionProtocol.DataFormatTagMap"/> tags that are placed in the byte[] payload of the <see cref="DataTransmissionPacket"/>.
         /// These tags are automatically placed upon instantiation in the constructor to help identify and handle the payload throughout its lifecycle.
+        /// It is necessary to unwrap the data before processing it, which should be primarily done in the <see cref="DistributionHandler"/>
         /// </summary>
         /// <param name="packet">The packet whose payloads needs extracting</param>
         /// <returns>The payload of the packet with the opening and closing data format tags removed (ie the raw data).</returns>

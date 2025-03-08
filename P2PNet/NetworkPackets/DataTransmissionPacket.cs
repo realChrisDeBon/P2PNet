@@ -12,7 +12,7 @@ namespace P2PNet.NetworkPackets
     /// <summary>
     /// Represents a data transmission packet used for transmitting data throughout the peer-to-peer network.
     /// </summary>
-    /// <remarks>This packet can be used to transmit <see cref="NetworkTask"/> and files throughout the network.</remarks>
+    /// <remarks>This packet can be used to transmit files, data, and <see cref="NetworkTask"/> objects throughout the network.</remarks>
     public sealed class DataTransmissionPacket : INetworkPacket
         {
         /// <summary>
@@ -22,6 +22,18 @@ namespace P2PNet.NetworkPackets
 
         /// <summary>
         /// Gets or sets the format of the data.
+        /// Acceptable data formats include:
+        /// <list type="bullet">
+        /// <item>
+        /// <description>File - represents an in-memory file</description>
+        /// </item>
+        /// <item>
+        /// <description>Task - represents a <see cref="NetworkTask"/></description>
+        /// </item>
+        /// <item>
+        /// <description>MiscData - represents any other type of object or class</description>
+        /// </item>
+        /// </list>
         /// </summary>
         public DataPayloadFormat DataType { get; set; }
 

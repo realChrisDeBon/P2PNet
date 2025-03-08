@@ -45,42 +45,28 @@ namespace P2PNet.Routines.Implementations
                 try
                 {
                     List<PeerChannel> peersToRemove = new List<PeerChannel>();
-                    List<PeerChannel> peersToTrust = new List<PeerChannel>();
 
-                    foreach (PeerChannel channel in PeerNetwork.ActivePeerChannels)
-                    {
-                        if (DateTime.Now - channel.LastIncomingDataReceived > TimeSpan.FromMinutes(60000)) // No activity for 60 seconds ~ subject to change
-                        {
-                            peersToRemove.Add(channel);
-                        }
-                        if (channel.GOODPINGS > 2)
-                        {
-                            peersToTrust.Add(channel);
-                        }
-                    }
+                    // LINQ statement to find channels to remove based on blocked identifiers or IPs
+                    peersToRemove = PeerNetwork.ActivePeerChannels
+                        .Where(channel =>
+                            PeerNetwork.IncomingPeerTrustPolicy.BlockedIdentifiers.Contains(channel.peer.Identifier) ||
+                            PeerNetwork.IncomingPeerTrustPolicy.BlockedIPs.Contains(channel.peer.IP))
+                        .ToList();
 
-                    // Remove inactive PeerChannels from ActivePeerChannels
-                    foreach (PeerChannel channel in peersToRemove)
+                    // check for inactivity
+                    peersToRemove.AddRange(PeerNetwork.ActivePeerChannels
+                        .Where(channel => DateTime.Now - channel.LastIncomingDataReceived > TimeSpan.FromMinutes(60))
+                        .ToList());
+
+                    // remove inactive or blocked PeerChannels from ActivePeerChannels
+                    foreach (PeerChannel channel in peersToRemove.Distinct())
                     {
                         bool success = await PeerNetwork.RemovePeer(channel);
-                        if (success == true)
+                        if (success)
                         {
-
-                            DebugMessage($"Removed peer for inactivity: {channel.peer.IP.ToString()} port {channel.peer.Port}", ConsoleColor.DarkCyan);
-
+                            DebugMessage($"Removed peer for inactivity or being blocked: {channel.peer.IP} port {channel.peer.Port}", ConsoleColor.DarkCyan);
                             channel.ClosePeerChannel();
                         }
-                    }
-                    foreach (PeerChannel channel in peersToTrust)
-                    {
-                        bool success = await PeerNetwork.ElevatePeerPermission(channel);
-                        if (success == true)
-                        {
-                            channel.TrustPeer();
-                        }
-
-                        DebugMessage($"Trusting peer: {channel.peer.IP.ToString()} port {channel.peer.Port}", ConsoleColor.Cyan);
-
                     }
                 }
                 catch (Exception ex)

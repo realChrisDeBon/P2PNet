@@ -16,7 +16,7 @@ namespace P2PNet.Peers
     /// <summary>
     /// Represents a communication channel with a peer in the P2P network.
     /// </summary>
-    public class PeerChannel : PeerChannel_Base
+    public class PeerChannel : PeerChannelBase
         {
         /// <summary>
         /// Gets the DateTime value of when the last piece of data or information was received from this peer.
@@ -29,11 +29,6 @@ namespace P2PNet.Peers
         public IPeer peer { get; set; }
 
         private int RETRIES = 0; // for retrying connections
-        /// <summary>
-        /// Gets the number of good pings received from the peer.
-        /// This value is incremented each time a ping is received from the peer, 
-        /// </summary>
-        public int GOODPINGS { get; internal set; } = 0; // readonly
         private const int MAX_RETRIES = 3;
 
         /// <summary>
@@ -64,10 +59,10 @@ namespace P2PNet.Peers
             receiveTask = Task.Run(() => ReadIncoming(cancelReceiver.Token));
             sendTask = Task.Run(() => SendOutgoing(cancelSender.Token));
 
-            if (IncomingPeerTrustPolicy.AllowDefaultCommunication == true)
+            if (IncomingPeerTrustPolicy.RunDefaultTrustProtocol == true)
                 {
-                Task.Run(() => CreatePing());
-                }
+                Task.Run(() => IncomingPeerTrustPolicy.DefaultTrustProtocol(this));
+            }
             }
 
         /// <summary>
@@ -82,19 +77,6 @@ namespace P2PNet.Peers
 
                 BreakAndRemovePeer();
 
-                }
-            }
-
-        protected async void CreatePing()
-            {
-            while(IsTrustedPeer == false)
-                {
-                PureMessagePacket pingMessage = new PureMessagePacket();
-                pingMessage.Message = $"Ping from {PublicIPV4Address.ToString()}";
-                string outgoing = Serialize<PureMessagePacket>(pingMessage);
-                WrapPacket(PacketType.PureMessage, ref outgoing);
-                OutgoingDataQueue.Enqueue(outgoing);
-                Thread.Sleep(3000);
                 }
             }
 

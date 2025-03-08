@@ -1,5 +1,6 @@
 ﻿using P2PNet.Distribution;
 using P2PNet.Distribution.P2PNet.Distribution;
+using P2PNet.NetworkPackets;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ using static P2PNet.PeerNetwork;
 
 namespace P2PNet.Peers
     {
-    public abstract class PeerChannel_Base
+    public abstract class PeerChannelBase
         {
         internal readonly static Dictionary<int, string> ErrorCodeDescriptions = new Dictionary<int, string>()
         {
@@ -32,6 +33,37 @@ namespace P2PNet.Peers
         protected ConcurrentQueue<string> OutgoingDataQueue = new ConcurrentQueue<string>();
         protected ConcurrentQueue<PacketTypeRelay> packetQueue = new ConcurrentQueue<PacketTypeRelay>();
 
+        protected Dictionary<string, Type> CustomData = new Dictionary<string, Type>();
+        /// <summary>
+        /// Adds custom properties or data to the peer channel. This is to help with custom needs associated with the peer channel.
+        /// </summary>
+        public void AddProperties(string key, Type type)
+        {
+            try
+            {
+                CustomData.Add(key, type);
+            }
+            catch(Exception e)
+            {
+                DebugMessage(e.ToString(), MessageType.Critical);
+            }
+        }
+        /// <summary>
+        /// Attempts to retrieve a custom property or data from the peer channel.
+        /// </summary>
+        /// <returns>The target value stored in the peer channel.</returns>
+        public Type TryGetProperty(string key)
+        {
+            if (CustomData.ContainsKey(key))
+            {
+                return CustomData[key];
+            }
+            else
+            {
+                return null; // or throw an exception, depending on your error handling preference
+            }
+        }
+
         /// <summary>
         /// Add the outgoing information to the broadcast queue.
         /// </summary>
@@ -40,6 +72,30 @@ namespace P2PNet.Peers
             {
             OutgoingDataQueue.Enqueue(outgoing);
             }
+        public virtual void LoadOutgoingData(DataTransmissionPacket dataTransmissionPacket)
+        {
+            string outgoing = Serialize<DataTransmissionPacket>(dataTransmissionPacket);
+            WrapPacket(PacketType.DataTransmissionPacket, ref outgoing);
+            OutgoingDataQueue.Enqueue(outgoing);
+        }
+        public virtual void LoadOutgoingData(PureMessagePacket pureMessagePacket)
+        {
+            string outgoing = Serialize<PureMessagePacket>(pureMessagePacket);
+            WrapPacket(PacketType.PureMessage, ref outgoing);
+            OutgoingDataQueue.Enqueue(outgoing);
+        }
+        public virtual void LoadOutgoingData(CollectionSharePacket peerColPacket)
+        {
+            string outgoing = Serialize<CollectionSharePacket>(peerColPacket);
+            WrapPacket(PacketType.PeerGroupPacket, ref outgoing);
+            OutgoingDataQueue.Enqueue(outgoing);
+        }
+        public virtual void LoadOutgoingData(DisconnectPacket disconnectPacket)
+        {
+            string outgoing = Serialize<DisconnectPacket>(disconnectPacket);
+            WrapPacket(PacketType.DisconnectPacket, ref outgoing);
+            OutgoingDataQueue.Enqueue(outgoing);
+        }
 
         internal Task sendTask;
         internal CancellationTokenSource cancelSender;
@@ -47,7 +103,7 @@ namespace P2PNet.Peers
         internal Task receiveTask;
         internal CancellationTokenSource cancelReceiver;
         internal readonly object receiveLock = new object();
-            private EventHandler<DataReceivedEventArgs> _dataReceived;
+        private EventHandler<DataReceivedEventArgs> _dataReceived;
 
         /// <summary>
         /// Occurs when a peer channel receives incoming data or information.
@@ -99,7 +155,8 @@ namespace P2PNet.Peers
         internal CancellationTokenSource cancelPacketHandler;
         internal readonly object sendLock = new object();
 
-        protected bool IsTrustedPeer { get; set; } = false;
+        protected bool _isTrustedPeer { get; set; } = false;
+        public bool IsTrustedPeer { get { return _isTrustedPeer; } }
 
         virtual protected void TerminateChannel()
             {
@@ -117,6 +174,7 @@ namespace P2PNet.Peers
         /// <summary>
         /// Terminates the sender task.
         /// </summary>
+        /// <remarks>Peer channel will cease broadcasting outbound data packets.</remarks>
         virtual public void TerminateCurrentSender()
             {
             cancelSender.Cancel();
@@ -124,6 +182,7 @@ namespace P2PNet.Peers
         /// <summary>
         /// Terminates the receiver task.
         /// </summary>
+        /// <remarks>Peer channel will cease processing inbound data packets.</remarks>
         virtual public void TerminateCurrentReceiver()
             {
             cancelReceiver.Cancel();
@@ -140,14 +199,14 @@ namespace P2PNet.Peers
         /// </summary>
         virtual public void TrustPeer()
             {
-            IsTrustedPeer = true;
+            _isTrustedPeer = true;
             }
         /// <summary>
         /// Demote trust level of peer.
         /// </summary>
         virtual public void UntrustPeer()
             {
-            IsTrustedPeer = false;
+            _isTrustedPeer = false;
             }
 
         protected void StartPacketHandling()
@@ -194,29 +253,38 @@ namespace P2PNet.Peers
         #region Packet Handling
         protected virtual void HandleIdentityPacket(string data)
         {
-            PacketHandleProtocol.HandleIdentityPacketAction?.Invoke(data);
+            if (_isTrustedPeer || IncomingPeerTrustPolicy.AllowEnhancedPacketExchange)
+            {
+                PacketHandleProtocol.HandleIdentityPacketAction?.Invoke(data);
+            } // enhanced packet exchange defines behavior with impact
         }
         protected virtual void HandleDisconnectPacket(string data)
         {
-            PacketHandleProtocol.HandleDisconnectPacketAction?.Invoke(data);
+            if (_isTrustedPeer || IncomingPeerTrustPolicy.AllowDefaultCommunication == true)
+            {
+                PacketHandleProtocol.HandleDisconnectPacketAction?.Invoke(data);
+            } // default communication defines relay of info with little to impact
         }
         protected virtual void HandlePeerGroupPacket(string data)
         {
-            if (IsTrustedPeer || IncomingPeerTrustPolicy.AllowEnhancedPacketExchange)
+            if (_isTrustedPeer || IncomingPeerTrustPolicy.AllowEnhancedPacketExchange)
             {
                 PacketHandleProtocol.HandlePeerGroupPacketAction?.Invoke(data);
-            }
+            } // enhanced packet exchange defines behavior with impact
         }
         protected virtual void HandleDataTransmissionPacket(string data)
         {
-            if (IsTrustedPeer || IncomingPeerTrustPolicy.AllowEnhancedPacketExchange)
+            if (_isTrustedPeer || IncomingPeerTrustPolicy.AllowEnhancedPacketExchange)
             {
                 PacketHandleProtocol.HandleDataTransmissionPacketAction?.Invoke(data);
-            }
+            } // enhanced packet exchange defines behavior with impact
         }
         protected virtual void HandlePureMessagePacket(string data)
         {
-            PacketHandleProtocol.HandlePureMessagePacketAction?.Invoke(data);
+            if (_isTrustedPeer || IncomingPeerTrustPolicy.AllowDefaultCommunication == true)
+            {
+                PacketHandleProtocol.HandlePureMessagePacketAction?.Invoke(data);
+            } // default communication defines relay of info with little to impact
         }
         #endregion
 
