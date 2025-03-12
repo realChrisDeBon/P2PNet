@@ -42,6 +42,7 @@ namespace P2PBootstrap
             AppSettings = config.Build();
 
             var builder = WebApplication.CreateBuilder(args);
+            builder.Logging.AddFilter("Microsoft", LogLevel.None);
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -61,18 +62,11 @@ namespace P2PBootstrap
                 Directory.CreateDirectory(DBdirectory);
             }
 
-            app.UseStaticFiles(new StaticFileOptions
-            {
-                FileProvider = new PhysicalFileProvider(DBdirectory),
-                RequestPath = "/localdb",
-                ServeUnknownFileTypes = true,
-                DefaultContentType = "application/octet-stream"
-            });
-
             app.UseRouting();
 
             if(GlobalConfig.TrustPolicy == BootstrapTrustPolicyType.Trustless)
             {
+                DebugMessage("Serving /api/Bootstrap/peers as trustless GET", MessageType.General);
                 // Endpoint to Get Peers
                 app.MapGet("/api/Bootstrap/peers", () =>
                 {
@@ -82,6 +76,7 @@ namespace P2PBootstrap
             }
             else
             {
+                DebugMessage("Serving /api/Bootstrap/peers as trusted PUT", MessageType.General);
                 // Endpoint to Get Peers -- returns 
                 app.MapPut("/api/Bootstrap/peers", () =>
                 {

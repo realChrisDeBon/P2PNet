@@ -6,7 +6,7 @@ namespace P2PBootstrap
     public static class GlobalConfig
     {
         public static IConfiguration AppSettings;
-        public static BootstrapTrustPolicyType TrustPolicy = BootstrapTrustPolicyType.Trustless;
+        public static BootstrapTrustPolicyType TrustPolicy = BootstrapTrustPolicyType.Authority;
         public const string ConfigFile = "appsettings.json";
         public static KeyPair ActiveKeys { get; set; } = new KeyPair();
 
@@ -16,8 +16,8 @@ namespace P2PBootstrap
         public static void SetTargetKeys()
         {
             string keysDirectory = AppSettings["Configuration:KeysDirectory"];
-            string publicKeyPath = Path.Combine(keysDirectory, AppSettings["Configuration:AuthorityKey:PublicKey"]);
-            string privateKeyPath = Path.Combine(keysDirectory, AppSettings["Configuration:AuthorityKey:PrivateKey"]);
+            string publicKeyPath = Path.Combine(AppContext.BaseDirectory, keysDirectory, AppSettings["Configuration:AuthorityKey:PublicKey"]);
+            string privateKeyPath = Path.Combine(AppContext.BaseDirectory, keysDirectory, AppSettings["Configuration:AuthorityKey:PrivateKey"]);
 
             if (File.Exists(publicKeyPath) && File.Exists(privateKeyPath))
             {
