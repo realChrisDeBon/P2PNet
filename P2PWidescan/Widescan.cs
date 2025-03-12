@@ -51,8 +51,6 @@ namespace P2PNet.Widescan
         private static List<string> addressPrefixes = new List<string>();
         private static int currentAddress = 0; // used to track which address prefix we're currently on
 
-        internal static Thread ICMPinterceptor = new Thread(() => { });
-
         internal static Thread worker = new Thread(() => { });
         internal static Thread reader = new Thread(() => { });
         internal static Thread broadcaster = new Thread(() => { });
@@ -92,7 +90,6 @@ namespace P2PNet.Widescan
                 }
             }";
         private static CancellationTokenSource cancelAddressGeneration = new CancellationTokenSource();
-        private static CancellationTokenSource cancelICMPListener = new CancellationTokenSource();
 
         ///<summary>
         /// Gets or sets the maximum memory allowed for the application to use.
@@ -271,7 +268,7 @@ namespace P2PNet.Widescan
         /// </summary>
         public static async void StartWidescan()
         {
-            ICMPinterceptor = new Thread(() => PacketIntercept.StartCapturing(cancelICMPListener.Token));
+            Thread packetcapture = new Thread(() => PacketIntercept.StartCapturing(cancelAddressGeneration.Token));
 
             // Determine which hard task to run. If memory limit is on, then use the override that
             // accepts a bool value (this one will automatically throttle).
@@ -330,17 +327,12 @@ namespace P2PNet.Widescan
 
                     break;
             }
-            
-            if(ICMPinterceptor.ThreadState == System.Threading.ThreadState.Unstarted)
-            {
-                ICMPinterceptor.Start();
-            } 
-
+            packetcapture.Start();
             worker.Start();
             reader.Start();
             broadcaster.Start();
 
-            ICMPinterceptor.Join();
+            packetcapture.Join();
             worker.Join();
             reader.Join();
             broadcaster.Join();
@@ -348,33 +340,11 @@ namespace P2PNet.Widescan
         }
 
         /// <summary>
-        /// Stops the widescan broadcasting.
+        /// Stops the widescanning.
         /// </summary>
         public static async void StopWidescan()
         {
             cancelAddressGeneration.Cancel();
-            cancelICMPListener.Cancel();
-        }
-
-        /// <summary>
-        /// Starts the ICMP listener independent of the widescan broadcasting.
-        /// </summary>
-        /// <remarks>
-        /// Use this method to start the ICMP listener without starting the widescan.
-        /// Client applications can use this method to listen for incoming ICMP packets, rendering them receptive to widescan broadcasts.
-        /// </remarks>
-        public static async void StartICMPListener()
-        {
-            ICMPinterceptor = new Thread(() => PacketIntercept.StartCapturing(cancelICMPListener.Token));
-            ICMPinterceptor.Start();
-        }
-
-        /// <summary>
-        /// Stops the ICMP listener.
-        /// </summary>
-        public static async void StopICMPListener()
-        {
-            cancelICMPListener.Cancel();
         }
 
         static void ReadAddressesFromPipe(CancellationToken cancellationToken)
@@ -776,17 +746,7 @@ namespace P2PNet.Widescan
 
                 while (true)
                 {
-                    Thread.Sleep(100);
-                    if (cancellationToken.IsCancellationRequested)
-                    {
-                        foreach (var device in devices)
-                        {
-                            device.StopCapture();
-                            device.Close();
-                        }
-
-                        break;
-                    }
+                    Thread.Sleep(10);
                 }
             }
 

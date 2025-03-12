@@ -19,7 +19,7 @@ namespace P2PNet.Peers
         }
     }
 
-    public class InboundConnectingPeersQueue
+    internal class InboundConnectingPeersQueue
     {
         private volatile ConcurrentQueue<GenericPeer> _queue = new ConcurrentQueue<GenericPeer>();
         
