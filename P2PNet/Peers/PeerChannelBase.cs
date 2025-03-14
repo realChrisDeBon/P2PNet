@@ -136,7 +136,7 @@ namespace P2PNet.Peers
                     _dataReceived -= value;
                     }
                 }
-            protected virtual void OnDataReceived(string data)
+        protected virtual void OnDataReceived(string data)
                 {
                 _dataReceived?.Invoke(this, new DataReceivedEventArgs(data));
                 }

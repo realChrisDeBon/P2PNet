@@ -23,9 +23,9 @@ namespace P2PNet.DicoveryChannels
 
         private const double MIN_INTERVAL = 20000;  // 20 seconds
         private const double MAX_INTERVAL = 1000;    // 1 second
-        private const double WAVE_DURATION = 4 * 60 * 1000; // 4 minutes
+        private const double WAVE_DURATION = 2 * 60 * 1000; // 4 minutes
 
-        internal static double currentInterval = MAX_INTERVAL;
+        internal static double currentInterval = 2000;
 
         static BroadcastRateControl()
             {
@@ -60,7 +60,7 @@ namespace P2PNet.DicoveryChannels
 
         public static Queue<int> dutypackets = new Queue<int>();
         internal static Random randomizer = new Random();
-        public readonly IdentifierPacket packet_ = new IdentifierPacket("IP", ListeningPort, PublicIPV4Address);
+        public readonly IdentifierPacket packet_ = new IdentifierPacket("discovery", ListeningPort, PeerNetwork.PublicIPV4Address);
         public static CollectionSharePacket collectionpacket_;
 
         public static IPEndPoint listenerendpoint;
@@ -83,15 +83,14 @@ namespace P2PNet.DicoveryChannels
 
             }
 
-        internal void HandlePacket(string packet)
+        public void HandlePacket(string packet)
             {
             var identifierPacket = Deserialize<IdentifierPacket>(packet);
             var collectionPacket = Deserialize<CollectionSharePacket>(packet);
-
             if (identifierPacket != null)
                 {
 
-                DebugMessage($"Packet received: {identifierPacket.Message} from {identifierPacket.IP}" + Environment.NewLine + $"\t\t\tSecret Port: {identifierPacket.Data}");
+                DebugMessage($"Identifier packet received: {identifierPacket.Data} from {identifierPacket.IP}" + Environment.NewLine + $"\t\t\tSecret Port: {identifierPacket.Data}");
 
                 IPeer newPeer = new GenericPeer(IPAddress.Parse(identifierPacket.IP), identifierPacket.Data);
                 PeerNetwork.AddPeer(newPeer);
@@ -119,14 +118,16 @@ namespace P2PNet.DicoveryChannels
         public int CreateTimeVariation(int min, int max) { return randomizer.Next(min, max); }
         private string packet_serialized()
             {
-            return System.Text.Json.JsonSerializer.Serialize(packet_, typeof(IdentifierPacket), new IdentifierPacketContext());
+            string ps_ = Serialize<IdentifierPacket>(packet_);
+            return ps_;
+            //return System.Text.Json.JsonSerializer.Serialize(packet_, typeof(IdentifierPacket), new IdentifierPacketContext());
             }
         public byte[] UniqueIdentifier() { string temp_ = packet_serialized(); return Encoding.UTF8.GetBytes(temp_); }
 
         private string colpacket_serialized()
             {
-            string c_ = System.Text.Json.JsonSerializer.Serialize(collectionpacket_);
-            return System.Text.Json.JsonSerializer.Serialize(collectionpacket_, typeof(CollectionSharePacket), new CollectionSharePacketContext());
+            string colp_ = Serialize<IdentifierPacket>(packet_);
+            return colp_;
             }
         public byte[] CollectionShare() { string temp_ = colpacket_serialized(); return Encoding.UTF8.GetBytes(temp_); }
 

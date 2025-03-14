@@ -172,7 +172,7 @@ namespace P2PNet.Distribution
                 throw new ArgumentException($"No serializer context found for type {typeof(T)}");
             }
 
-            return JsonSerializer.Serialize(obj, (JsonTypeInfo<T>)context);
+            return System.Text.Json.JsonSerializer.Serialize(obj, (JsonTypeInfo<T>)context);
         }
 
         /// <summary>
