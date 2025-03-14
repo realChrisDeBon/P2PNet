@@ -369,3 +369,6 @@ FodyWeavers.xsd
 /api
 /_site/favicon.ico
 /_site/logo.svg
+/ExampleApplication
+/docker-compose.yml
+/P2PNet.sln
