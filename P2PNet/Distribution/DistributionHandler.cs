@@ -22,7 +22,7 @@ namespace P2PNet.Distribution
         /// <summary>
         /// Gets the list of trusted peer channels.
         /// </summary>
-        static List<PeerChannel> TrustedPeerChannels
+        static List<PeerChannel> _trustedPeerChannels
         {
             get { return PeerNetwork.ActivePeerChannels.Where(pc => pc.IsTrustedPeer).ToList(); }
         }
@@ -165,7 +165,7 @@ namespace P2PNet.Distribution
             {
             string outdata = Serialize<DataTransmissionPacket>(outgoingpacket);
             WrapPacket(PacketType.DataTransmissionPacket, ref outdata);
-            foreach (var peer in TrustedPeerChannels)
+            foreach (var peer in _trustedPeerChannels)
                 {
                 peer.LoadOutgoingData(outdata);
                 }

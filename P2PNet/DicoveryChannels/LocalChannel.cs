@@ -45,7 +45,7 @@ namespace P2PNet.DiscoveryChannels
                     broadcaster.Send(message, message.Length, broadcastEndPoint);
                     Thread.Sleep(500);
                     broadcaster.Send(message, message.Length, localEndPoint);
-                    DebugMessage($"Local channel broadcast: {broadcastEndPoint.Address.ToString()} {localEndPoint.Address.ToString()}");
+            //        DebugMessage($"Local channel broadcast: {broadcastEndPoint.Address.ToString()} {localEndPoint.Address.ToString()}");
                     Thread.Sleep(BroadcastRateControl.GetCurrentInterval());
             }
         }
@@ -59,7 +59,7 @@ namespace P2PNet.DiscoveryChannels
             {
                 byte[] receivedData = listener.Receive(ref remoteEndPoint);
                 string packet = Encoding.UTF8.GetString(receivedData);
-                DebugMessage("Local channel - packet received!");
+            //    DebugMessage("Local channel - packet received!");
                 HandlePacket(packet);
             }
         }

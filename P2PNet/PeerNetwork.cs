@@ -134,6 +134,14 @@ namespace P2PNet
         private static volatile List<IPeer> activePeers_ = new List<IPeer>();
 
         /// <summary>
+        /// Gets the list of trusted peer channels within the <see cref="PeerNetwork.ActivePeerChannels"/>
+        /// </summary>
+        public static List<PeerChannel> TrustedPeerChannels
+        {
+            get { return ActivePeerChannels.Where(pc => pc.IsTrustedPeer).ToList(); }
+        }
+
+        /// <summary>
         /// Gets or sets the list of known peers.
         /// </summary>
         /// <remarks>
@@ -201,7 +209,7 @@ namespace P2PNet
         /// This allows for additional verification and handling of incoming peers before they are assigned a peer channel.
         /// For idle action, consider using <see cref="PeerNetwork.IncomingPeerTrustPolicy.IncomingPeerMode.EventBased"/> and ignoring the event to prevent excessive memory usage.
         /// </remarks>
-        private static InboundConnectingPeersQueue InboundConnectingPeers = new InboundConnectingPeersQueue();
+        public static InboundConnectingPeersQueue InboundConnectingPeers = new InboundConnectingPeersQueue();
 
         /// <summary>
         /// Occurs when a new incoming peer connection attempt is detected.
@@ -224,15 +232,6 @@ namespace P2PNet
         public static GenericPeer DequeueInboundPeer()
         {
             return InboundConnectingPeers.Dequeue();
-            // If it is EventBased queue will certainly be empty and unused. Otherwise there's a possible return.
-            if (IncomingPeerTrustPolicy.IncomingPeerPlacement != IncomingPeerTrustPolicy.IncomingPeerMode.EventBased)
-            {
-                return InboundConnectingPeers.Dequeue();
-            }
-
-            DebugMessage("Cannot dequeue if IncomingPeerPlacement is not QueueBased or QueueAndEventBased", MessageType.Warning);
-
-            return null;
         }
 
         /// <summary>
@@ -288,19 +287,20 @@ namespace P2PNet
                 // Check for existing peer
                 if (KnownPeers.Any(p => p.IP.Equals(peerIP)))
                 {
-                    DebugMessage("Duplicate connection attempt from existing peer. Ignoring.", MessageType.Warning);
+                //    DebugMessage("Duplicate connection attempt from existing peer. Ignoring.", MessageType.Warning);
                     client.Dispose();
                 }
                 else if (InboundConnectingPeers.PeerIsQueued(peerIP.ToString()))
                 {
-                    DebugMessage("Duplicate connection attempt from existing peer. Ignoring.", MessageType.Warning);
+                //    DebugMessage("Duplicate connection attempt from existing peer. Ignoring.", MessageType.Warning);
                 }
                 else
                 {
-                    // Set inbound as GenericPeer - intentional gap before AddPeer to implement additional verifications as needed
+                    // Set inbound as GenericPeer
                     GenericPeer newPeer = new GenericPeer(((IPEndPoint)client.Client.RemoteEndPoint).Address, ((IPEndPoint)client.Client.RemoteEndPoint).Port);
 
                     InboundConnectingPeers.Enqueue(newPeer);
+
                     Task.Run(() => AddPeer(newPeer, client));
                 }
             }
@@ -319,12 +319,12 @@ namespace P2PNet
             List<IPeer> peers = KnownPeers;
             if ((KnownPeers.Any(p => p.IP.Equals(peer.IP))) || (KnownPeers.Any(p => p.Identifier.Equals(peer.Identifier))))
             {
-                DebugMessage("Duplicate connection attempt from existing peer. Ignoring.", MessageType.Warning);
+            //    DebugMessage("Duplicate connection attempt from existing peer. Ignoring.", MessageType.Warning);
                 return;
             }
             else if (peer.IP.ToString() == PublicIPV4Address.ToString() && peer.Port == ListeningPort)
             {
-                DebugMessage("Listener broadcast to itself.");
+            //    DebugMessage("Listener broadcast to itself.");
                 return;
             }
             else
@@ -833,23 +833,22 @@ namespace P2PNet
 
                 EventHandler<PeerChannelBase.DataReceivedEventArgs> dataReceivedHandler = (sender, e) =>
                 {
+                    DebugMessage(e.Data.ToString(), ConsoleColor.Cyan);
                     if (e.Data.Contains("Ping from"))
                     {
                         successfulPings++;
                         if (successfulPings >= requiredPings)
                         {
                             peerChannel.TrustPeer();
+                            DebugMessage("Peer passed trust test.", ConsoleColor.Green);
                         }
                     }
                 };
 
                 peerChannel.DataReceived += dataReceivedHandler;
 
-                DebugMessage("Subscribed event handled.", ConsoleColor.Cyan);
-
                 while (peerChannel.IsTrustedPeer == false)
                 {
-                    DebugMessage("Entering loop.", ConsoleColor.Cyan);
                     PureMessagePacket pingMessage = new PureMessagePacket
                     {
                         Message = $"Ping from {PeerNetwork.PublicIPV4Address}"
