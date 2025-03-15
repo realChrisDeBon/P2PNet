@@ -369,6 +369,3 @@ FodyWeavers.xsd
 /api
 /_site/favicon.ico
 /_site/logo.svg
-/ExampleApplication
-/docker-compose.yml
-/LAN_Test.ps1
