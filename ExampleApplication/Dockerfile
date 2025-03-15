@@ -13,7 +13,7 @@ COPY . .
 WORKDIR "/app/ExampleApplication"
 
 # download WinPcap
-RUN powershell -Command Invoke-WebRequest -Uri https://github.com/realChrisDeBon/P2PNet/releases/download/dependency/winpcap-nmap-4.13.exe -OutFile winpcap-download.exe
+RUN powershell -Command Invoke-WebRequest -Uri https://github.com/P2PNetSuite/P2PNet/releases/download/dependency/winpcap-nmap-4.13.exe -OutFile winpcap-download.exe
 
 
 # install WinPcap
