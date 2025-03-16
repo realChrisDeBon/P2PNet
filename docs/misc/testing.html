@@ -84,11 +84,72 @@
           <nav id="breadcrumb"></nav>
         </div>
 
-        <article data-uid="peersinfo">
+        <article data-uid="testing">
 
 <h3 id="testing">Testing</h3>
 <hr>
-<p>todo</p>
+<p>This portion of documentation outlines different methods of testing, and different test types with varying levels of setup complexity.</p>
+<p><strong>LAN Tests</strong></p>
+<ul>
+<li><p>Quick LAN test - quickly setup a peer connection using the ExampleApplication container and a local instance started from Visual Studio</p>
+</li>
+<li><p>Multi-peer LAN test - runs a Powershell script which automates a Docker Compose setup to simulate 3 peers establishing connection over NAT</p>
+</li>
+</ul>
+<p><strong>WAN Tests</strong></p>
+<ul>
+<li><p>Bootstrap test - <em>in progress</em></p>
+</li>
+<li><p>Widescan test - <em>in progress</em></p>
+</li>
+</ul>
+<hr>
+<h3 id="quick-lan-test">Quick LAN test</h3>
+<ol>
+<li>In the ExampleApplication, startup the Docker container from Visual Studio.<p>
+     <img src="https://raw.githubusercontent.com/p2pnetsuite/P2PNet/refs/heads/master/misc/screenshots/quick_lan_test_1.png">
+ </p>
+</li>
+<li>Once the container have verifiably started, go ahead and stop the container (Ctrl + C or from Docker dashboard)<p>
+     <img src="https://raw.githubusercontent.com/p2pnetsuite/P2PNet/refs/heads/master/misc/screenshots/quick_lan_test_2.png">
+ </p>
+</li>
+<li>With the container still stopped, go ahead and run a regular instance of the ExampleApplication from Visual Studio (Ctrl + F5)<p>
+     <img src="https://raw.githubusercontent.com/p2pnetsuite/P2PNet/refs/heads/master/misc/screenshots/quick_lan_test_3.png">
+ </p>
+</li>
+<li>Ensure the regular instance of the ExampleApplication starts up. Leave this open.<p>
+     <img src="https://raw.githubusercontent.com/p2pnetsuite/P2PNet/refs/heads/master/misc/screenshots/quick_lan_test_4.png">
+ </p>
+</li>
+<li>With the regular instance running, go into your Docker dashboard and go to Containers. Proceed to startup the ExampleApplication container (simply click the Start button). Go to the Exec tab and you should see the Windows terminal open. Type <code>ExampleApplication.exe</code> then hit enter.<p>
+     <img src="https://raw.githubusercontent.com/p2pnetsuite/P2PNet/refs/heads/master/misc/screenshots/quick_lan_test_5.png">
+ </p>
+</li>
+<li>You should now be able to see the application start up in the Docker container. From this point, you have two instances of the ExampleApplication running which you should be able to observe side-by-side. Observe and see if the default trust protocol shows back and forth communication between the peers.<p>
+     <img src="https://raw.githubusercontent.com/p2pnetsuite/P2PNet/refs/heads/master/misc/screenshots/quick_lan_test_6.png">
+ </p>
+</li>
+</ol>
+<h3 id="multi-peer-lan-test">Multi-peer LAN test</h3>
+<ol>
+<li>Open the solution in Visual Studio. It is advised to Clean Solution and then to do a fresh Build Solution. Then, proceed to run the <code>LAN_Test.ps1</code> script that should be in the root directory<p>
+     <img src="https://raw.githubusercontent.com/p2pnetsuite/P2PNet/refs/heads/master/misc/screenshots/multipeer_lan_test_1.png">
+ </p>
+</li>
+<li>The Docker Compose build process may take a minute or two. This is normal.<p>
+     <img src="https://raw.githubusercontent.com/p2pnetsuite/P2PNet/refs/heads/master/misc/screenshots/multipeer_lan_test_2.png">
+ </p>
+</li>
+<li>The build process creates a new NAT network and 3 individual peer containers. This is automated through the Powershell script.<p>
+     <img src="https://raw.githubusercontent.com/p2pnetsuite/P2PNet/refs/heads/master/misc/screenshots/multipeer_lan_test_3.png">
+ </p>
+</li>
+<li>You should then be able to observe the multi-peer LAN test output within the Developer Powershell console in Visual Studio. It will typically look something like this:<p>
+     <img src="https://raw.githubusercontent.com/p2pnetsuite/P2PNet/refs/heads/master/misc/screenshots/multipeer_lan_test_4.png">
+ </p>
+</li>
+</ol>
 
 </article>
 

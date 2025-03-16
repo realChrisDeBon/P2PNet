@@ -6190,3 +6190,6 @@ references:
 - uid: peersinfo
   name: peersinfo
   href: misc/peers.html
+- uid: testing
+  name: testing
+  href: misc/testing.html
