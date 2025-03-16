@@ -15,6 +15,7 @@ namespace P2PNet.Distribution
         /// <summary>
         /// Provides protocol actions for handling different types of packets received by <see cref="Peers.PeerChannel"/> instances.
         /// </summary>
+        /// <remarks>When a <see cref="PeerChannel"/> receives an inbound packet, it will invoke the respective Action while passing the data to the delegate.</remarks>
         public static class PacketHandleProtocol
         {
             /// <summary>

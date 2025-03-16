@@ -61,8 +61,8 @@ namespace P2PNet.Peers
 
             if (IncomingPeerTrustPolicy.RunDefaultTrustProtocol == true)
                 {
-                Task.Run(() => IncomingPeerTrustPolicy.DefaultTrustProtocol(this));
-            }
+                IncomingPeerTrustPolicy.DefaultTrustProtocol.Invoke(this);
+                }
             }
 
         /// <summary>

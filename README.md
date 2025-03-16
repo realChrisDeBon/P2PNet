@@ -12,6 +12,10 @@ P2PNet facilitates peer-to-peer networking with an array of components for setti
 
 *Please note this repo is still under development. Many features are working as described, with the grander interoperability still being rolled out.*
 
+### Dependency
+
+The P2PNet library requires WinPcap installed on the target system. You can check the releases for a working version that interops with the library. For automation, CI/CD and distribution you are advised to read the license guidelines.
+
 ### Bootstrap Server Container
 
 Docker image for launching an instance of a bootstrap server.

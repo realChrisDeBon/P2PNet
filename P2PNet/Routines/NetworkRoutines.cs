@@ -15,14 +15,14 @@ namespace P2PNet.Routines
     /// </summary>
     /// <typeparam name="TKey">The type of the key.</typeparam>
     /// <typeparam name="TValue">The type of the value which must implement IRoutine.</typeparam>
-    public static class NetworkRoutines<TKey, TValue> where TValue : class, IRoutine
+    public sealed class NetworkRoutines<TKey, TValue> where TValue : class, IRoutine
     {
         private static Dictionary<TKey, TValue> _routines { get; set; } = new Dictionary<TKey, TValue>();
 
         /// <summary>
         /// Initializes the routines dictionary and adds default routines.
         /// </summary>
-        public static void InitializeRoutines()
+        public void InitializeRoutines()
         {
             _routines = new Dictionary<TKey, TValue>();
 
@@ -37,7 +37,7 @@ namespace P2PNet.Routines
         /// <param name="key">The key of the routine to add.</param>
         /// <param name="routine">The routine to add.</param>
         /// <exception cref="InvalidCastException">Thrown when the key cannot be cast to the specified type.</exception>
-        private static void AddDefaultRoutine(string key, IRoutine routine)
+        private void AddDefaultRoutine(string key, IRoutine routine)
         {
             if (key is TKey typedKey)
             {
@@ -55,7 +55,7 @@ namespace P2PNet.Routines
         /// <param name="key">The key of the routine to get or set.</param>
         /// <returns>The routine associated with the specified key.</returns>
         /// <exception cref="KeyNotFoundException">Thrown when the key is not found in the cache.</exception>
-        public static TValue GetRoutine(TKey key)
+        public TValue GetRoutine(TKey key)
         {
             if (_routines.TryGetValue(key, out TValue foundValue))
             {
@@ -69,7 +69,7 @@ namespace P2PNet.Routines
         /// </summary>
         /// <param name="key">The key of the routine to set.</param>
         /// <param name="value">The routine to set.</param>
-        public static void SetRoutine(TKey key, TValue value)
+        public void SetRoutine(TKey key, TValue value)
         {
                 _routines[key] = value;
         }
@@ -78,7 +78,7 @@ namespace P2PNet.Routines
         /// Adds a routine to the routines dictionary.
         /// </summary>
         /// <param name="item">The key-value pair of the routine to add.</param>
-        public static void AddRoutine(TValue item)
+        public void AddRoutine(TValue item)
         {
             if (item.RoutineName is TKey typedKey)
             {
@@ -94,7 +94,7 @@ namespace P2PNet.Routines
         /// Tries to start the routine associated with the specified key.
         /// </summary>
         /// <param name="key">The key of the routine to start.</param>
-        public static void TryStartRoutine(TKey key)
+        public void TryStartRoutine(TKey key)
         {
             if (_routines.TryGetValue(key, out TValue foundValue))
             {
@@ -106,7 +106,7 @@ namespace P2PNet.Routines
         /// Tries to stop the routine associated with the specified key.
         /// </summary>
         /// <param name="key">The key of the routine to stop.</param>
-        public static void TryStopRoutine(TKey key)
+        public void TryStopRoutine(TKey key)
         {
             if (_routines.TryGetValue(key, out TValue foundValue))
             {
@@ -119,7 +119,7 @@ namespace P2PNet.Routines
         /// </summary>
         /// <param name="key">The key of the routine to set the interval for.</param>
         /// <param name="interval">The interval to set.</param>
-        public static void TrySetRoutineInterval(TKey key, int interval)
+        public void TrySetRoutineInterval(TKey key, int interval)
         {
             if (_routines.TryGetValue(key, out TValue foundValue))
             {
@@ -130,7 +130,7 @@ namespace P2PNet.Routines
         /// <summary>
         /// Gets the count of routines.
         /// </summary>
-        public static int Count
+        public int Count
         {
             get
             {
@@ -138,7 +138,7 @@ namespace P2PNet.Routines
             }
         }
 
-        public static IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
+        public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
         {
             return _routines.ToList().GetEnumerator();
         }

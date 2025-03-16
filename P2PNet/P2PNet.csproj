@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFrameworks>net9.0</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 	<IsPackable>true</IsPackable>
@@ -19,7 +19,11 @@ Including PacketDotNet and SharpPcap as dependencies.</PackageReleaseNotes>
 	<NoWarn>$(NoWarn);CS0168,CS0219</NoWarn>
   </PropertyGroup>
 
-  <ItemGroup>
+	<PropertyGroup>
+		<NoWarn>$(NoWarn);CS0168,CS0219,CA1416</NoWarn>
+	</PropertyGroup>
+
+	<ItemGroup>
     <None Include="..\p2pnet_logo.jpg-HD.png">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>

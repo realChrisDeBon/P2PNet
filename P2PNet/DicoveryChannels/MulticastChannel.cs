@@ -37,17 +37,16 @@ namespace P2PNet.DiscoveryChannels
         {
             int timevariation = CreateTimeVariation(100, 500);
             UdpClient broadcaster = new UdpClient();
-            broadcaster.JoinMulticastGroup(multicast_address);
             broadcaster.EnableBroadcast = true;
             broadcaster.MulticastLoopback = true;
-            broadcasterendpoint = new IPEndPoint(multicast_address, MULTICAST_PORTS[0]);
+            broadcasterendpoint = new IPEndPoint(multicast_address, 0);
             while (!cancellationToken.IsCancellationRequested)
             {
                     byte[] message = UniqueIdentifier(); // Turn unique identifier packet to byte[]
 
                     DebugMessage($"Multicast channel broadcast:  Endpoint-{broadcasterendpoint.Address.ToString()} MCAddress-{multicast_address.Address.ToString()}");
 
-                    broadcaster.Send(message, message.Length, new IPEndPoint(multicast_address, MULTICAST_PORTS[0]));
+                    broadcaster.Send(message, message.Length, new IPEndPoint(multicast_address, 0));
                     Thread.Sleep(BroadcastRateControl.GetCurrentInterval());
             }
         }

@@ -21,18 +21,13 @@ namespace P2PNet.DiscoveryChannels
             DESIGNATED_PORT = port_designation;
         }
 
-        public async void OpenLocalChannel()
+        public async Task OpenLocalChannel()
             {
             cancelBroadcaster = new CancellationTokenSource();
             cancelListener = new CancellationTokenSource();
 
             Task.Run(() => StartBroadcaster(cancelBroadcaster.Token));
-            Task.Run(() => StartListener(cancelListener.Token));
-            }
-
-        public async void OpenLocalChannel(bool ListenerOnly)
-            {
-
+            Task.Run(() => StartListener(cancelListener.Token, DESIGNATED_PORT));
             }
 
         public override async Task StartBroadcaster(CancellationToken cancellationToken)
@@ -44,19 +39,14 @@ namespace P2PNet.DiscoveryChannels
             
             IPEndPoint localEndPoint = new IPEndPoint(IPAddress.Loopback, BroadcasterPort);
 
-            while (!cancellationToken.IsCancellationRequested)
+            while (true)
             {
-                if (DESIGNATED_PORT != BroadcasterPort)
-                    {
                     byte[] message = UniqueIdentifier();
                     broadcaster.Send(message, message.Length, broadcastEndPoint);
                     Thread.Sleep(500);
                     broadcaster.Send(message, message.Length, localEndPoint);
-
-                    DebugMessage($"Local channel broadcast: {broadcastEndPoint.Address.ToString()} {localEndPoint.Address.ToString()}");
-
-                    }
-                Thread.Sleep(BroadcastRateControl.GetCurrentInterval());
+            //        DebugMessage($"Local channel broadcast: {broadcastEndPoint.Address.ToString()} {localEndPoint.Address.ToString()}");
+                    Thread.Sleep(BroadcastRateControl.GetCurrentInterval());
             }
         }
 
@@ -65,15 +55,12 @@ namespace P2PNet.DiscoveryChannels
             IPEndPoint remoteEndPoint = new IPEndPoint(IPAddress.Any, designated_port);
             UdpClient listener = new UdpClient(remoteEndPoint);
 
-            while (!cancellationToken.IsCancellationRequested)
+            while (true)
             {
                 byte[] receivedData = listener.Receive(ref remoteEndPoint);
                 string packet = Encoding.UTF8.GetString(receivedData);
-
-                DebugMessage("Local channel - packet received!");
-
+            //    DebugMessage("Local channel - packet received!");
                 HandlePacket(packet);
-
             }
         }
     }

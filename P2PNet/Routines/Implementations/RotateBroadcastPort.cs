@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -25,11 +26,13 @@ namespace P2PNet.Routines.Implementations
 
         public void StartRoutine()
         {
+            routineTimer.Enabled = true;
             routineTimer.Start();
         }
         public void StopRoutine()
         {
             routineTimer.Stop();
+            routineTimer.Enabled = false;
         }
         public void SetRoutineInterval(int interval)
         {

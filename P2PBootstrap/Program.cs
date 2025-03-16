@@ -42,6 +42,7 @@ namespace P2PBootstrap
             AppSettings = config.Build();
 
             var builder = WebApplication.CreateBuilder(args);
+            builder.Logging.AddFilter("Microsoft", LogLevel.None);
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -60,14 +61,6 @@ namespace P2PBootstrap
             {
                 Directory.CreateDirectory(DBdirectory);
             }
-
-            app.UseStaticFiles(new StaticFileOptions
-            {
-                FileProvider = new PhysicalFileProvider(DBdirectory),
-                RequestPath = "/localdb",
-                ServeUnknownFileTypes = true,
-                DefaultContentType = "application/octet-stream"
-            });
 
             app.UseRouting();
 

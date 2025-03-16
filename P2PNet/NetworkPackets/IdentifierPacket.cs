@@ -24,7 +24,10 @@ namespace P2PNet.NetworkPackets {
         /// IP address to broadcast.
         /// </summary>
         public string IP { get; set; }
+
+        [JsonConstructor]
         public IdentifierPacket() { }
+
         public IdentifierPacket(string message, int data, IPAddress ip_)
         {
             Message = message;
