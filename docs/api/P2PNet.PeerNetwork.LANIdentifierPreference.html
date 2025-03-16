@@ -2,9 +2,9 @@
 <html>
   <head>
     <meta charset="utf-8">
-      <title>Namespace P2PNet | P2PNetDocs </title>
+      <title>Enum PeerNetwork.LANIdentifierPreference | P2PNetDocs </title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="title" content="Namespace P2PNet | P2PNetDocs ">
+      <meta name="title" content="Enum PeerNetwork.LANIdentifierPreference | P2PNetDocs ">
       
       
       <link rel="icon" href="../misc/p2pnet_logo.png">
@@ -16,7 +16,7 @@
       <meta name="docfx:rel" content="../">
       
       
-      
+      <meta name="docfx:docurl" content="https://github.com/realChrisDeBon/P2PNet/new/docs/apiSpec/new?filename=P2PNet_PeerNetwork_LANIdentifierPreference.md&amp;value=---%0Auid%3A%20P2PNet.PeerNetwork.LANIdentifierPreference%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
       <meta name="loc:inThisArticle" content="In this article">
       <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
       <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
@@ -84,62 +84,49 @@
           <nav id="breadcrumb"></nav>
         </div>
 
-        <article data-uid="P2PNet">
+        <article data-uid="P2PNet.PeerNetwork.LANIdentifierPreference">
 
-  <h1 id="P2PNet" data-uid="P2PNet" class="text-break">Namespace P2PNet</h1>
-  <div class="markdown level0 summary"></div>
-  <div class="markdown level0 conceptual"></div>
-  <div class="markdown level0 remarks"></div>
 
-    <h3 id="classes">
-Classes
-</h3>
-    <dl class="jumplist">
-      <dt><a class="xref" href="P2PNet.PeerNetwork.html">PeerNetwork</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="P2PNet.PeerNetwork.BootstrapTrustPolicy.html">PeerNetwork.BootstrapTrustPolicy</a></dt>
-      <dd><p>Handles trust and permissions in regards to bootstrap connections.</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="P2PNet.PeerNetwork.IncomingPeerTrustPolicy.html">PeerNetwork.IncomingPeerTrustPolicy</a></dt>
-      <dd><p>Handles trust and permissions in regards to incoming peer connections.</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="P2PNet.PeerNetwork.LocalAreaNetworkManagement.html">PeerNetwork.LocalAreaNetworkManagement</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="P2PNet.PeerNetwork.NewPeerEventArgs.html">PeerNetwork.NewPeerEventArgs</a></dt>
-      <dd></dd>
-    </dl>
-    <h3 id="enums">
-Enums
-</h3>
-    <dl class="jumplist">
-      <dt><a class="xref" href="P2PNet.PeerNetwork.BootstrapTrustPolicyType.html">PeerNetwork.BootstrapTrustPolicyType</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="P2PNet.PeerNetwork.IncomingPeerTrustPolicy.IncomingPeerMode.html">PeerNetwork.IncomingPeerTrustPolicy.IncomingPeerMode</a></dt>
-      <dd><p>Values for <a class="xref" href="P2PNet.PeerNetwork.IncomingPeerTrustPolicy.html#P2PNet_PeerNetwork_IncomingPeerTrustPolicy_IncomingPeerPlacement">IncomingPeerPlacement</a></p>
-<ul><li><span class="term">QueueBased</span>The inbound peer will be directed to the inbound peer queue.</li><li><span class="term">EventBased</span>An event is triggered and the peer is passed to the event args.</li><li><span class="term">QueueAndEventBased</span>The peer is directed to the inbound peer queue, and an event is triggered where the peer is passed to the event args.</li></ul>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="P2PNet.PeerNetwork.LANIdentifierPreference.html">PeerNetwork.LANIdentifierPreference</a></dt>
-      <dd></dd>
-    </dl>
-    <h3 id="delegates">
-Delegates
-</h3>
-    <dl class="jumplist">
-      <dt><a class="xref" href="P2PNet.PeerNetwork.NewKnownPeerEventHandler.html">PeerNetwork.NewKnownPeerEventHandler</a></dt>
-      <dd></dd>
-    </dl>
+
+
+  <h1 id="P2PNet_PeerNetwork_LANIdentifierPreference" data-uid="P2PNet.PeerNetwork.LANIdentifierPreference" class="text-break">
+Enum PeerNetwork.LANIdentifierPreference  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/docs/P2PNet/PeerNetwork.cs/#L981"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="P2PNet.html">P2PNet</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>P2PNet.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"></div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public enum PeerNetwork.LANIdentifierPreference</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+  <h2 id="fields">Fields
+</h2>
+  <dl class="parameters">
+    <dt id="P2PNet_PeerNetwork_LANIdentifierPreference_IP"><code>IP = 0</code></dt>
+  
+  <dd></dd>
+    <dt id="P2PNet_PeerNetwork_LANIdentifierPreference_MAC"><code>MAC = 1</code></dt>
+  
+  <dd></dd>
+    <dt id="P2PNet_PeerNetwork_LANIdentifierPreference_PeerID"><code>PeerID = 2</code></dt>
+  
+  <dd></dd>
+  </dl>
+
 
 
 </article>

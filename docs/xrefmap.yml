@@ -3903,6 +3903,12 @@ references:
   isSpec: "True"
   fullName: P2PNet.PeerNetwork.ElevatePeerPermission
   nameWithType: PeerNetwork.ElevatePeerPermission
+- uid: P2PNet.PeerNetwork.InboundConnectingPeers
+  name: InboundConnectingPeers
+  href: api/P2PNet.PeerNetwork.html#P2PNet_PeerNetwork_InboundConnectingPeers
+  commentId: F:P2PNet.PeerNetwork.InboundConnectingPeers
+  fullName: P2PNet.PeerNetwork.InboundConnectingPeers
+  nameWithType: PeerNetwork.InboundConnectingPeers
 - uid: P2PNet.PeerNetwork.InboundPeerCount
   name: InboundPeerCount
   href: api/P2PNet.PeerNetwork.html#P2PNet_PeerNetwork_InboundPeerCount
@@ -4056,6 +4062,30 @@ references:
   isSpec: "True"
   fullName: P2PNet.PeerNetwork.KnownPeers
   nameWithType: PeerNetwork.KnownPeers
+- uid: P2PNet.PeerNetwork.LANIdentifierPreference
+  name: PeerNetwork.LANIdentifierPreference
+  href: api/P2PNet.PeerNetwork.LANIdentifierPreference.html
+  commentId: T:P2PNet.PeerNetwork.LANIdentifierPreference
+  fullName: P2PNet.PeerNetwork.LANIdentifierPreference
+  nameWithType: PeerNetwork.LANIdentifierPreference
+- uid: P2PNet.PeerNetwork.LANIdentifierPreference.IP
+  name: IP
+  href: api/P2PNet.PeerNetwork.LANIdentifierPreference.html#P2PNet_PeerNetwork_LANIdentifierPreference_IP
+  commentId: F:P2PNet.PeerNetwork.LANIdentifierPreference.IP
+  fullName: P2PNet.PeerNetwork.LANIdentifierPreference.IP
+  nameWithType: PeerNetwork.LANIdentifierPreference.IP
+- uid: P2PNet.PeerNetwork.LANIdentifierPreference.MAC
+  name: MAC
+  href: api/P2PNet.PeerNetwork.LANIdentifierPreference.html#P2PNet_PeerNetwork_LANIdentifierPreference_MAC
+  commentId: F:P2PNet.PeerNetwork.LANIdentifierPreference.MAC
+  fullName: P2PNet.PeerNetwork.LANIdentifierPreference.MAC
+  nameWithType: PeerNetwork.LANIdentifierPreference.MAC
+- uid: P2PNet.PeerNetwork.LANIdentifierPreference.PeerID
+  name: PeerID
+  href: api/P2PNet.PeerNetwork.LANIdentifierPreference.html#P2PNet_PeerNetwork_LANIdentifierPreference_PeerID
+  commentId: F:P2PNet.PeerNetwork.LANIdentifierPreference.PeerID
+  fullName: P2PNet.PeerNetwork.LANIdentifierPreference.PeerID
+  nameWithType: PeerNetwork.LANIdentifierPreference.PeerID
 - uid: P2PNet.PeerNetwork.ListeningPort
   name: ListeningPort
   href: api/P2PNet.PeerNetwork.html#P2PNet_PeerNetwork_ListeningPort
@@ -4082,6 +4112,38 @@ references:
   isSpec: "True"
   fullName: P2PNet.PeerNetwork.LoadLocalAddresses
   nameWithType: PeerNetwork.LoadLocalAddresses
+- uid: P2PNet.PeerNetwork.LocalAreaNetworkManagement
+  name: PeerNetwork.LocalAreaNetworkManagement
+  href: api/P2PNet.PeerNetwork.LocalAreaNetworkManagement.html
+  commentId: T:P2PNet.PeerNetwork.LocalAreaNetworkManagement
+  fullName: P2PNet.PeerNetwork.LocalAreaNetworkManagement
+  nameWithType: PeerNetwork.LocalAreaNetworkManagement
+- uid: P2PNet.PeerNetwork.LocalAreaNetworkManagement.AllowSameIPConnections
+  name: AllowSameIPConnections
+  href: api/P2PNet.PeerNetwork.LocalAreaNetworkManagement.html#P2PNet_PeerNetwork_LocalAreaNetworkManagement_AllowSameIPConnections
+  commentId: P:P2PNet.PeerNetwork.LocalAreaNetworkManagement.AllowSameIPConnections
+  fullName: P2PNet.PeerNetwork.LocalAreaNetworkManagement.AllowSameIPConnections
+  nameWithType: PeerNetwork.LocalAreaNetworkManagement.AllowSameIPConnections
+- uid: P2PNet.PeerNetwork.LocalAreaNetworkManagement.AllowSameIPConnections*
+  name: AllowSameIPConnections
+  href: api/P2PNet.PeerNetwork.LocalAreaNetworkManagement.html#P2PNet_PeerNetwork_LocalAreaNetworkManagement_AllowSameIPConnections_
+  commentId: Overload:P2PNet.PeerNetwork.LocalAreaNetworkManagement.AllowSameIPConnections
+  isSpec: "True"
+  fullName: P2PNet.PeerNetwork.LocalAreaNetworkManagement.AllowSameIPConnections
+  nameWithType: PeerNetwork.LocalAreaNetworkManagement.AllowSameIPConnections
+- uid: P2PNet.PeerNetwork.LocalAreaNetworkManagement.LANIdentifierPreference
+  name: LANIdentifierPreference
+  href: api/P2PNet.PeerNetwork.LocalAreaNetworkManagement.html#P2PNet_PeerNetwork_LocalAreaNetworkManagement_LANIdentifierPreference
+  commentId: P:P2PNet.PeerNetwork.LocalAreaNetworkManagement.LANIdentifierPreference
+  fullName: P2PNet.PeerNetwork.LocalAreaNetworkManagement.LANIdentifierPreference
+  nameWithType: PeerNetwork.LocalAreaNetworkManagement.LANIdentifierPreference
+- uid: P2PNet.PeerNetwork.LocalAreaNetworkManagement.LANIdentifierPreference*
+  name: LANIdentifierPreference
+  href: api/P2PNet.PeerNetwork.LocalAreaNetworkManagement.html#P2PNet_PeerNetwork_LocalAreaNetworkManagement_LANIdentifierPreference_
+  commentId: Overload:P2PNet.PeerNetwork.LocalAreaNetworkManagement.LANIdentifierPreference
+  isSpec: "True"
+  fullName: P2PNet.PeerNetwork.LocalAreaNetworkManagement.LANIdentifierPreference
+  nameWithType: PeerNetwork.LocalAreaNetworkManagement.LANIdentifierPreference
 - uid: P2PNet.PeerNetwork.MAC
   name: MAC
   href: api/P2PNet.PeerNetwork.html#P2PNet_PeerNetwork_MAC
@@ -4132,6 +4194,19 @@ references:
   isSpec: "True"
   fullName: P2PNet.PeerNetwork.NewPeerEventArgs.peerChannel
   nameWithType: PeerNetwork.NewPeerEventArgs.peerChannel
+- uid: P2PNet.PeerNetwork.P2PNetworkRoutines
+  name: P2PNetworkRoutines
+  href: api/P2PNet.PeerNetwork.html#P2PNet_PeerNetwork_P2PNetworkRoutines
+  commentId: P:P2PNet.PeerNetwork.P2PNetworkRoutines
+  fullName: P2PNet.PeerNetwork.P2PNetworkRoutines
+  nameWithType: PeerNetwork.P2PNetworkRoutines
+- uid: P2PNet.PeerNetwork.P2PNetworkRoutines*
+  name: P2PNetworkRoutines
+  href: api/P2PNet.PeerNetwork.html#P2PNet_PeerNetwork_P2PNetworkRoutines_
+  commentId: Overload:P2PNet.PeerNetwork.P2PNetworkRoutines
+  isSpec: "True"
+  fullName: P2PNet.PeerNetwork.P2PNetworkRoutines
+  nameWithType: PeerNetwork.P2PNetworkRoutines
 - uid: P2PNet.PeerNetwork.PeerAdded
   name: PeerAdded
   href: api/P2PNet.PeerNetwork.html#P2PNet_PeerNetwork_PeerAdded
@@ -4228,6 +4303,19 @@ references:
   isSpec: "True"
   fullName: P2PNet.PeerNetwork.ThrottleBroadcastingDown
   nameWithType: PeerNetwork.ThrottleBroadcastingDown
+- uid: P2PNet.PeerNetwork.TrustedPeerChannels
+  name: TrustedPeerChannels
+  href: api/P2PNet.PeerNetwork.html#P2PNet_PeerNetwork_TrustedPeerChannels
+  commentId: P:P2PNet.PeerNetwork.TrustedPeerChannels
+  fullName: P2PNet.PeerNetwork.TrustedPeerChannels
+  nameWithType: PeerNetwork.TrustedPeerChannels
+- uid: P2PNet.PeerNetwork.TrustedPeerChannels*
+  name: TrustedPeerChannels
+  href: api/P2PNet.PeerNetwork.html#P2PNet_PeerNetwork_TrustedPeerChannels_
+  commentId: Overload:P2PNet.PeerNetwork.TrustedPeerChannels
+  isSpec: "True"
+  fullName: P2PNet.PeerNetwork.TrustedPeerChannels
+  nameWithType: PeerNetwork.TrustedPeerChannels
 - uid: P2PNet.Peers
   name: P2PNet.Peers
   href: api/P2PNet.Peers.html
@@ -4443,6 +4531,95 @@ references:
   isSpec: "True"
   fullName: P2PNet.Peers.IPeer.Stream
   nameWithType: IPeer.Stream
+- uid: P2PNet.Peers.InboundConnectingPeersQueue
+  name: InboundConnectingPeersQueue
+  href: api/P2PNet.Peers.InboundConnectingPeersQueue.html
+  commentId: T:P2PNet.Peers.InboundConnectingPeersQueue
+  fullName: P2PNet.Peers.InboundConnectingPeersQueue
+  nameWithType: InboundConnectingPeersQueue
+- uid: P2PNet.Peers.InboundConnectingPeersQueue.Count
+  name: Count
+  href: api/P2PNet.Peers.InboundConnectingPeersQueue.html#P2PNet_Peers_InboundConnectingPeersQueue_Count
+  commentId: P:P2PNet.Peers.InboundConnectingPeersQueue.Count
+  fullName: P2PNet.Peers.InboundConnectingPeersQueue.Count
+  nameWithType: InboundConnectingPeersQueue.Count
+- uid: P2PNet.Peers.InboundConnectingPeersQueue.Count*
+  name: Count
+  href: api/P2PNet.Peers.InboundConnectingPeersQueue.html#P2PNet_Peers_InboundConnectingPeersQueue_Count_
+  commentId: Overload:P2PNet.Peers.InboundConnectingPeersQueue.Count
+  isSpec: "True"
+  fullName: P2PNet.Peers.InboundConnectingPeersQueue.Count
+  nameWithType: InboundConnectingPeersQueue.Count
+- uid: P2PNet.Peers.InboundConnectingPeersQueue.Dequeue
+  name: Dequeue()
+  href: api/P2PNet.Peers.InboundConnectingPeersQueue.html#P2PNet_Peers_InboundConnectingPeersQueue_Dequeue
+  commentId: M:P2PNet.Peers.InboundConnectingPeersQueue.Dequeue
+  fullName: P2PNet.Peers.InboundConnectingPeersQueue.Dequeue()
+  nameWithType: InboundConnectingPeersQueue.Dequeue()
+- uid: P2PNet.Peers.InboundConnectingPeersQueue.Dequeue*
+  name: Dequeue
+  href: api/P2PNet.Peers.InboundConnectingPeersQueue.html#P2PNet_Peers_InboundConnectingPeersQueue_Dequeue_
+  commentId: Overload:P2PNet.Peers.InboundConnectingPeersQueue.Dequeue
+  isSpec: "True"
+  fullName: P2PNet.Peers.InboundConnectingPeersQueue.Dequeue
+  nameWithType: InboundConnectingPeersQueue.Dequeue
+- uid: P2PNet.Peers.InboundConnectingPeersQueue.Enqueue(P2PNet.Peers.GenericPeer)
+  name: Enqueue(GenericPeer)
+  href: api/P2PNet.Peers.InboundConnectingPeersQueue.html#P2PNet_Peers_InboundConnectingPeersQueue_Enqueue_P2PNet_Peers_GenericPeer_
+  commentId: M:P2PNet.Peers.InboundConnectingPeersQueue.Enqueue(P2PNet.Peers.GenericPeer)
+  fullName: P2PNet.Peers.InboundConnectingPeersQueue.Enqueue(P2PNet.Peers.GenericPeer)
+  nameWithType: InboundConnectingPeersQueue.Enqueue(GenericPeer)
+- uid: P2PNet.Peers.InboundConnectingPeersQueue.Enqueue*
+  name: Enqueue
+  href: api/P2PNet.Peers.InboundConnectingPeersQueue.html#P2PNet_Peers_InboundConnectingPeersQueue_Enqueue_
+  commentId: Overload:P2PNet.Peers.InboundConnectingPeersQueue.Enqueue
+  isSpec: "True"
+  fullName: P2PNet.Peers.InboundConnectingPeersQueue.Enqueue
+  nameWithType: InboundConnectingPeersQueue.Enqueue
+- uid: P2PNet.Peers.InboundConnectingPeersQueue.IncomingPeerConnectionAttempt
+  name: IncomingPeerConnectionAttempt
+  href: api/P2PNet.Peers.InboundConnectingPeersQueue.html#P2PNet_Peers_InboundConnectingPeersQueue_IncomingPeerConnectionAttempt
+  commentId: E:P2PNet.Peers.InboundConnectingPeersQueue.IncomingPeerConnectionAttempt
+  fullName: P2PNet.Peers.InboundConnectingPeersQueue.IncomingPeerConnectionAttempt
+  nameWithType: InboundConnectingPeersQueue.IncomingPeerConnectionAttempt
+- uid: P2PNet.Peers.InboundConnectingPeersQueue.OnIncomingPeerConnectionAttempt(P2PNet.Peers.GenericPeer)
+  name: OnIncomingPeerConnectionAttempt(GenericPeer)
+  href: api/P2PNet.Peers.InboundConnectingPeersQueue.html#P2PNet_Peers_InboundConnectingPeersQueue_OnIncomingPeerConnectionAttempt_P2PNet_Peers_GenericPeer_
+  commentId: M:P2PNet.Peers.InboundConnectingPeersQueue.OnIncomingPeerConnectionAttempt(P2PNet.Peers.GenericPeer)
+  fullName: P2PNet.Peers.InboundConnectingPeersQueue.OnIncomingPeerConnectionAttempt(P2PNet.Peers.GenericPeer)
+  nameWithType: InboundConnectingPeersQueue.OnIncomingPeerConnectionAttempt(GenericPeer)
+- uid: P2PNet.Peers.InboundConnectingPeersQueue.OnIncomingPeerConnectionAttempt*
+  name: OnIncomingPeerConnectionAttempt
+  href: api/P2PNet.Peers.InboundConnectingPeersQueue.html#P2PNet_Peers_InboundConnectingPeersQueue_OnIncomingPeerConnectionAttempt_
+  commentId: Overload:P2PNet.Peers.InboundConnectingPeersQueue.OnIncomingPeerConnectionAttempt
+  isSpec: "True"
+  fullName: P2PNet.Peers.InboundConnectingPeersQueue.OnIncomingPeerConnectionAttempt
+  nameWithType: InboundConnectingPeersQueue.OnIncomingPeerConnectionAttempt
+- uid: P2PNet.Peers.InboundConnectingPeersQueue.PeerIsQueued(System.Net.IPAddress,System.String)
+  name: PeerIsQueued(IPAddress, string)
+  href: api/P2PNet.Peers.InboundConnectingPeersQueue.html#P2PNet_Peers_InboundConnectingPeersQueue_PeerIsQueued_System_Net_IPAddress_System_String_
+  commentId: M:P2PNet.Peers.InboundConnectingPeersQueue.PeerIsQueued(System.Net.IPAddress,System.String)
+  name.vb: PeerIsQueued(IPAddress, String)
+  fullName: P2PNet.Peers.InboundConnectingPeersQueue.PeerIsQueued(System.Net.IPAddress, string)
+  fullName.vb: P2PNet.Peers.InboundConnectingPeersQueue.PeerIsQueued(System.Net.IPAddress, String)
+  nameWithType: InboundConnectingPeersQueue.PeerIsQueued(IPAddress, string)
+  nameWithType.vb: InboundConnectingPeersQueue.PeerIsQueued(IPAddress, String)
+- uid: P2PNet.Peers.InboundConnectingPeersQueue.PeerIsQueued(System.String,System.String)
+  name: PeerIsQueued(string, string)
+  href: api/P2PNet.Peers.InboundConnectingPeersQueue.html#P2PNet_Peers_InboundConnectingPeersQueue_PeerIsQueued_System_String_System_String_
+  commentId: M:P2PNet.Peers.InboundConnectingPeersQueue.PeerIsQueued(System.String,System.String)
+  name.vb: PeerIsQueued(String, String)
+  fullName: P2PNet.Peers.InboundConnectingPeersQueue.PeerIsQueued(string, string)
+  fullName.vb: P2PNet.Peers.InboundConnectingPeersQueue.PeerIsQueued(String, String)
+  nameWithType: InboundConnectingPeersQueue.PeerIsQueued(string, string)
+  nameWithType.vb: InboundConnectingPeersQueue.PeerIsQueued(String, String)
+- uid: P2PNet.Peers.InboundConnectingPeersQueue.PeerIsQueued*
+  name: PeerIsQueued
+  href: api/P2PNet.Peers.InboundConnectingPeersQueue.html#P2PNet_Peers_InboundConnectingPeersQueue_PeerIsQueued_
+  commentId: Overload:P2PNet.Peers.InboundConnectingPeersQueue.PeerIsQueued
+  isSpec: "True"
+  fullName: P2PNet.Peers.InboundConnectingPeersQueue.PeerIsQueued
+  nameWithType: InboundConnectingPeersQueue.PeerIsQueued
 - uid: P2PNet.Peers.IncomingPeerEventArgs
   name: IncomingPeerEventArgs
   href: api/P2PNet.Peers.IncomingPeerEventArgs.html
@@ -5946,6 +6123,19 @@ references:
   isSpec: "True"
   fullName: P2PNet.Widescan.Widescan.SetHardwareMode
   nameWithType: Widescan.SetHardwareMode
+- uid: P2PNet.Widescan.Widescan.StartICMPListener
+  name: StartICMPListener()
+  href: api/P2PNet.Widescan.Widescan.html#P2PNet_Widescan_Widescan_StartICMPListener
+  commentId: M:P2PNet.Widescan.Widescan.StartICMPListener
+  fullName: P2PNet.Widescan.Widescan.StartICMPListener()
+  nameWithType: Widescan.StartICMPListener()
+- uid: P2PNet.Widescan.Widescan.StartICMPListener*
+  name: StartICMPListener
+  href: api/P2PNet.Widescan.Widescan.html#P2PNet_Widescan_Widescan_StartICMPListener_
+  commentId: Overload:P2PNet.Widescan.Widescan.StartICMPListener
+  isSpec: "True"
+  fullName: P2PNet.Widescan.Widescan.StartICMPListener
+  nameWithType: Widescan.StartICMPListener
 - uid: P2PNet.Widescan.Widescan.StartWidescan
   name: StartWidescan()
   href: api/P2PNet.Widescan.Widescan.html#P2PNet_Widescan_Widescan_StartWidescan
@@ -5959,6 +6149,19 @@ references:
   isSpec: "True"
   fullName: P2PNet.Widescan.Widescan.StartWidescan
   nameWithType: Widescan.StartWidescan
+- uid: P2PNet.Widescan.Widescan.StopICMPListener
+  name: StopICMPListener()
+  href: api/P2PNet.Widescan.Widescan.html#P2PNet_Widescan_Widescan_StopICMPListener
+  commentId: M:P2PNet.Widescan.Widescan.StopICMPListener
+  fullName: P2PNet.Widescan.Widescan.StopICMPListener()
+  nameWithType: Widescan.StopICMPListener()
+- uid: P2PNet.Widescan.Widescan.StopICMPListener*
+  name: StopICMPListener
+  href: api/P2PNet.Widescan.Widescan.html#P2PNet_Widescan_Widescan_StopICMPListener_
+  commentId: Overload:P2PNet.Widescan.Widescan.StopICMPListener
+  isSpec: "True"
+  fullName: P2PNet.Widescan.Widescan.StopICMPListener
+  nameWithType: Widescan.StopICMPListener
 - uid: P2PNet.Widescan.Widescan.StopWidescan
   name: StopWidescan()
   href: api/P2PNet.Widescan.Widescan.html#P2PNet_Widescan_Widescan_StopWidescan

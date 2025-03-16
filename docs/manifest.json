@@ -32,6 +32,26 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "P2PBootstrap/bin/Release/net9.0/wwwroot/node_modules/xterm/README.md",
+      "output": {
+        ".html": {
+          "relative_path": "P2PBootstrap/bin/Release/net9.0/wwwroot/node_modules/xterm/README.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "P2PBootstrap/bin/Release/net9.0/wwwroot/node_modules/xterm/src/browser/renderer/shared/README.md",
+      "output": {
+        ".html": {
+          "relative_path": "P2PBootstrap/bin/Release/net9.0/wwwroot/node_modules/xterm/src/browser/renderer/shared/README.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "P2PBootstrap/node_modules/xterm/README.md",
       "output": {
         ".html": {
@@ -736,7 +756,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "P2PNet.Distribution.DistributionProtocol",
-      "Summary": "<p sourcefile=\"api/P2PNet.Distribution.DistributionProtocol.yml\" sourcestartlinenumber=\"1\">The DistributionProtocol provides uniformity with data exchange, packet formatting, and other functions within the peer-to-peer network.\nThis should be included as a static reference.</p>\n"
+      "Summary": "<p sourcefile=\"api/P2PNet.Distribution.DistributionProtocol.yml\" sourcestartlinenumber=\"1\">The DistributionProtocol provides uniformity with data exchange, packet formatting, and other functions within the P2P network.\nThis should be included as a static reference.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -904,7 +924,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "P2PNet.Distribution.PureMessagePacketContext",
-      "Summary": "<p sourcefile=\"api/P2PNet.Distribution.PureMessagePacketContext.yml\" sourcestartlinenumber=\"1\">This region keeps the packet objects and classes AOT compliant for JSON serialization.</p>\n"
+      "Summary": null
     },
     {
       "type": "ManagedReference",
@@ -1076,6 +1096,34 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.PeerNetwork.LANIdentifierPreference.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.PeerNetwork.LANIdentifierPreference.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.PeerNetwork.LANIdentifierPreference",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.PeerNetwork.LocalAreaNetworkManagement.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.PeerNetwork.LocalAreaNetworkManagement.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.PeerNetwork.LocalAreaNetworkManagement",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/P2PNet.PeerNetwork.NewKnownPeerEventHandler.yml",
       "output": {
         ".html": {
@@ -1143,6 +1191,20 @@
       "IsMRef": true,
       "Title": "P2PNet.Peers.IPeer",
       "Summary": "<p sourcefile=\"api/P2PNet.Peers.IPeer.yml\" sourcestartlinenumber=\"1\">Represents a peer with an IP address, port, TCP client, network stream, and identifier.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.Peers.InboundConnectingPeersQueue.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.Peers.InboundConnectingPeersQueue.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.Peers.InboundConnectingPeersQueue",
+      "Summary": null
     },
     {
       "type": "ManagedReference",
@@ -1493,6 +1555,16 @@
       "output": {
         ".html": {
           "relative_path": "misc/peers.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "misc/testing.md",
+      "output": {
+        ".html": {
+          "relative_path": "misc/testing.html"
         }
       },
       "version": ""

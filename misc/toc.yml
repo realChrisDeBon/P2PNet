@@ -2,6 +2,8 @@
   href: p2pnetwork.md
 - name: Peers
   href: peers.md
+- name: Testing🛠️
+  href: testing.md
 - name: Bootstrap Server
   href: bootstrapserver.md
 - name: Widescan
