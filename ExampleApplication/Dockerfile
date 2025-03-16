@@ -37,7 +37,7 @@ COPY --from=build C:/app/wpcap.dll C:/Windows/System32/wpcap.dll
 COPY --from=build C:/app/Packet.dll C:/Windows/System32/Packet.dll
 
 # expose the ports
-EXPOSE 8001 8002 8003
+EXPOSE 1000-9000
 
 # entrypoint
 ENTRYPOINT ["dotnet", "ExampleApplication.dll"]

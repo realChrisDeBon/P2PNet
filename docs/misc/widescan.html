@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title> | P2PNetDocs </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content=" | P2PNetDocs ">
+      
+      
+      <link rel="icon" href="../misc/p2pnet_logo.png">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/realChrisDeBon/P2PNet/blob/docs/misc/widescan.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../misc/p2plogo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="p2pnetwidescan">
+
+<h3 id="widescan-">Widescan 📡</h3>
+<hr>
+<p>The <code>P2PNet.Widescan</code> class library project is designed to facilitate mass IPv6 address generation and peer discovery within a peer-to-peer network. This project leverages hardware capabilities, such as GPUs, to efficiently generate vast quantities of IPv6 addresses. By utilizing user-defined address prefixes, it allows for a more targeted and narrow scope of addresses to ping, enhancing the efficiency of the discovery process. This can be leveraged with publicly available information on IPv6 prefix registrations, like the <a href="https://apps.db.ripe.net/db-web-ui/query">Ripe database</a>, in order to refine the scope of the widescan. Additionally, the project employs lightweight ICMP packets to broadcast discovery information, ensuring minimal network overhead while effectively communicating with potential peers.</p>
+<h3 id="initialization">Initialization</h3>
+<hr>
+<p>The <code>P2PNet.Widescan</code> project initializes by setting up the necessary configurations and services required for widescan operations. The main entry point is the <code>Widescan</code> class, which configures the application and starts the widescan process.</p>
+<ol>
+<li><strong>Configuration</strong>: The application reads configuration settings from the provided parameters. This includes settings for address prefixes, hardware mode (GPU or CPU), and other essential configurations.</li>
+<li><strong>Logging</strong>: Logging is configured to use a plain text format and is activated to capture important events and errors.</li>
+<li><strong>Hardware Mode Setup</strong>: The application can be configured to use either GPU offloading or parallel CPU capabilities for address generation and peer discovery.</li>
+</ol>
+<h3 id="operation">Operation</h3>
+<hr>
+<p>The <code>P2PNet.Widescan</code> project operates by providing several key functionalities:</p>
+<ol>
+<li><p><strong>IPv6 Address Generation</strong>: The widescan application generates vast quantities of IPv6 addresses using either GPU offloading or parallel CPU capabilities. This allows for efficient and rapid address generation.</p>
+<ul>
+<li><strong>GPU Offloading</strong>: Utilizes the processing power of GPUs to generate IPv6 addresses in parallel, significantly speeding up the process.</li>
+<li><strong>Parallel CPU Capabilities</strong>: Uses multiple CPU cores to generate IPv6 addresses in parallel, providing an alternative for systems without GPU support.</li>
+</ul>
+</li>
+<li><p><strong>Peer Discovery</strong>: The widescan application pings the generated IPv6 addresses to discover potential peers within the network. It uses lightweight ICMP packets to broadcast discovery information, ensuring minimal network overhead.</p>
+</li>
+<li><p><strong>Address Prefix Filtering</strong>: By utilizing user-defined address prefixes, the widescan application narrows the scope of addresses to ping, enhancing the efficiency of the discovery process. This can be refined using publicly available information on IPv6 prefix registrations, such as the <a href="https://apps.db.ripe.net/db-web-ui/query">Ripe database</a>.</p>
+</li>
+</ol>
+<h3 id="integration">Integration</h3>
+<hr>
+<p>The <code>P2PNet.Widescan</code> project is designed to be a modular import that can be integrated with other P2P network applications, such as a<code>P2PNetwork</code> client application or the <code>P2PBootstrap</code> server. It does not run independently and does not use <code>appsettings.json</code> for configuration. Instead, it relies on the host application to provide the necessary configuration parameters.</p>
+<h3 id="diagrams">Diagrams</h3>
+<hr>
+<p>To supplement the information visually, the following diagrams are provided:</p>
+<ol>
+<li><strong>Widescan Architecture</strong>: Shows the overall architecture of the widescan application, including its interaction with the P2P network and the hardware components (GPU/CPU).</li>
+<li><strong>IPv6 Address Generation Flow</strong>: Illustrates the flow of IPv6 address generation, from configuration to address generation using GPU or CPU, and finally to peer discovery. This is very much a simple consumer-producer pattern, with intermediate in-memory queues to operate as a broadcaster.</li>
+<li><strong>ICMP Packet Listener:</strong> Operating independently of the broadcaster, the ICMP Packet Listener operates as a listener for responses from prospective peers and other potential widescan instances. This utilizes a docile form of packet sniffing on the host machine.</li>
+</ol>
+<p>
+    <img src="https://raw.githubusercontent.com/realChrisDeBon/P2PNet/refs/heads/master/misc/Widescan.png" width="500" height="325" alt="widescan chart">
+</p>
+<p><strong>Note:</strong> Widescan project still under construction 🏗️</p>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
