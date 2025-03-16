@@ -18,9 +18,11 @@ The P2PNet library requires WinPcap installed on the target system. You can chec
 
 ### Bootstrap Server Container
 
-Docker image for launching an instance of a bootstrap server.
+Docker image for launching an instance of the bootstrap server:
+[![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)](http://ghcr.io/realchrisdebon/p2pnet/p2pbootstrap)
 
-[![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)](http://ghcr.io/p2pnetsuite/p2pnet/p2pbootstrap)
+See live example deployment:
+[![Fly.io Badge](https://img.shields.io/badge/Fly.io-24175B?logo=flydotio&logoColor=fff&style=for-the-badge)](https://p2pbootstrap.fly.dev/)
 
 ### Documentation
 

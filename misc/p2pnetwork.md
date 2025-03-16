@@ -68,7 +68,6 @@ To supplement the information visually, the following diagrams are provided:
 2. **Peer Discovery Flow**: Illustrates the flow of peer discovery, from broadcasting to establishing connections and managing peer channels.
 
 <p>
-    <img src="https://raw.githubusercontent.com/realChrisDeBon/P2PNet/refs/heads/master/misc/P2PNetwork.png" width="500" height="325" alt="peer network chart">
+    <img src="https://raw.githubusercontent.com/p2pnetsuite/P2PNet/refs/heads/master/misc/P2PNetwork.png" width="500" height="325" alt="peer network chart">
 </p>
 
-*subject to change*

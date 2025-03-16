@@ -831,19 +831,47 @@ namespace P2PNet
                 int successfulPings = 0;
                 const int requiredPings = 3;
 
-                EventHandler<PeerChannelBase.DataReceivedEventArgs> dataReceivedHandler = (sender, e) =>
+                EventHandler<PeerChannelBase.DataReceivedEventArgs> dataReceivedHandler = null;
+                EventHandler<PeerChannelBase.DataReceivedEventArgs> postTestDataReceivedHandler = null;
+
+                // trust established, but peer is still waiting for pings
+                postTestDataReceivedHandler = (sender, e) =>
+                {
+                    DebugMessage(e.Data.ToString(), ConsoleColor.Cyan);
+                    if (e.Data.Contains("Ping from"))
+                    {
+                        // we have established trust, but peer is still waiting for pings
+                        PureMessagePacket pingMessage = new PureMessagePacket
+                        {
+                            Message = $"Ping from {PeerNetwork.PublicIPV4Address}"
+                        };
+                        string outgoing = Serialize(pingMessage);
+                        WrapPacket(PacketType.PureMessage, ref outgoing);
+                        peerChannel.LoadOutgoingData(outgoing);
+                    }
+                };
+
+                // peer is not yet trusted, we are still waiting for pings
+                dataReceivedHandler = (sender, e) =>
                 {
                     DebugMessage(e.Data.ToString(), ConsoleColor.Cyan);
                     if (e.Data.Contains("Ping from"))
                     {
                         successfulPings++;
-                        if (successfulPings >= requiredPings)
+                        if ((successfulPings >= requiredPings) && (successfulPings < 6))
                         {
                             peerChannel.TrustPeer();
                             DebugMessage("Peer passed trust test.", ConsoleColor.Green);
+                        } else if (successfulPings >= 5)
+                        {
+                            // swap event handlers
+                            peerChannel.DataReceived -= dataReceivedHandler;
+                            peerChannel.DataReceived += postTestDataReceivedHandler;
                         }
                     }
                 };
+
+
 
                 peerChannel.DataReceived += dataReceivedHandler;
 
@@ -856,7 +884,7 @@ namespace P2PNet
                     string outgoing = Serialize(pingMessage);
                     WrapPacket(PacketType.PureMessage, ref outgoing);
                     peerChannel.LoadOutgoingData(outgoing);
-                    await Task.Delay(3000);
+                    Thread.Sleep(3000);
                 }
             }
         }
