@@ -11,5 +11,6 @@ P2PNet facilitates peer-to-peer networking with an array of components and optio
 ### Documentation
 
 - [Peer Network](misc/p2pnetwork.md)
+- [Testing 🛠️](misc/testing.md)
 - [Bootstrap Server](misc/bootstrapserver.md)
 - [Widescan](misc/widescan.md)
