@@ -59,9 +59,9 @@ namespace P2PNet.Peers
             receiveTask = Task.Run(() => ReadIncoming(cancelReceiver.Token));
             sendTask = Task.Run(() => SendOutgoing(cancelSender.Token));
 
-            if (IncomingPeerTrustPolicy.RunDefaultTrustProtocol == true)
+            if (TrustPolicies.IncomingPeerTrustPolicy.RunDefaultTrustProtocol == true)
                 {
-                IncomingPeerTrustPolicy.DefaultTrustProtocol.Invoke(this);
+                TrustPolicies.IncomingPeerTrustPolicy.DefaultTrustProtocol.Invoke(this);
                 }
             }
 

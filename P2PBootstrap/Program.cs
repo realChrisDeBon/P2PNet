@@ -24,12 +24,13 @@ using Microsoft.Extensions.FileProviders;
 using ConsoleDebugger;
 using P2PBootstrap.Encryption;
 using P2PNet.Distribution.NetworkTasks;
+using System.Text;
 
 namespace P2PBootstrap
 {
     public class Program
     {
-
+        public static string PublicKeyToString => Encoding.UTF8.GetString(GlobalConfig.ActiveKeys.Public.KeyData);
         public static void Main(string[] args)
         {
             LoggingConfiguration.LoggerStyle = LogStyle.PlainTextFormat;
@@ -64,37 +65,53 @@ namespace P2PBootstrap
 
             app.UseRouting();
 
-            if(GlobalConfig.TrustPolicy == BootstrapTrustPolicyType.Trustless)
+            app.MapPut("/api/Bootstrap/peers", async Task<IResult> (HttpContext context) =>
             {
-                // Endpoint to Get Peers
-                app.MapGet("/api/Bootstrap/peers", () =>
+                try
                 {
-                    string serialized = Serialize(new CollectionSharePacket(100, KnownPeers));
-                    return Results.Content(serialized, "application/json");
-                });
-            }
-            else
-            {
-                // Endpoint to Get Peers -- returns 
-                app.MapPut("/api/Bootstrap/peers", () =>
-                {
-                    DataTransmissionPacket packet = new DataTransmissionPacket()
+                    // read the incoming PUT
+                    using var reader = new StreamReader(context.Request.Body);
+                    var bodyJson = await reader.ReadToEndAsync();
+
+                    // deserialize the input
+                    var incomingPacket = Deserialize<DataTransmissionPacket>(bodyJson);
+
+                    if (GlobalConfig.TrustPolicy == TrustPolicies.BootstrapTrustPolicyType.Trustless)
                     {
-                        DataType = DataPayloadFormat.Task,
-                        Data = new NetworkTask()
+                        // reply with a CollectionSharePacket
+                        var share = new CollectionSharePacket(100, KnownPeers);
+                        var responseJson = Serialize(share);
+                        return Results.Content(responseJson, "application/json");
+                    }
+                    else
+                    {
+
+                        // reply with a DataTransmissionPacket holding public key and peer list
+                        var networkTask = new NetworkTask()
                         {
                             TaskType = TaskType.SendPublicKey,
                             TaskData = new Dictionary<string, string>()
-                            {
-                                { "PublicKey", AppSettings["Encryption:PublicKey"] },
-                                { "Peers", Serialize(new CollectionSharePacket(100, KnownPeers)) }
-                            }
-                        }.ToByte(),
-                    };
-                    return Results.Content("Trusted", "text/plain");
-                });
-            }
-            
+                                {
+                                    { "PublicKey", PublicKeyToString },
+                                    { "Peers", Serialize(new CollectionSharePacket(100, KnownPeers)) }
+                                }
+                        };
+
+                        var outPacket = new DataTransmissionPacket()
+                        {
+                            DataType = DataPayloadFormat.Task,
+                            Data = networkTask.ToByte()
+                        };
+
+                        var responseJson = Serialize(outPacket);
+                        return Results.Content(responseJson, "application/json");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return Results.Problem(ex.Message);
+                }
+            });
 
             app.MapGet("/api/parser/output", () =>
             {

@@ -1,4 +1,4 @@
-﻿# P2PNet
+# P2PNet
 
 <p align="center">
     <img src="https://github.com/realChrisDeBon/P2PNet/assets/97779307/36f3441a-2905-476e-ac6a-c5fa8a9112b0" width="175" height="175" alt="p2pnet logo">
@@ -18,9 +18,13 @@ The P2PNet library requires WinPcap installed on the target system. You can chec
 
 ### Bootstrap Server Container
 
-Docker image for launching an instance of a bootstrap server.
+Docker image for launching an instance of the bootstrap server:
 
 [![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)](http://ghcr.io/realchrisdebon/p2pnet/p2pbootstrap)
+
+See live example deployment:
+
+[![Fly.io Badge](https://img.shields.io/badge/Fly.io-24175B?logo=flydotio&logoColor=fff&style=for-the-badge)](https://p2pbootstrap.fly.dev/)
 
 ### Documentation
 

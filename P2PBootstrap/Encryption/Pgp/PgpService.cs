@@ -40,7 +40,7 @@ namespace P2PBootstrap.Encryption.Pgp
                 Directory.CreateDirectory(KeysDirectory);
             }
 
-            if (GlobalConfig.TrustPolicy == BootstrapTrustPolicyType.Authority)
+            if (GlobalConfig.TrustPolicy == TrustPolicies.BootstrapTrustPolicyType.Authority)
             {
                 string publicKeyPath = Path.Combine(KeysDirectory, AppSettings["Configuration:AuthorityKey:PublicKey"]);
                 string privateKeyPath = Path.Combine(KeysDirectory, AppSettings["Configuration:AuthorityKey:PrivateKey"]);

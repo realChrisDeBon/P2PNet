@@ -6,7 +6,7 @@ namespace P2PBootstrap
     public static class GlobalConfig
     {
         public static IConfiguration AppSettings;
-        public static BootstrapTrustPolicyType TrustPolicy = BootstrapTrustPolicyType.Authority;
+        public static TrustPolicies.BootstrapTrustPolicyType TrustPolicy = TrustPolicies.BootstrapTrustPolicyType.Authority;
         public const string ConfigFile = "appsettings.json";
         public static KeyPair ActiveKeys { get; set; } = new KeyPair();
 
