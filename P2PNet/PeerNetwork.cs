@@ -205,9 +205,9 @@ namespace P2PNet
         /// Queue of inbound connecting peers that have not been assigned a peer channel.
         /// </summary>
         /// <remarks>
-        /// This will only become populated if the <see cref="PeerNetwork.IncomingPeerTrustPolicy.IncomingPeerPlacement"/> value includes queue-based placement.
-        /// This allows for additional verification and handling of incoming peers before they are assigned a peer channel.
-        /// For idle action, consider using <see cref="PeerNetwork.IncomingPeerTrustPolicy.IncomingPeerMode.EventBased"/> and ignoring the event to prevent excessive memory usage.
+        /// This allows peers to be handled or referenced in a chronological order as they are discovered.
+        /// This will only become populated if the <see cref="PeerNetwork.IncomingPeerTrustPolicy.IncomingPeerPlacement"/> value includes queue-based placement, this is to preserve memory resources.
+        /// For idle action, consider setting <see cref="PeerNetwork.IncomingPeerTrustPolicy.IncomingPeerMode.EventBased"/> and ignoring the event if you do not need to preform any actions.
         /// </remarks>
         public static InboundConnectingPeersQueue InboundConnectingPeers = new InboundConnectingPeersQueue();
 

@@ -30,7 +30,7 @@ This portion of documentation outlines different methods of testing, and differe
    <p>
         <img src="https://raw.githubusercontent.com/p2pnetsuite/P2PNet/refs/heads/master/misc/screenshots/quick_lan_test_1.png"  >
     </p>
-2. Once the container have verifiably started, go ahead and stop the container (Ctrl + C or from Docker dashboard)
+2. Once the container has verifiably started, go ahead and stop the container (Ctrl + C or from Docker dashboard)
    <p>
         <img src="https://raw.githubusercontent.com/p2pnetsuite/P2PNet/refs/heads/master/misc/screenshots/quick_lan_test_2.png"  >
     </p>
