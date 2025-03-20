@@ -1,0 +1,1624 @@
+{
+  "source_base_path": "C:/Users/Chris/source/repos/P2PNet",
+  "xrefmap": "xrefmap.yml",
+  "files": [
+    {
+      "type": "Resource",
+      "output": {
+        "resource": {
+          "relative_path": "index.json"
+        }
+      }
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "P2PBootstrap/bin/Debug/net9.0/wwwroot/node_modules/xterm/README.md",
+      "output": {
+        ".html": {
+          "relative_path": "P2PBootstrap/bin/Debug/net9.0/wwwroot/node_modules/xterm/README.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "P2PBootstrap/bin/Debug/net9.0/wwwroot/node_modules/xterm/src/browser/renderer/shared/README.md",
+      "output": {
+        ".html": {
+          "relative_path": "P2PBootstrap/bin/Debug/net9.0/wwwroot/node_modules/xterm/src/browser/renderer/shared/README.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "P2PBootstrap/bin/Release/net9.0/wwwroot/node_modules/xterm/README.md",
+      "output": {
+        ".html": {
+          "relative_path": "P2PBootstrap/bin/Release/net9.0/wwwroot/node_modules/xterm/README.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "P2PBootstrap/bin/Release/net9.0/wwwroot/node_modules/xterm/src/browser/renderer/shared/README.md",
+      "output": {
+        ".html": {
+          "relative_path": "P2PBootstrap/bin/Release/net9.0/wwwroot/node_modules/xterm/src/browser/renderer/shared/README.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "P2PBootstrap/node_modules/xterm/README.md",
+      "output": {
+        ".html": {
+          "relative_path": "P2PBootstrap/node_modules/xterm/README.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "P2PBootstrap/node_modules/xterm/src/browser/renderer/shared/README.md",
+      "output": {
+        ".html": {
+          "relative_path": "P2PBootstrap/node_modules/xterm/src/browser/renderer/shared/README.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "P2PBootstrap/wwwroot/node_modules/xterm/README.md",
+      "output": {
+        ".html": {
+          "relative_path": "P2PBootstrap/wwwroot/node_modules/xterm/README.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "P2PBootstrap/wwwroot/node_modules/xterm/src/browser/renderer/shared/README.md",
+      "output": {
+        ".html": {
+          "relative_path": "P2PBootstrap/wwwroot/node_modules/xterm/src/browser/renderer/shared/README.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "README.md",
+      "output": {
+        ".html": {
+          "relative_path": "README.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PBootstrap.CLI.Command.CommandArg.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PBootstrap.CLI.Command.CommandArg.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PBootstrap.CLI.Command.CommandArg",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PBootstrap.CLI.Command.CommandImplementations.Key_cmd.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PBootstrap.CLI.Command.CommandImplementations.Key_cmd.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PBootstrap.CLI.Command.CommandImplementations.Key_cmd",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PBootstrap.CLI.Command.CommandImplementations.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PBootstrap.CLI.Command.CommandImplementations.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PBootstrap.CLI.Command.CommandImplementations",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PBootstrap.CLI.Command.CommandResponse.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PBootstrap.CLI.Command.CommandResponse.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PBootstrap.CLI.Command.CommandResponse",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PBootstrap.CLI.Command.ICommand.ICommand.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PBootstrap.CLI.Command.ICommand.ICommand.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PBootstrap.CLI.Command.ICommand.ICommand",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PBootstrap.CLI.Command.ICommand.ICommandArg.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PBootstrap.CLI.Command.ICommand.ICommandArg.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PBootstrap.CLI.Command.ICommand.ICommandArg",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PBootstrap.CLI.Command.ICommand.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PBootstrap.CLI.Command.ICommand.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PBootstrap.CLI.Command.ICommand",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PBootstrap.CLI.Command.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PBootstrap.CLI.Command.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PBootstrap.CLI.Command",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PBootstrap.CLI.Parser.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PBootstrap.CLI.Parser.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PBootstrap.CLI.Parser",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PBootstrap.CLI.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PBootstrap.CLI.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PBootstrap.CLI",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PBootstrap.Database.DatabaseService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PBootstrap.Database.DatabaseService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PBootstrap.Database.DatabaseService",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PBootstrap.Database.Tables.EqualityCheck.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PBootstrap.Database.Tables.EqualityCheck.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PBootstrap.Database.Tables.EqualityCheck",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PBootstrap.Database.Tables.TableBase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PBootstrap.Database.Tables.TableBase.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PBootstrap.Database.Tables.TableBase",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PBootstrap.Database.Tables.TableComponents.Column-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PBootstrap.Database.Tables.TableComponents.Column-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PBootstrap.Database.Tables.TableComponents.Column<T>",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PBootstrap.Database.Tables.TableComponents.ColumnModifiers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PBootstrap.Database.Tables.TableComponents.ColumnModifiers.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PBootstrap.Database.Tables.TableComponents.ColumnModifiers",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PBootstrap.Database.Tables.TableComponents.ColumnOptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PBootstrap.Database.Tables.TableComponents.ColumnOptions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PBootstrap.Database.Tables.TableComponents.ColumnOptions",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PBootstrap.Database.Tables.TableComponents.IColumn-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PBootstrap.Database.Tables.TableComponents.IColumn-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PBootstrap.Database.Tables.TableComponents.IColumn<T>",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PBootstrap.Database.Tables.TableComponents.IColumn.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PBootstrap.Database.Tables.TableComponents.IColumn.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PBootstrap.Database.Tables.TableComponents.IColumn",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PBootstrap.Database.Tables.TableComponents.SQLiteCompatibleTypes.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PBootstrap.Database.Tables.TableComponents.SQLiteCompatibleTypes.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PBootstrap.Database.Tables.TableComponents.SQLiteCompatibleTypes",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PBootstrap.Database.Tables.TableComponents.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PBootstrap.Database.Tables.TableComponents.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PBootstrap.Database.Tables.TableComponents",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PBootstrap.Database.Tables.Table_LogsCLI.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PBootstrap.Database.Tables.Table_LogsCLI.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PBootstrap.Database.Tables.Table_LogsCLI",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PBootstrap.Database.Tables.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PBootstrap.Database.Tables.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PBootstrap.Database.Tables",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PBootstrap.Database.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PBootstrap.Database.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PBootstrap.Database",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PBootstrap.Encryption.EncryptionService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PBootstrap.Encryption.EncryptionService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PBootstrap.Encryption.EncryptionService",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PBootstrap.Encryption.Pgp.IKeyPair.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PBootstrap.Encryption.Pgp.IKeyPair.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PBootstrap.Encryption.Pgp.IKeyPair",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PBootstrap.Encryption.Pgp.KeyPair.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PBootstrap.Encryption.Pgp.KeyPair.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PBootstrap.Encryption.Pgp.KeyPair",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PBootstrap.Encryption.Pgp.Keys.KeyRingDictionary-2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PBootstrap.Encryption.Pgp.Keys.KeyRingDictionary-2.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PBootstrap.Encryption.Pgp.Keys.KeyRingDictionary<TKey, TValue>",
+      "Summary": "<p sourcefile=\"api/P2PBootstrap.Encryption.Pgp.Keys.KeyRingDictionary-2.yml\" sourcestartlinenumber=\"1\">A dictionary that securely stores key pairs in a highly secure manner.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PBootstrap.Encryption.Pgp.Keys.PGPKeyInfo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PBootstrap.Encryption.Pgp.Keys.PGPKeyInfo.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PBootstrap.Encryption.Pgp.Keys.PGPKeyInfo",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PBootstrap.Encryption.Pgp.Keys.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PBootstrap.Encryption.Pgp.Keys.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PBootstrap.Encryption.Pgp.Keys",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PBootstrap.Encryption.Pgp.PgpService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PBootstrap.Encryption.Pgp.PgpService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PBootstrap.Encryption.Pgp.PgpService",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PBootstrap.Encryption.Pgp.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PBootstrap.Encryption.Pgp.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PBootstrap.Encryption.Pgp",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PBootstrap.Encryption.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PBootstrap.Encryption.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PBootstrap.Encryption",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PBootstrap.GlobalConfig.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PBootstrap.GlobalConfig.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PBootstrap.GlobalConfig",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PBootstrap.Program.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PBootstrap.Program.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PBootstrap.Program",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PBootstrap.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PBootstrap.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PBootstrap",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.DicoveryChannels.WAN.BootstrapChannel.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.DicoveryChannels.WAN.BootstrapChannel.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.DicoveryChannels.WAN.BootstrapChannel",
+      "Summary": "<p sourcefile=\"api/P2PNet.DicoveryChannels.WAN.BootstrapChannel.yml\" sourcestartlinenumber=\"1\">Communicates with a bootstrap server to share known peers and establish identity in network.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.DicoveryChannels.WAN.BootstrapPeer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.DicoveryChannels.WAN.BootstrapPeer.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.DicoveryChannels.WAN.BootstrapPeer",
+      "Summary": "<p sourcefile=\"api/P2PNet.DicoveryChannels.WAN.BootstrapPeer.yml\" sourcestartlinenumber=\"1\">Represents a bootstrap server using IPeer implementation.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.DicoveryChannels.WAN.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.DicoveryChannels.WAN.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.DicoveryChannels.WAN",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.Distribution.CollectionSharePacketContext.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.Distribution.CollectionSharePacketContext.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.Distribution.CollectionSharePacketContext",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.Distribution.DataTransmissionPacketContext.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.Distribution.DataTransmissionPacketContext.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.Distribution.DataTransmissionPacketContext",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.Distribution.DisconnectPacketContext.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.Distribution.DisconnectPacketContext.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.Distribution.DisconnectPacketContext",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.Distribution.DistributionHandler.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.Distribution.DistributionHandler.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.Distribution.DistributionHandler",
+      "Summary": "<p sourcefile=\"api/P2PNet.Distribution.DistributionHandler.yml\" sourcestartlinenumber=\"1\">Provides methods and properties to handle data distribution to trusted peer channels.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.Distribution.DistributionProtocol.DataPayloadFormat.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.Distribution.DistributionProtocol.DataPayloadFormat.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.Distribution.DistributionProtocol.DataPayloadFormat",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.Distribution.DistributionProtocol.MessageTags.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.Distribution.DistributionProtocol.MessageTags.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.Distribution.DistributionProtocol.MessageTags",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.Distribution.DistributionProtocol.PacketType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.Distribution.DistributionProtocol.PacketType.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.Distribution.DistributionProtocol.PacketType",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.Distribution.DistributionProtocol.PacketTypeRelay.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.Distribution.DistributionProtocol.PacketTypeRelay.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.Distribution.DistributionProtocol.PacketTypeRelay",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.Distribution.DistributionProtocol.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.Distribution.DistributionProtocol.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.Distribution.DistributionProtocol",
+      "Summary": "<p sourcefile=\"api/P2PNet.Distribution.DistributionProtocol.yml\" sourcestartlinenumber=\"1\">The DistributionProtocol provides uniformity with data exchange, packet formatting, and other functions within the P2P network.\nThis should be included as a static reference.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.Distribution.GenericPeerContext.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.Distribution.GenericPeerContext.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.Distribution.GenericPeerContext",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.Distribution.GenericPeerListContext.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.Distribution.GenericPeerListContext.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.Distribution.GenericPeerListContext",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.Distribution.IPeerContext.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.Distribution.IPeerContext.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.Distribution.IPeerContext",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.Distribution.IPeerListContext.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.Distribution.IPeerListContext.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.Distribution.IPeerListContext",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.Distribution.IdentifierPacketContext.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.Distribution.IdentifierPacketContext.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.Distribution.IdentifierPacketContext",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.Distribution.NetworkTaskContext.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.Distribution.NetworkTaskContext.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.Distribution.NetworkTaskContext",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.Distribution.NetworkTasks.NetworkTask.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.Distribution.NetworkTasks.NetworkTask.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.Distribution.NetworkTasks.NetworkTask",
+      "Summary": "<p sourcefile=\"api/P2PNet.Distribution.NetworkTasks.NetworkTask.yml\" sourcestartlinenumber=\"1\">Represents a network task that can be executed within the peer-to-peer network.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.Distribution.NetworkTasks.TaskType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.Distribution.NetworkTasks.TaskType.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.Distribution.NetworkTasks.TaskType",
+      "Summary": "<p sourcefile=\"api/P2PNet.Distribution.NetworkTasks.TaskType.yml\" sourcestartlinenumber=\"1\">Defines the types of tasks that can be executed within the peer-to-peer network.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.Distribution.NetworkTasks.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.Distribution.NetworkTasks.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.Distribution.NetworkTasks",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.Distribution.P2PNet.Distribution.PacketHandleProtocol.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.Distribution.P2PNet.Distribution.PacketHandleProtocol.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.Distribution.P2PNet.Distribution.PacketHandleProtocol",
+      "Summary": "<p sourcefile=\"api/P2PNet.Distribution.P2PNet.Distribution.PacketHandleProtocol.yml\" sourcestartlinenumber=\"1\">Provides protocol actions for handling different types of packets received by <xref href=\"P2PNet.Peers.PeerChannel\" data-throw-if-not-resolved=\"false\"></xref> instances.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.Distribution.P2PNet.Distribution.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.Distribution.P2PNet.Distribution.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.Distribution.P2PNet.Distribution",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.Distribution.PureMessagePacketContext.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.Distribution.PureMessagePacketContext.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.Distribution.PureMessagePacketContext",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.Distribution.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.Distribution.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.Distribution",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.NetworkPackets.CollectionSharePacket.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.NetworkPackets.CollectionSharePacket.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.NetworkPackets.CollectionSharePacket",
+      "Summary": "<p sourcefile=\"api/P2PNet.NetworkPackets.CollectionSharePacket.yml\" sourcestartlinenumber=\"1\">Standard packet used to relay a collection of peers on the network using peer-identifying information.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.NetworkPackets.DataTransmissionPacket.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.NetworkPackets.DataTransmissionPacket.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.NetworkPackets.DataTransmissionPacket",
+      "Summary": "<p sourcefile=\"api/P2PNet.NetworkPackets.DataTransmissionPacket.yml\" sourcestartlinenumber=\"1\">Represents a data transmission packet used for transmitting data throughout the peer-to-peer network.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.NetworkPackets.DisconnectPacket.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.NetworkPackets.DisconnectPacket.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.NetworkPackets.DisconnectPacket",
+      "Summary": "<p sourcefile=\"api/P2PNet.NetworkPackets.DisconnectPacket.yml\" sourcestartlinenumber=\"1\">Standard packet used to relay information about disconnecting peers.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.NetworkPackets.INetworkPacket.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.NetworkPackets.INetworkPacket.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.NetworkPackets.INetworkPacket",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.NetworkPackets.IdentifierPacket.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.NetworkPackets.IdentifierPacket.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.NetworkPackets.IdentifierPacket",
+      "Summary": "<p sourcefile=\"api/P2PNet.NetworkPackets.IdentifierPacket.yml\" sourcestartlinenumber=\"1\">Standard packet used to relay identifying information through out peer network.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.NetworkPackets.PureMessagePacket.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.NetworkPackets.PureMessagePacket.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.NetworkPackets.PureMessagePacket",
+      "Summary": "<p sourcefile=\"api/P2PNet.NetworkPackets.PureMessagePacket.yml\" sourcestartlinenumber=\"1\">Represents a simple human-readable message packet.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.NetworkPackets.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.NetworkPackets.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.NetworkPackets",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.PeerNetwork.BootstrapTrustPolicy.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.PeerNetwork.BootstrapTrustPolicy.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.PeerNetwork.BootstrapTrustPolicy",
+      "Summary": "<p sourcefile=\"api/P2PNet.PeerNetwork.BootstrapTrustPolicy.yml\" sourcestartlinenumber=\"1\">Handles trust and permissions in regards to bootstrap connections.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.PeerNetwork.BootstrapTrustPolicyType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.PeerNetwork.BootstrapTrustPolicyType.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.PeerNetwork.BootstrapTrustPolicyType",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.PeerNetwork.IncomingPeerTrustPolicy.IncomingPeerMode.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.PeerNetwork.IncomingPeerTrustPolicy.IncomingPeerMode.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.PeerNetwork.IncomingPeerTrustPolicy.IncomingPeerMode",
+      "Summary": "<p sourcefile=\"api/P2PNet.PeerNetwork.IncomingPeerTrustPolicy.IncomingPeerMode.yml\" sourcestartlinenumber=\"1\">Values for <xref href=\"P2PNet.PeerNetwork.IncomingPeerTrustPolicy.IncomingPeerPlacement\" data-throw-if-not-resolved=\"false\"></xref></p>\n<ul><li><span class=\"term\">QueueBased</span>The inbound peer will be directed to the inbound peer queue.</li><li><span class=\"term\">EventBased</span>An event is triggered and the peer is passed to the event args.</li><li><span class=\"term\">QueueAndEventBased</span>The peer is directed to the inbound peer queue, and an event is triggered where the peer is passed to the event args.</li></ul>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.PeerNetwork.IncomingPeerTrustPolicy.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.PeerNetwork.IncomingPeerTrustPolicy.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.PeerNetwork.IncomingPeerTrustPolicy",
+      "Summary": "<p sourcefile=\"api/P2PNet.PeerNetwork.IncomingPeerTrustPolicy.yml\" sourcestartlinenumber=\"1\">Handles trust and permissions in regards to incoming peer connections.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.PeerNetwork.LANIdentifierPreference.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.PeerNetwork.LANIdentifierPreference.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.PeerNetwork.LANIdentifierPreference",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.PeerNetwork.LocalAreaNetworkManagement.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.PeerNetwork.LocalAreaNetworkManagement.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.PeerNetwork.LocalAreaNetworkManagement",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.PeerNetwork.NewKnownPeerEventHandler.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.PeerNetwork.NewKnownPeerEventHandler.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.PeerNetwork.NewKnownPeerEventHandler",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.PeerNetwork.NewPeerEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.PeerNetwork.NewPeerEventArgs.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.PeerNetwork.NewPeerEventArgs",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.PeerNetwork.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.PeerNetwork.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.PeerNetwork",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.Peers.GenericPeer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.Peers.GenericPeer.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.Peers.GenericPeer",
+      "Summary": "<p sourcefile=\"api/P2PNet.Peers.GenericPeer.yml\" sourcestartlinenumber=\"1\">Represents a default peer implementation using IPeer.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.Peers.IPeer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.Peers.IPeer.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.Peers.IPeer",
+      "Summary": "<p sourcefile=\"api/P2PNet.Peers.IPeer.yml\" sourcestartlinenumber=\"1\">Represents a peer with an IP address, port, TCP client, network stream, and identifier.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.Peers.InboundConnectingPeersQueue.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.Peers.InboundConnectingPeersQueue.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.Peers.InboundConnectingPeersQueue",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.Peers.IncomingPeerEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.Peers.IncomingPeerEventArgs.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.Peers.IncomingPeerEventArgs",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.Peers.PeerChannel.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.Peers.PeerChannel.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.Peers.PeerChannel",
+      "Summary": "<p sourcefile=\"api/P2PNet.Peers.PeerChannel.yml\" sourcestartlinenumber=\"1\">Represents a communication channel with a peer in the P2P network.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.Peers.PeerChannelBase.DataReceivedEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.Peers.PeerChannelBase.DataReceivedEventArgs.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.Peers.PeerChannelBase.DataReceivedEventArgs",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.Peers.PeerChannelBase.DataReceivedEventHandler.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.Peers.PeerChannelBase.DataReceivedEventHandler.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.Peers.PeerChannelBase.DataReceivedEventHandler",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.Peers.PeerChannelBase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.Peers.PeerChannelBase.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.Peers.PeerChannelBase",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.Peers.PeerChannel_Base.DataReceivedEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.Peers.PeerChannel_Base.DataReceivedEventArgs.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.Peers.PeerChannel_Base.DataReceivedEventArgs",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.Peers.PeerChannel_Base.DataReceivedEventHandler.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.Peers.PeerChannel_Base.DataReceivedEventHandler.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.Peers.PeerChannel_Base.DataReceivedEventHandler",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.Peers.PeerChannel_Base.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.Peers.PeerChannel_Base.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.Peers.PeerChannel_Base",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.Peers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.Peers.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.Peers",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.Routines.IRoutine.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.Routines.IRoutine.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.Routines.IRoutine",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.Routines.Implementations.DiscernPeerChannels.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.Routines.Implementations.DiscernPeerChannels.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.Routines.Implementations.DiscernPeerChannels",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.Routines.Implementations.RotateBroadcastPort.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.Routines.Implementations.RotateBroadcastPort.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.Routines.Implementations.RotateBroadcastPort",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.Routines.Implementations.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.Routines.Implementations.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.Routines.Implementations",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.Routines.NetworkRoutines-2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.Routines.NetworkRoutines-2.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.Routines.NetworkRoutines<TKey, TValue>",
+      "Summary": "<p sourcefile=\"api/P2PNet.Routines.NetworkRoutines-2.yml\" sourcestartlinenumber=\"1\">Handles network routines for peer-to-peer networking.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.Routines.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.Routines.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.Routines",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.Widescan.HardwareMode.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.Widescan.HardwareMode.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.Widescan.HardwareMode",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.Widescan.MaximumMemoryAllocation.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.Widescan.MaximumMemoryAllocation.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.Widescan.MaximumMemoryAllocation",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.Widescan.Widescan.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.Widescan.Widescan.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.Widescan.Widescan",
+      "Summary": "<p sourcefile=\"api/P2PNet.Widescan.Widescan.yml\" sourcestartlinenumber=\"1\">An IPv6 tool that leverages hardware capabilities to generate vast quantities of IPv6 addresses to send identifier packets to.\nThe widescan throws a large net out to every possible combination of addresses within the provided prefix.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.Widescan.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.Widescan.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet.Widescan",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/P2PNet.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/P2PNet.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "P2PNet",
+      "Summary": null
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "api/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/toc.html"
+        },
+        ".json": {
+          "relative_path": "api/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "index.md",
+      "output": {
+        ".html": {
+          "relative_path": "index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "misc/bootstrapserver.md",
+      "output": {
+        ".html": {
+          "relative_path": "misc/bootstrapserver.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "misc/getting-started.md",
+      "output": {
+        ".html": {
+          "relative_path": "misc/getting-started.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "misc/introduction.md",
+      "output": {
+        ".html": {
+          "relative_path": "misc/introduction.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "misc/p2pnetwork.md",
+      "output": {
+        ".html": {
+          "relative_path": "misc/p2pnetwork.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "misc/peers.md",
+      "output": {
+        ".html": {
+          "relative_path": "misc/peers.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "misc/testing.md",
+      "output": {
+        ".html": {
+          "relative_path": "misc/testing.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "misc/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "misc/toc.html"
+        },
+        ".json": {
+          "relative_path": "misc/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "misc/widescan.md",
+      "output": {
+        ".html": {
+          "relative_path": "misc/widescan.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "p2pnet_logo.png",
+      "output": {
+        "resource": {
+          "relative_path": "p2pnet_logo.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "toc.html"
+        },
+        ".json": {
+          "relative_path": "toc.json"
+        }
+      },
+      "version": ""
+    }
+  ],
+  "groups": [
+    {
+      "xrefmap": "xrefmap.yml"
+    }
+  ]
+}

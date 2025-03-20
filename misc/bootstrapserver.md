@@ -52,7 +52,7 @@ To supplement the information visually, the following diagrams are provided:
 2. **Peer Distribution Flow**: Illustrates the flow of peer distribution, from a new peer requesting the peer list to the server returning the list based on the configured trust policy.
 
 <p>
-    <img src="https://raw.githubusercontent.com/realChrisDeBon/P2PNet/refs/heads/master/misc/Bootstrap.png" width="500" height="325" alt="bootstrap chart">
+    <img src="https://raw.githubusercontent.com/p2pnetsuite/P2PNet/refs/heads/master/misc/Bootstrap.png" width="500" height="325" alt="bootstrap chart">
 </p>
 
 **Note:** Bootstrap server still under construction 🏗️

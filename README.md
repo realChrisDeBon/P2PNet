@@ -30,4 +30,4 @@ See live example deployment:
 
 Technical overview and API documentation available down below.
 
-[![view - Documentation](https://img.shields.io/badge/view-Documentation-blue?style=for-the-badge)](https://realchrisdebon.github.io/P2PNet/)
+[![view - Documentation](https://img.shields.io/badge/view-Documentation-blue?style=for-the-badge)](https://p2pnetsuite.github.io/P2PNet/)
