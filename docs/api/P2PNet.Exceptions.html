@@ -2,9 +2,9 @@
 <html>
   <head>
     <meta charset="utf-8">
-      <title>Namespace P2PNet | P2PNetDocs </title>
+      <title>Namespace P2PNet.Exceptions | P2PNetDocs </title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="title" content="Namespace P2PNet | P2PNetDocs ">
+      <meta name="title" content="Namespace P2PNet.Exceptions | P2PNetDocs ">
       
       
       <link rel="icon" href="../misc/p2pnet_logo.png">
@@ -84,9 +84,9 @@
           <nav id="breadcrumb"></nav>
         </div>
 
-        <article data-uid="P2PNet">
+        <article data-uid="P2PNet.Exceptions">
 
-  <h1 id="P2PNet" data-uid="P2PNet" class="text-break">Namespace P2PNet</h1>
+  <h1 id="P2PNet_Exceptions" data-uid="P2PNet.Exceptions" class="text-break">Namespace P2PNet.Exceptions</h1>
   <div class="markdown level0 summary"></div>
   <div class="markdown level0 conceptual"></div>
   <div class="markdown level0 remarks"></div>
@@ -95,55 +95,12 @@
 Classes
 </h3>
     <dl class="jumplist">
-      <dt><a class="xref" href="P2PNet.PeerNetwork.html">PeerNetwork</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="P2PNet.PeerNetwork.NewPeerEventArgs.html">PeerNetwork.NewPeerEventArgs</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="P2PNet.PeerNetwork.TrustPolicies.html">PeerNetwork.TrustPolicies</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="P2PNet.PeerNetwork.TrustPolicies.BootstrapTrustPolicy.html">PeerNetwork.TrustPolicies.BootstrapTrustPolicy</a></dt>
-      <dd><p>Handles trust and permissions in regards to bootstrap connections.</p>
+      <dt><a class="xref" href="P2PNet.Exceptions.InitialAuthorityLockedException.html">InitialAuthorityLockedException</a></dt>
+      <dd><p>Represents an exception thrown when the initial bootstrap authority is locked in and another action conflicts with the initial locked in authority.</p>
 </dd>
     </dl>
     <dl class="jumplist">
-      <dt><a class="xref" href="P2PNet.PeerNetwork.TrustPolicies.IncomingPeerTrustPolicy.html">PeerNetwork.TrustPolicies.IncomingPeerTrustPolicy</a></dt>
-      <dd><p>Handles trust and permissions in regards to incoming peer connections.</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="P2PNet.PeerNetwork.TrustPolicies.PeerNetworkTrustPolicy.html">PeerNetwork.TrustPolicies.PeerNetworkTrustPolicy</a></dt>
-      <dd></dd>
-    </dl>
-    <h3 id="enums">
-Enums
-</h3>
-    <dl class="jumplist">
-      <dt><a class="xref" href="P2PNet.PeerNetwork.TrustPolicies.BootstrapTrustPolicyType.html">PeerNetwork.TrustPolicies.BootstrapTrustPolicyType</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="P2PNet.PeerNetwork.TrustPolicies.IncomingPeerTrustPolicy.IncomingPeerMode.html">PeerNetwork.TrustPolicies.IncomingPeerTrustPolicy.IncomingPeerMode</a></dt>
-      <dd><p>Values for <a class="xref" href="P2PNet.PeerNetwork.TrustPolicies.IncomingPeerTrustPolicy.html#P2PNet_PeerNetwork_TrustPolicies_IncomingPeerTrustPolicy_IncomingPeerPlacement">IncomingPeerPlacement</a></p>
-<ul><li><span class="term">QueueBased</span>The inbound peer will be directed to the inbound peer queue.</li><li><span class="term">EventBased</span>An event is triggered and the peer is passed to the event args.</li><li><span class="term">QueueAndEventBased</span>The peer is directed to the inbound peer queue, and an event is triggered where the peer is passed to the event args.</li></ul>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="P2PNet.PeerNetwork.TrustPolicies.LocalIdentifierSetPolicyTypes.html">PeerNetwork.TrustPolicies.LocalIdentifierSetPolicyTypes</a></dt>
-      <dd><p>Specifies the policy for initializing and managing the identifier of a peer member in the P2P network.
-This policy determines whether the identifier can be set locally, remotely, or both, and whether it can be changed after initial assignment.</p>
-</dd>
-    </dl>
-    <h3 id="delegates">
-Delegates
-</h3>
-    <dl class="jumplist">
-      <dt><a class="xref" href="P2PNet.PeerNetwork.NewKnownPeerEventHandler.html">PeerNetwork.NewKnownPeerEventHandler</a></dt>
+      <dt><a class="xref" href="P2PNet.Exceptions.TrustPolicyConflictException.html">TrustPolicyConflictException</a></dt>
       <dd></dd>
     </dl>
 

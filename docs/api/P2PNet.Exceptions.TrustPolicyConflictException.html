@@ -2,9 +2,9 @@
 <html>
   <head>
     <meta charset="utf-8">
-      <title>Class Program | P2PNetDocs </title>
+      <title>Class TrustPolicyConflictException | P2PNetDocs </title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="title" content="Class Program | P2PNetDocs ">
+      <meta name="title" content="Class TrustPolicyConflictException | P2PNetDocs ">
       
       
       <link rel="icon" href="../misc/p2pnet_logo.png">
@@ -16,7 +16,7 @@
       <meta name="docfx:rel" content="../">
       
       
-      <meta name="docfx:docurl" content="https://github.com/realChrisDeBon/P2PNet/new/docs/apiSpec/new?filename=P2PBootstrap_Program.md&amp;value=---%0Auid%3A%20P2PBootstrap.Program%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="docfx:docurl" content="https://github.com/realChrisDeBon/P2PNet/new/docs/apiSpec/new?filename=P2PNet_Exceptions_TrustPolicyConflictException.md&amp;value=---%0Auid%3A%20P2PNet.Exceptions.TrustPolicyConflictException%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
       <meta name="loc:inThisArticle" content="In this article">
       <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
       <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
@@ -84,24 +84,24 @@
           <nav id="breadcrumb"></nav>
         </div>
 
-        <article data-uid="P2PBootstrap.Program">
+        <article data-uid="P2PNet.Exceptions.TrustPolicyConflictException">
 
 
 
-  <h1 id="P2PBootstrap_Program" data-uid="P2PBootstrap.Program" class="text-break">
-Class Program  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/docs/P2PBootstrap/Program.cs/#L34"><i class="bi bi-code-slash"></i></a>
+  <h1 id="P2PNet_Exceptions_TrustPolicyConflictException" data-uid="P2PNet.Exceptions.TrustPolicyConflictException" class="text-break">
+Class TrustPolicyConflictException  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/docs/P2PNet/P2PExceptions/TrustPolicyConflictException.cs/#L21"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
-    <dl><dt>Namespace</dt><dd><a class="xref" href="P2PBootstrap.html">P2PBootstrap</a></dd></dl>
-  <dl><dt>Assembly</dt><dd>P2PBootstrap.dll</dd></dl>
+    <dl><dt>Namespace</dt><dd><a class="xref" href="P2PNet.html">P2PNet</a>.<a class="xref" href="P2PNet.Exceptions.html">Exceptions</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>P2PNet.dll</dd></dl>
   </div>
 
   <div class="markdown summary"></div>
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class Program</code></pre>
+    <pre><code class="lang-csharp hljs">public class TrustPolicyConflictException : Exception, ISerializable</code></pre>
   </div>
 
 
@@ -111,15 +111,58 @@ Class Program  <a class="header-action link-secondary" title="View source" href=
     <dt>Inheritance</dt>
     <dd>
       <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
-      <div><span class="xref">Program</span></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a></div>
+      <div><span class="xref">TrustPolicyConflictException</span></div>
     </dd>
   </dl>
 
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.runtime.serialization.iserializable">ISerializable</a></div>
+    </dd>
+  </dl>
 
 
   <dl class="typelist inheritedMembers">
     <dt>Inherited Members</dt>
     <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception.getbaseexception">Exception.GetBaseException()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception.gettype">Exception.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception.tostring">Exception.ToString()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception.data">Exception.Data</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception.helplink">Exception.HelpLink</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception.hresult">Exception.HResult</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception.innerexception">Exception.InnerException</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception.message">Exception.Message</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception.source">Exception.Source</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception.stacktrace">Exception.StackTrace</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception.targetsite">Exception.TargetSite</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception.serializeobjectstate">Exception.SerializeObjectState</a>
+    </div>
     <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
     </div>
@@ -130,16 +173,10 @@ Class Program  <a class="header-action link-secondary" title="View source" href=
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
     </div>
     <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
-    </div>
-    <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
     </div>
     <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
     </div>
   </dd></dl>
 
@@ -148,33 +185,28 @@ Class Program  <a class="header-action link-secondary" title="View source" href=
 
 
 
-  <h2 class="section" id="properties">Properties
+  <h2 class="section" id="constructors">Constructors
 </h2>
 
 
-  <a id="P2PBootstrap_Program_PublicKeyToString_" data-uid="P2PBootstrap.Program.PublicKeyToString*"></a>
+  <a id="P2PNet_Exceptions_TrustPolicyConflictException__ctor_" data-uid="P2PNet.Exceptions.TrustPolicyConflictException.#ctor*"></a>
 
-  <h3 id="P2PBootstrap_Program_PublicKeyToString" data-uid="P2PBootstrap.Program.PublicKeyToString">
-  PublicKeyToString
-  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/docs/P2PBootstrap/Program.cs/#L36"><i class="bi bi-code-slash"></i></a>
+  <h3 id="P2PNet_Exceptions_TrustPolicyConflictException__ctor" data-uid="P2PNet.Exceptions.TrustPolicyConflictException.#ctor">
+  TrustPolicyConflictException()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/docs/P2PNet/P2PExceptions/TrustPolicyConflictException.cs/#L23"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static string PublicKeyToString { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public TrustPolicyConflictException()</code></pre>
   </div>
 
 
 
 
 
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd></dd>
-  </dl>
 
 
 
@@ -183,27 +215,23 @@ Class Program  <a class="header-action link-secondary" title="View source" href=
 
 
 
-  <h2 class="section" id="methods">Methods
-</h2>
+  <a id="P2PNet_Exceptions_TrustPolicyConflictException__ctor_" data-uid="P2PNet.Exceptions.TrustPolicyConflictException.#ctor*"></a>
 
-
-  <a id="P2PBootstrap_Program_Main_" data-uid="P2PBootstrap.Program.Main*"></a>
-
-  <h3 id="P2PBootstrap_Program_Main_System_String___" data-uid="P2PBootstrap.Program.Main(System.String[])">
-  Main(string[])
-  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/docs/P2PBootstrap/Program.cs/#L37"><i class="bi bi-code-slash"></i></a>
+  <h3 id="P2PNet_Exceptions_TrustPolicyConflictException__ctor_System_String_" data-uid="P2PNet.Exceptions.TrustPolicyConflictException.#ctor(System.String)">
+  TrustPolicyConflictException(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/docs/P2PNet/P2PExceptions/TrustPolicyConflictException.cs/#L26"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static void Main(string[] args)</code></pre>
+    <pre><code class="lang-csharp hljs">public TrustPolicyConflictException(string message)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
-    <dt><code>args</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>[]</dt>
+    <dt><code>message</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
     <dd></dd>
   </dl>
 
@@ -218,20 +246,27 @@ Class Program  <a class="header-action link-secondary" title="View source" href=
 
 
 
-  <a id="P2PBootstrap_Program_Test_" data-uid="P2PBootstrap.Program.Test*"></a>
+  <a id="P2PNet_Exceptions_TrustPolicyConflictException__ctor_" data-uid="P2PNet.Exceptions.TrustPolicyConflictException.#ctor*"></a>
 
-  <h3 id="P2PBootstrap_Program_Test" data-uid="P2PBootstrap.Program.Test">
-  Test()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/docs/P2PBootstrap/Program.cs/#L213"><i class="bi bi-code-slash"></i></a>
+  <h3 id="P2PNet_Exceptions_TrustPolicyConflictException__ctor_System_String_System_Exception_" data-uid="P2PNet.Exceptions.TrustPolicyConflictException.#ctor(System.String,System.Exception)">
+  TrustPolicyConflictException(string, Exception)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/docs/P2PNet/P2PExceptions/TrustPolicyConflictException.cs/#L30"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static void Test()</code></pre>
+    <pre><code class="lang-csharp hljs">public TrustPolicyConflictException(string message, Exception inner)</code></pre>
   </div>
 
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>message</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>inner</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a></dt>
+    <dd></dd>
+  </dl>
 
 
 
