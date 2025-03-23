@@ -33,5 +33,6 @@ namespace P2PBootstrap
                 DebugMessage("Public or private key file not found.", MessageType.Warning);
             }
         }
+            string containerEnv = Environment.GetEnvironmentVariable("CONTAINERIZED_ENVIRONMENT", EnvironmentVariableTarget.Process);
     }
 }
