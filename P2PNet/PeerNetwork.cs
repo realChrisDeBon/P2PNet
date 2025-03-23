@@ -1,19 +1,15 @@
-﻿global using static ConsoleDebugger.ConsoleDebugger;
-global using P2PNet.Exceptions;
+﻿global using P2PNet.Exceptions;
+global using static ConsoleDebugger.ConsoleDebugger;
+using P2PNet.DicoveryChannels.WAN;
 using P2PNet.DiscoveryChannels;
-using P2PNet.Distribution;
 using P2PNet.NetworkPackets;
 using P2PNet.Peers;
+using P2PNet.Routines;
 using SharpPcap;
 using SharpPcap.LibPcap;
-using System;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
-using System.Threading.Channels;
-using P2PNet.Routines;
-using P2PNet.DicoveryChannels.WAN;
-using System.ComponentModel;
 
 namespace P2PNet
 {
@@ -53,6 +49,41 @@ namespace P2PNet
         /// </summary>
         public static IPAddress PublicIPV6Address;
         private static bool IPv6AddressFound = false;
+
+        /// <summary>
+        /// Gets or sets the identifier for the peer member in the P2P network.
+        /// The ability to set or change the identifier is governed by the <see cref="TrustPolicies.PeerNetworkTrustPolicy.LocalIdentifierSetPolicy"/>.
+        /// </summary>
+        /// <exception cref="UnauthorizedAccessException">
+        /// Thrown if an attempt is made to change the identifier when the policy is set to <see cref="TrustPolicies.LocalIdentifierSetPolicyTypes.StrictLocalOnly"/> or <see cref="TrustPolicies.LocalIdentifierSetPolicyTypes.StrictRemoteOnly"/>
+        /// and the identifier has already been set.
+        /// </exception>
+        public static string Identifier
+        {
+            get { return _identifier; }
+            set 
+            { 
+                if((TrustPolicies.PeerNetworkTrustPolicy.LocalIdentifierSetPolicy != TrustPolicies.LocalIdentifierSetPolicyTypes.StrictLocalOnly) && (TrustPolicies.PeerNetworkTrustPolicy.LocalIdentifierSetPolicy != TrustPolicies.LocalIdentifierSetPolicyTypes.StrictRemoteOnly))
+                {
+                    // checking if origin (local or remote) match policy should occur upstream from here
+                    // these checks only occur here due to security
+                    _identifier = value;
+                } else
+                {
+                    if (_identifierSet == false)
+                    {
+                        _identifier = value;
+                        _identifierSet = true;
+                    }
+                    else
+                    {
+                        throw new UnauthorizedAccessException("The identifier value is set and locked, therefore cannot be changed.");
+                    }
+                }
+            }
+        }
+        private static string _identifier = string.Empty;
+        private static bool _identifierSet = false;
 
         /// <summary>
         /// Gets the system MAC address.
@@ -274,7 +305,6 @@ namespace P2PNet
             listener = new TcpListener(IPAddress.Any, ListeningPort);
 
             P2PNetworkRoutines.InitializeRoutines();
-
         }
 
         static async Task AcceptClientsAsync()
@@ -759,10 +789,10 @@ namespace P2PNet
         /// <summary>
         /// Adds the provided <see cref="BootstrapChannel"/> instance to the active bootstrap channels collection.
         /// </summary>
-        /// <param name="bChannel">An instance of <see cref="BootstrapChannel"/> to be added.</param>
-        public static void AddBootstrapChannel(BootstrapChannel bChannel)
+        /// <param name="bootstrapChannel">An instance of <see cref="BootstrapChannel"/> to be added.</param>
+        public static void AddBootstrapChannel(BootstrapChannel bootstrapChannel)
         {
-            ActiveBootstrapChannel.Add(bChannel);
+            ActiveBootstrapChannel.Add(bootstrapChannel);
         }
         /// <summary>
         /// Creates a new <see cref="BootstrapChannel"/> from the specified connection options and adds it to the active bootstrap channels collection.
@@ -1117,10 +1147,81 @@ namespace P2PNet
 
             }
 
+            public static class PeerNetworkTrustPolicy
+            {
+                private static LocalIdentifierSetPolicyTypes _localIdentifierInitPolicy = LocalIdentifierSetPolicyTypes.LocalAndRemote;
+
+                /// <summary>
+                /// Gets or sets the policy for initializing and managing the identifier of a peer member in the P2P network.
+                /// This policy determines whether the identifier can be set locally, remotely, or both, and whether it can be changed after initial assignment.
+                /// </summary>
+                /// <exception cref="UnauthorizedAccessException">
+                /// Thrown if an attempt is made to change the policy to or from <see cref="LocalIdentifierSetPolicyTypes.StrictLocalOnly"/> or <see cref="LocalIdentifierSetPolicyTypes.StrictRemoteOnly"/>
+                /// after the identifier has already been set.
+                /// </exception>
+                public static LocalIdentifierSetPolicyTypes LocalIdentifierSetPolicy
+                {
+                    get => _localIdentifierInitPolicy;
+                    set
+                    {
+                        if ((_localIdentifierInitPolicy == LocalIdentifierSetPolicyTypes.StrictLocalOnly || _localIdentifierInitPolicy == LocalIdentifierSetPolicyTypes.StrictRemoteOnly) && (_identifierSet == true))
+                        {
+                            // ensure that the identifier cannot be changed after initial assignment
+                            throw new UnauthorizedAccessException("The identifier policy is locked and cannot be changed after initial assignment.");
+                        }
+                        else
+                        {
+                            _localIdentifierInitPolicy = value;
+                        }
+                    }
+                }
+
+            }
+
             public enum BootstrapTrustPolicyType
             {
                 Trustless,
                 Authority
+            }
+
+            /// <summary>
+            /// Specifies the policy for initializing and managing the identifier of a peer member in the P2P network.
+            /// This policy determines whether the identifier can be set locally, remotely, or both, and whether it can be changed after initial assignment.
+            /// </summary>
+            public enum LocalIdentifierSetPolicyTypes
+            {
+                /// <summary>
+                /// The identifier is set only upon initialization and cannot be changed thereafter.
+                /// This ensures that the identifier remains consistent and is not influenced by any external commands or local changes.
+                /// Note that this will lock in the policy and prevent any changes to the identifier after initial assignment.
+                /// </summary>
+                StrictLocalOnly,
+
+                /// <summary>
+                /// The identifier can be set and changed locally by the client.
+                /// This allows the client to manage its own identifier through out application lifecycle, but does not permit remote commands to alter it.
+                /// </summary>
+                Local,
+
+                /// <summary>
+                /// The identifier can be set and changed both locally and remotely.
+                /// The client can receive a NetworkTask from a trusted source (e.g., a bootstrap server in authority mode) with instructions to change the identifier.
+                /// This provides flexibility for both local and remote management of the identifier.
+                /// </summary>
+                LocalAndRemote,
+
+                /// <summary>
+                /// The identifier can only be set based on a NetworkTask from a remote authority source, such as a bootstrap server.
+                /// This ensures that the identifier is controlled by a trusted external entity and cannot be changed locally by the client.
+                /// </summary>
+                RemoteOnly,
+
+                /// <summary>
+                /// The identifier is strictly initialized and managed by a remote authority source and cannot be changed locally.
+                /// This provides the highest level of control by ensuring that the identifier is only influenced by trusted remote commands.
+                /// Note that this will lock in the policy and prevent any changes to the identifier after initial assignment.
+                /// </summary>
+                StrictRemoteOnly
             }
         }
         #endregion

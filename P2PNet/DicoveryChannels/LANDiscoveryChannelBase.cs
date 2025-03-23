@@ -55,7 +55,7 @@ namespace P2PNet.DicoveryChannels
             }
         }
 
-    internal abstract class Discovery_Channel_Base
+    internal abstract class LANDiscoveryChannelBase
         {
 
         public static Queue<int> dutypackets = new Queue<int>();
@@ -77,7 +77,7 @@ namespace P2PNet.DicoveryChannels
         public virtual async Task StartListener(CancellationToken cancellationToken, int port) { } // port-designated overload
         internal CancellationTokenSource cancelListener;
 
-        public Discovery_Channel_Base()
+        public LANDiscoveryChannelBase()
             {
             collectionpacket_ = new CollectionSharePacket();
 

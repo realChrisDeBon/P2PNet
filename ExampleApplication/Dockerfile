@@ -1,6 +1,9 @@
 FROM mcr.microsoft.com/dotnet/sdk:9.0-windowsservercore-ltsc2019 AS build
 WORKDIR /app
 
+ENV CONTAINERIZED_ENVIRONMENT=true
+ENV BOOTSTRAP_MODE=Authority
+
 # copy the NuGet configuration file from the root directory
 COPY ["NuGet.config", "./"]
 

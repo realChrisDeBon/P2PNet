@@ -19,7 +19,8 @@ namespace P2PNet.DicoveryChannels.WAN
             private string BootstrapServerEndpoint { get; set; }
             public BootstrapPeer BootstrapServer { get; set; }
             public bool IsAuthorityMode { get; set; }
-            private byte[] publicKey { get; set; }
+            private PGPKeyInfo publicKey { get; set; } = null; // store the public key from the server
+            public string PublicKey => publicKey?.ToString(); // expose the public key as a string for easy access
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BootstrapChannel"/> class using the specified endpoint and authority mode.
@@ -78,35 +79,38 @@ namespace P2PNet.DicoveryChannels.WAN
                 }
 
                 string responseContent = await response.Content.ReadAsStringAsync();
-                DataTransmissionPacket responsePacket = Deserialize<DataTransmissionPacket>(responseContent);
+                var responsePacket = Deserialize<DataTransmissionPacket>(responseContent);
 
-                if (IsAuthorityMode)
+                if (responsePacket != null)
                 {
-                    // expecting a DataTransmissionPacket with NetworkTask.
-                    NetworkTask networkTask = Deserialize<NetworkTask>(Encoding.UTF8.GetString(responsePacket.Data));
-                    // store server's public key.
-                    StorePublicKey(networkTask.TaskData["PublicKey"]);
-                    // process the peer list.
-                    CollectionSharePacket sharePacket = Deserialize<CollectionSharePacket>(networkTask.TaskData["Peers"]);
-                    ProcessPeerList(sharePacket);
-                    // check and set first locking authority
-                    if((PeerNetwork.TrustPolicies.BootstrapTrustPolicy.FirstSingleLockingAuthority == true)&&(PeerNetwork.TrustPolicies.BootstrapTrustPolicy.FirstSingleLockingAuthoritySet == false))
+                    if (IsAuthorityMode)
                     {
-                        PeerNetwork.TrustPolicies.BootstrapTrustPolicy.SetFirstLockingAuthority(this);
+                        // expecting a DataTransmissionPacket with NetworkTask.
+                        NetworkTask networkTask = Deserialize<NetworkTask>(Encoding.UTF8.GetString(responsePacket.Data));
+                        // store server's public key.
+                        StorePublicKey(networkTask.TaskData["PublicKey"]);
+                        // process the peer list.
+                        CollectionSharePacket sharePacket = Deserialize<CollectionSharePacket>(networkTask.TaskData["Peers"]);
+                        ProcessPeerList(sharePacket);
+                        // check and set first locking authority
+                        if ((PeerNetwork.TrustPolicies.BootstrapTrustPolicy.FirstSingleLockingAuthority == true) && (PeerNetwork.TrustPolicies.BootstrapTrustPolicy.FirstSingleLockingAuthoritySet == false))
+                        {
+                            PeerNetwork.TrustPolicies.BootstrapTrustPolicy.SetFirstLockingAuthority(this);
+                        }
                     }
-                }
-                else
-                {
-                    // trustless mode
-                    CollectionSharePacket sharePacket = Deserialize<CollectionSharePacket>(responseContent);
-                    ProcessPeerList(sharePacket);
+                    else
+                    {
+                        // trustless mode
+                        CollectionSharePacket sharePacket = Deserialize<CollectionSharePacket>(responseContent);
+                        ProcessPeerList(sharePacket);
+                    }
                 }
             }
         }
 
             private void StorePublicKey(string publicKey)
             {
-                this.publicKey = Encoding.UTF8.GetBytes(publicKey);
+            this.publicKey = new PGPKeyInfo("PublicKey", Encoding.UTF8.GetBytes(publicKey));
             }
 
 

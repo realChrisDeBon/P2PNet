@@ -15,10 +15,11 @@ namespace P2PBootstrap.Encryption.Pgp
     public static class PgpService
         {
         private static PGP localPGP = new PGP();
-        private static string KeysDirectory { get; set; } = Path.Combine(AppContext.BaseDirectory, AppSettings["Configuration:KeysDirectory"]);
+        private static string KeysDirectory { get; set; } = Path.Combine(AppContext.BaseDirectory, GlobalConfig.KeysDirectory());
         private static KeyPair ActiveKeyPair => GlobalConfig.ActiveKeys;
         private static List<PGPKeyInfo> _pgpKeys = new List<PGPKeyInfo>();
-        private static bool PublicKeySet, PrivateKeySet = false;
+        private static bool PrivateKeySet => ActiveKeyPair.Private != null;
+        private static bool PublicKeySet => ActiveKeyPair.Public != null;
 
         // TODO implement public accessors, advise user to implement a unique salt in documentation
         private static byte[] hashSalt = new byte[]
@@ -29,8 +30,11 @@ namespace P2PBootstrap.Encryption.Pgp
 
         // TODO fix me
         private static string username = "bob";
-        // TODO fix me
-        private static string passphrase = "password";
+        
+        public static string AllKeysList => string.Join(Environment.NewLine, _pgpKeys.Select(k => k.Name).ToArray());
+
+        public static string CurrentPGPPassphrase => _passphrase;
+        private static string _passphrase = "password";
 
         public static void Initialize()
         {
@@ -40,10 +44,10 @@ namespace P2PBootstrap.Encryption.Pgp
                 Directory.CreateDirectory(KeysDirectory);
             }
 
-            if (GlobalConfig.TrustPolicy == TrustPolicies.BootstrapTrustPolicyType.Authority)
+            if (GlobalConfig.TrustPolicy() == TrustPolicies.BootstrapTrustPolicyType.Authority)
             {
-                string publicKeyPath = Path.Combine(KeysDirectory, AppSettings["Configuration:AuthorityKey:PublicKey"]);
-                string privateKeyPath = Path.Combine(KeysDirectory, AppSettings["Configuration:AuthorityKey:PrivateKey"]);
+                string publicKeyPath = Path.Combine(KeysDirectory, GlobalConfig.PublicKeyPath());
+                string privateKeyPath = Path.Combine(KeysDirectory, GlobalConfig.PrivateKeyPath());
 
                 // Check if the public and private key files exist
                 if (!File.Exists(publicKeyPath) || !File.Exists(privateKeyPath))
@@ -108,21 +112,10 @@ namespace P2PBootstrap.Encryption.Pgp
                         // load all keys into memory
                         LoadPGPKeysFromDirectory();
 
-                        // Open passphrase in an instance of Notepad for user to view/save/write down
-                        string tempFile = Path.GetTempFileName();
-                        File.WriteAllText(tempFile, passphrase);
-                        DebugMessage("The message about to open in Notepad is your private key's passphrase. You will need to hold on to it in order to sign and encrypt messages. It is recommended you write it down, then make sure the temporary file was deleted! (deletion should be automatic, but always double check!)");
-                        // Start Notepad process
-                        Process notepad = new Process();
-                        notepad.StartInfo.FileName = "notepad.exe";
-                        notepad.StartInfo.RedirectStandardInput = true;
-                        notepad.StartInfo.Arguments = tempFile;
-                        notepad.StartInfo.UseShellExecute = false;
-                        notepad.Start();
-                        Thread.Sleep(2000);
-                        File.Delete(tempFile); // Delete temporary file
-                        message = $"PGP key pair generated successfully. Save this passphrase:{passphrase}";
-                        DebugMessage("PGP key pair generated successfully.", MessageType.General);
+                        Console.WriteLine("A private passphrase was generated with this PGP key pair. It is important to keep this passphrase secure and private, and to not lose it. You will need to use it in order to properly sign messages and encrypt data with your private key. It is advised that you write it down and store it somewhere safe..");
+                        Console.WriteLine("Passphrase: " + passphrase);
+                        message = $"PGP key pair generated successfully. Save this passphrase: {passphrase}";
+
                         return true;
                     }
 
@@ -162,28 +155,31 @@ namespace P2PBootstrap.Encryption.Pgp
             {
                     string prvkey = Encoding.UTF8.GetString(ActiveKeyPair.Private.KeyData);
 
-                    EncryptionKeys encyptionKeys = new EncryptionKeys(prvkey, passphrase);
+                    EncryptionKeys encyptionKeys = new EncryptionKeys(prvkey, _passphrase);
 
                     PGP temppgp = new PGP(encyptionKeys);
 
                     string msgout = temppgp.ClearSign(message);
 
                     message = msgout;
-                }
-                catch
-                {
-                    flawless_ = false;
-                }
-                finally
-                {
+            }
+            catch(Exception ex)
+            {
+                    DebugMessage(ex.ToString(), MessageType.Warning);
+            }
 
-                    if (flawless_ == true)
-                    {
-                        // message signed
-                    }
-                }
             return Task.FromResult(false);
 
+        }
+
+        public static void SetPGPPassphrase(string passphrase)
+        {
+            if (string.IsNullOrEmpty(passphrase))
+            {
+                _passphrase = passphrase;
+                return;
+            }
+            
         }
 
     }

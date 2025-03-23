@@ -38,7 +38,7 @@ namespace P2PNet.Distribution
         public static ConcurrentQueue<DataTransmissionPacket> incomingDataQueue = new ConcurrentQueue<DataTransmissionPacket>();
 
 
-        private static Timer _timer;
+        private static Timer _outboundChecker;
         private static Timer _queueChecker;
 
         /// <summary>
@@ -83,10 +83,10 @@ namespace P2PNet.Distribution
 
         static DistributionHandler()
             {
-            _timer = new System.Timers.Timer(500); // half second
-            _timer.Elapsed += OnTimedEvent;
-            _timer.AutoReset = true;
-            _timer.Enabled = true;
+            _outboundChecker = new System.Timers.Timer(500); // half second
+            _outboundChecker.Elapsed += HandleOutgoingData;
+            _outboundChecker.AutoReset = true;
+            _outboundChecker.Enabled = true;
 
             _queueChecker = new System.Timers.Timer(500); // 10 seconds
             _queueChecker.Elapsed += HandleIncomingDataPackets;
@@ -94,7 +94,7 @@ namespace P2PNet.Distribution
             _queueChecker.Enabled = true;
             }
          
-        internal static void OnTimedEvent(System.Object source, ElapsedEventArgs e)
+        internal static void HandleOutgoingData(System.Object source, ElapsedEventArgs e)
             {
             if (outgoingDataQueue.IsEmpty)
                 return;
