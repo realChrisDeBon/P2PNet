@@ -27,11 +27,11 @@ namespace P2PNet.Peers
 
         public void Enqueue(GenericPeer peer)
         {
-           if((IncomingPeerTrustPolicy.IncomingPeerPlacement == IncomingPeerTrustPolicy.IncomingPeerMode.QueueBased)||(IncomingPeerTrustPolicy.IncomingPeerPlacement == IncomingPeerTrustPolicy.IncomingPeerMode.QueueAndEventBased))
+           if((TrustPolicies.IncomingPeerTrustPolicy.IncomingPeerPlacement == TrustPolicies.IncomingPeerTrustPolicy.IncomingPeerMode.QueueBased)||(TrustPolicies.IncomingPeerTrustPolicy.IncomingPeerPlacement == TrustPolicies.IncomingPeerTrustPolicy.IncomingPeerMode.QueueAndEventBased))
                 {
                 _queue.Enqueue(peer);
                 }
-            if ((IncomingPeerTrustPolicy.IncomingPeerPlacement == IncomingPeerTrustPolicy.IncomingPeerMode.EventBased) || (IncomingPeerTrustPolicy.IncomingPeerPlacement == IncomingPeerTrustPolicy.IncomingPeerMode.QueueAndEventBased))
+            if ((TrustPolicies.IncomingPeerTrustPolicy.IncomingPeerPlacement == TrustPolicies.IncomingPeerTrustPolicy.IncomingPeerMode.EventBased) || (TrustPolicies.IncomingPeerTrustPolicy.IncomingPeerPlacement == TrustPolicies.IncomingPeerTrustPolicy.IncomingPeerMode.QueueAndEventBased))
                 {
                 Task.Run(() => { OnIncomingPeerConnectionAttempt(peer); });
                 }

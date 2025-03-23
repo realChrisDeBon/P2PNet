@@ -18,23 +18,30 @@ namespace ExampleApplication
                 targerPorts = args.ToArray().Select(x => int.Parse(x)).ToList();
                 PeerNetwork.DesignatedPorts = targerPorts;
                 PeerNetwork.BroadcasterPort = targerPorts[0]; // we'll chain these together
+            } else if (Environment.GetEnvironmentVariables(EnvironmentVariableTarget.Process).Contains("BROADCASTPORT"))
+            {
+                if (int.TryParse(Environment.GetEnvironmentVariable("BROADCASTPORT"), out int port))
+                {
+                    Console.WriteLine($"Using environment variable for broadcast port: {port}");
+                    PeerNetwork.BroadcasterPort = port;
+                }
             }
-            
+
             PeerNetwork.LoadLocalAddresses();
 
-            PeerNetwork.IncomingPeerTrustPolicy.IncomingPeerPlacement = IncomingPeerTrustPolicy.IncomingPeerMode.EventBased;
-            PeerNetwork.IncomingPeerTrustPolicy.RunDefaultTrustProtocol = true;
-            PeerNetwork.IncomingPeerTrustPolicy.AllowDefaultCommunication = true;
-
+            PeerNetwork.TrustPolicies.IncomingPeerTrustPolicy.IncomingPeerPlacement = TrustPolicies.IncomingPeerTrustPolicy.IncomingPeerMode.EventBased;
+            PeerNetwork.TrustPolicies.IncomingPeerTrustPolicy.RunDefaultTrustProtocol = true;
+            PeerNetwork.TrustPolicies.IncomingPeerTrustPolicy.AllowDefaultCommunication = true;
 
             PeerNetwork.PeerAdded += NewPeerAdded;
             PeerNetwork.IncomingPeerConnectionAttempt += NewPeerChannel;
 
             PeerNetwork.BeginAcceptingInboundPeers();
-            PeerNetwork.StartBroadcastingLAN();
-            
+            PeerNetwork.StartBroadcastingLAN(false);
+
             Console.WriteLine("Hello, p2p world!");
             Console.WriteLine($"Listening port: {ListeningPort}, local IP: {PublicIPV4Address}");
+            Console.WriteLine($"Broadcasting on port: {PeerNetwork.BroadcasterPort}");
             Task.Run(() => { WaitForPeers(); });
             while (true)
             {

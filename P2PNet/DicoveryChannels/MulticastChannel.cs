@@ -11,7 +11,7 @@ namespace P2PNet.DiscoveryChannels
     /// <summary>
     /// Conducts LAN multicasting to broaden network.
     /// </summary>
-    internal class MulticastChannel : Discovery_Channel_Base
+    internal class MulticastChannel : LANDiscoveryChannelBase
     {
         private readonly int[] MULTICAST_PORTS = { 3000, 3010, 3020, 3030 }; // TODO :: Allow the range of local multicast ports to be modified
         public IPAddress multicast_address;

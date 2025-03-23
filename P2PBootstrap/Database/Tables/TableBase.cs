@@ -20,7 +20,13 @@ namespace P2PBootstrap.Database.Tables
             Columns.Add(column);
         }
 
-
+        /// <summary>
+        /// Generates an SQL insert command to insert a single value into a target column.
+        /// </summary>
+        /// <param name="value">The value to be inserted into the target column.</param>
+        /// <param name="targetColumn">The name of the column to insert the value into.</param>
+        /// <returns>A string representing the SQL insert command.</returns>
+        /// <exception cref="ArgumentException">Thrown if the target column does not exist in the table.</exception>
         public string RunInsertCommand(string value, string targetColumn)
         {
             var targetColumn_ = Columns.FirstOrDefault(c => c.ColumnName == targetColumn);
@@ -35,6 +41,40 @@ namespace P2PBootstrap.Database.Tables
             // SQL insert command
             StringBuilder commandBuilder = new StringBuilder();
             commandBuilder.Append($"INSERT INTO {TableName} ({targetColumn}) VALUES ('{escapedValue}');");
+
+            return commandBuilder.ToString();
+        }
+        /// <summary>
+        /// Generates an SQL insert command to insert multiple values into multiple target columns.
+        /// </summary>
+        /// <param name="values">A dictionary where the keys are the column names and the values are the corresponding values to be inserted.</param>
+        /// <returns>A string representing the SQL insert command.</returns>
+        /// <exception cref="ArgumentException">Thrown if any of the target columns do not exist in the table.</exception>
+        public string RunInsertCommand(Dictionary<string, string> values)
+        {
+            // ensure all columns exist
+            foreach (var column in values.Keys)
+            {
+                var targetColumn = Columns.FirstOrDefault(c => c.ColumnName == column);
+                if (targetColumn == null)
+                {
+                    throw new ArgumentException($"Column '{column}' does not exist in the table '{TableName}'.");
+                }
+            }
+
+            // escape single quotes in the values to prevent SQL injection
+            var escapedValues = values.ToDictionary(
+                kvp => kvp.Key,
+                kvp => kvp.Value.Replace("'", "''")
+            );
+
+            // dynamically build the SQL INSERT command
+            StringBuilder commandBuilder = new StringBuilder();
+            commandBuilder.Append($"INSERT INTO {TableName} (");
+            commandBuilder.Append(string.Join(", ", escapedValues.Keys));
+            commandBuilder.Append(") VALUES (");
+            commandBuilder.Append(string.Join(", ", escapedValues.Values.Select(v => $"'{v}'")));
+            commandBuilder.Append(");");
 
             return commandBuilder.ToString();
         }

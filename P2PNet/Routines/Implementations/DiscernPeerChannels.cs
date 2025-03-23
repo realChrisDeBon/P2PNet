@@ -49,8 +49,8 @@ namespace P2PNet.Routines.Implementations
                     // LINQ statement to find channels to remove based on blocked identifiers or IPs
                     peersToRemove = PeerNetwork.ActivePeerChannels
                         .Where(channel =>
-                            PeerNetwork.IncomingPeerTrustPolicy.BlockedIdentifiers.Contains(channel.peer.Identifier) ||
-                            PeerNetwork.IncomingPeerTrustPolicy.BlockedIPs.Contains(channel.peer.IP))
+                            PeerNetwork.TrustPolicies.IncomingPeerTrustPolicy.BlockedIdentifiers.Contains(channel.peer.Identifier) ||
+                            PeerNetwork.TrustPolicies.IncomingPeerTrustPolicy.BlockedIPs.Contains(channel.peer.IP))
                         .ToList();
 
                     // check for inactivity

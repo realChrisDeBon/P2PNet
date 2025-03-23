@@ -3,6 +3,7 @@ global using static P2PNet.Distribution.DistributionProtocol;
 global using static ConsoleDebugger.ConsoleDebugger;
 global using static P2PBootstrap.GlobalConfig;
 global using static P2PBootstrap.Database.DatabaseService;
+global using static P2PBootstrap.Encryption.EncryptionService;
 global using P2PNet.Distribution;
 
 using Microsoft.AspNetCore.Builder;
@@ -24,12 +25,15 @@ using Microsoft.Extensions.FileProviders;
 using ConsoleDebugger;
 using P2PBootstrap.Encryption;
 using P2PNet.Distribution.NetworkTasks;
+using System.Text;
+using System.Security.Cryptography;
+using System.Net;
 
 namespace P2PBootstrap
 {
     public class Program
     {
-
+        public static string PublicKeyToString => Encoding.UTF8.GetString(GlobalConfig.ActiveKeys.Public.KeyData);
         public static void Main(string[] args)
         {
             LoggingConfiguration.LoggerStyle = LogStyle.PlainTextFormat;
@@ -40,6 +44,9 @@ namespace P2PBootstrap
                 .AddJsonFile(ConfigFile, optional: false, reloadOnChange: true);
 
             AppSettings = config.Build();
+
+            // check if application is running in container or not
+            GlobalConfig.CheckContainerEnvironment();
 
             var builder = WebApplication.CreateBuilder(args);
             builder.Logging.AddFilter("Microsoft", LogLevel.None);
@@ -56,7 +63,7 @@ namespace P2PBootstrap
             app.UseDefaultFiles(); // Serves index.html by default
             app.UseStaticFiles();
 
-            var DBdirectory = Path.Combine(Directory.GetCurrentDirectory(), "localdb");
+            var DBdirectory = Path.Combine(Directory.GetCurrentDirectory(), GlobalConfig.DbFileName());
             if (!Directory.Exists(DBdirectory))
             {
                 Directory.CreateDirectory(DBdirectory);
@@ -64,38 +71,117 @@ namespace P2PBootstrap
 
             app.UseRouting();
 
-            if(GlobalConfig.TrustPolicy == BootstrapTrustPolicyType.Trustless)
+            app.MapPut("/api/Bootstrap/peers", async Task<IResult> (HttpContext context) =>
             {
-                // Endpoint to Get Peers
-                app.MapGet("/api/Bootstrap/peers", () =>
+                try
                 {
-                    string serialized = Serialize(new CollectionSharePacket(100, KnownPeers));
-                    return Results.Content(serialized, "application/json");
-                });
-            }
-            else
-            {
-                // Endpoint to Get Peers -- returns 
-                app.MapPut("/api/Bootstrap/peers", () =>
-                {
-                    DataTransmissionPacket packet = new DataTransmissionPacket()
-                    {
-                        DataType = DataPayloadFormat.Task,
-                        Data = new NetworkTask()
-                        {
-                            TaskType = TaskType.SendPublicKey,
-                            TaskData = new Dictionary<string, string>()
-                            {
-                                { "PublicKey", AppSettings["Encryption:PublicKey"] },
-                                { "Peers", Serialize(new CollectionSharePacket(100, KnownPeers)) }
-                            }
-                        }.ToByte(),
-                    };
-                    return Results.Content("Trusted", "text/plain");
-                });
-            }
-            
+                    // read the incoming PUT
+                    using var reader = new StreamReader(context.Request.Body);
+                    var bodyJson = await reader.ReadToEndAsync();
 
+                    // deserialize the input
+                    var incomingPacket = Deserialize<DataTransmissionPacket>(bodyJson);
+
+                    // TODO improve logic for handling incoming peer verification
+                    // ie Identifier values
+                    if(incomingPacket != null)
+                    {
+                        string IDpacketJSON = Encoding.UTF8.GetString(incomingPacket.Data);
+                        IdentifierPacket identifierPacket = JsonSerializer.Deserialize<IdentifierPacket>(IDpacketJSON);
+                        IPeer newPeer = new GenericPeer(IPAddress.Parse(identifierPacket.IP), identifierPacket.Data);
+                        KnownPeers.Add(newPeer); // add the new peer to the known peers list
+                        // we DO NOT use PeerNetwork.AddPeer(...) otherwise a PeerChannel will be created
+                    }
+
+                    if (GlobalConfig.TrustPolicy() == TrustPolicies.BootstrapTrustPolicyType.Trustless)
+                    {
+                        // reply with a CollectionSharePacket
+                        var share = new CollectionSharePacket(100, KnownPeers);
+                        var responseJson = Serialize(share);
+                        return Results.Content(responseJson, "application/json");
+                    }
+                    else
+                    {
+
+                        // reply with a DataTransmissionPacket holding public key and peer list
+                        var networkTask = new NetworkTask()
+                        {
+                            TaskType = TaskType.BootstrapInitialization,
+                            TaskData = new Dictionary<string, string>()
+                                {
+                                    { "PublicKey", PublicKeyToString },
+                                    { "Peers", Serialize(new CollectionSharePacket(100, KnownPeers)) }
+                                }
+                        };
+
+                        var outPacket = new DataTransmissionPacket()
+                        {
+                            DataType = DataPayloadFormat.Task,
+                            Data = networkTask.ToByte()
+                        };
+
+                        var responseJson = Serialize(outPacket);
+                        return Results.Content(responseJson, "application/json");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return Results.Problem(ex.Message);
+                }
+            });
+            app.MapPut("/api/Bootstrap/verifyhash", async Task<IResult> (HttpContext context) =>
+            {
+                if (GlobalConfig.TrustPolicy() != TrustPolicies.BootstrapTrustPolicyType.Trustless)
+                {
+                    // read the PUT 
+                    using var reader = new StreamReader(context.Request.Body);
+                    string bodyJson = await reader.ReadToEndAsync();
+
+                    // Deserialize the incoming DataTransmissionPacket.
+                    var incomingPacket = Deserialize<DataTransmissionPacket>(bodyJson);
+
+                    // null check
+                    if (incomingPacket == null || incomingPacket.Data == null)
+                    {
+                        return Results.Problem(Serialize<PureMessagePacket>(new PureMessagePacket("Invalid DataTransmissionPacket received.")), statusCode: 400);
+                    }
+
+                    // extract the NetworkTask from the DataTransmissionPacket Data field.
+                    string ntJson = Encoding.UTF8.GetString(incomingPacket.Data);
+                    NetworkTask task = Deserialize<NetworkTask>(ntJson);
+
+                    // verify the task type.
+                    if (task.TaskType != TaskType.RequestVerifyHashRecord)
+                    {
+                        return Results.Problem(Serialize<PureMessagePacket>(new PureMessagePacket("Invalid network task type for this endpoint.")), statusCode: 400);
+                    }
+
+                    // check for the 'Hash' key.
+                    if (!task.TaskData.ContainsKey("Hash"))
+                    {
+                        return Results.Problem(Serialize<PureMessagePacket>(new PureMessagePacket("Missing 'Hash' key in TaskData.")), statusCode: 400);
+                    }
+
+                    string hashValue = task.TaskData["Hash"];
+                    bool exists = DatabaseService.VerifyHashRecord(hashValue);
+
+                    // prepare a PureMessagePacket indicating whether the hash was found.
+                    var replyPacket = new PureMessagePacket
+                    {
+                        Message = (exists ? $"True:{hashValue}" : $"False:{hashValue}")
+                    };
+
+                    // return the serialized PureMessagePacket as application/json.
+                    return Results.Content(Serialize<PureMessagePacket>(replyPacket), "application/json");
+                }
+                else
+                {
+                    // trustless policy, just return a message indicating this
+                    return Results.Content(Serialize<PureMessagePacket>(new PureMessagePacket("Trustless policy in effect, no hash verification performed.")), "application/json");
+                }
+            });
+
+            // TODO secure this against remote access
             app.MapGet("/api/parser/output", () =>
             {
                 if (Parser.OutputQueue.Count > 0)
@@ -122,6 +208,35 @@ namespace P2PBootstrap
         private class InputModel
         {
             public string Input { get; set; }
+        }
+
+        public static void Test()
+        {
+            Thread.Sleep(5000);
+            // test
+            NetworkTask nt = new NetworkTask()
+            {
+                TaskType = TaskType.BootstrapInitialization,
+                TaskData = new Dictionary<string, string>()
+                {
+                    { "PublicKey", PublicKeyToString },
+                    { "Peers", Serialize(new CollectionSharePacket(100, KnownPeers)) }
+                }
+            };
+
+            SignOffOnNetworkTask(ref nt);
+            foreach (KeyValuePair<string, string> kvp in nt.TaskData)
+            {
+                DebugMessage($"Key: {kvp.Key}, Value: {kvp.Value}", MessageType.Debug);
+            }
+            MD5 hashing = MD5.Create();
+            string _hashone = Convert.ToBase64String(hashing.ComputeHash(nt.ToByte()));
+            DebugMessage("Hash out before entry removal: " + _hashone, MessageType.Debug);
+
+            nt.TaskData.Remove("Signature"); // remove signature for verification
+            
+            string _hash = Convert.ToBase64String(hashing.ComputeHash(nt.ToByte()));
+            DebugMessage("Hash out after entry removal: " + _hash, MessageType.Debug);
         }
     }
 }

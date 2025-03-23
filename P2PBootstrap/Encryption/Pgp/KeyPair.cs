@@ -1,5 +1,4 @@
-﻿using P2PBootstrap.Encryption.Pgp.Keys;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace P2PBootstrap.Encryption.Pgp
     {

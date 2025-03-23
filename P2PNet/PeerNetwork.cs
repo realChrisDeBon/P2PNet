@@ -1,17 +1,15 @@
-﻿global using static ConsoleDebugger.ConsoleDebugger;
-
+﻿global using P2PNet.Exceptions;
+global using static ConsoleDebugger.ConsoleDebugger;
+using P2PNet.DicoveryChannels.WAN;
 using P2PNet.DiscoveryChannels;
-using P2PNet.Distribution;
 using P2PNet.NetworkPackets;
 using P2PNet.Peers;
+using P2PNet.Routines;
 using SharpPcap;
 using SharpPcap.LibPcap;
-using System;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
-using System.Threading.Channels;
-using P2PNet.Routines;
 
 namespace P2PNet
 {
@@ -39,7 +37,7 @@ namespace P2PNet
         /// <summary>
         /// Gets or sets the broadcaster port designated for outbound LAN discovery.
         /// </summary>
-        public static int BroadcasterPort;
+        public static int BroadcasterPort { get; set; } = 0;
 
         /// <summary>
         /// Gets the public IPv4 IP address.
@@ -51,6 +49,41 @@ namespace P2PNet
         /// </summary>
         public static IPAddress PublicIPV6Address;
         private static bool IPv6AddressFound = false;
+
+        /// <summary>
+        /// Gets or sets the identifier for the peer member in the P2P network.
+        /// The ability to set or change the identifier is governed by the <see cref="TrustPolicies.PeerNetworkTrustPolicy.LocalIdentifierSetPolicy"/>.
+        /// </summary>
+        /// <exception cref="UnauthorizedAccessException">
+        /// Thrown if an attempt is made to change the identifier when the policy is set to <see cref="TrustPolicies.LocalIdentifierSetPolicyTypes.StrictLocalOnly"/> or <see cref="TrustPolicies.LocalIdentifierSetPolicyTypes.StrictRemoteOnly"/>
+        /// and the identifier has already been set.
+        /// </exception>
+        public static string Identifier
+        {
+            get { return _identifier; }
+            set 
+            { 
+                if((TrustPolicies.PeerNetworkTrustPolicy.LocalIdentifierSetPolicy != TrustPolicies.LocalIdentifierSetPolicyTypes.StrictLocalOnly) && (TrustPolicies.PeerNetworkTrustPolicy.LocalIdentifierSetPolicy != TrustPolicies.LocalIdentifierSetPolicyTypes.StrictRemoteOnly))
+                {
+                    // checking if origin (local or remote) match policy should occur upstream from here
+                    // these checks only occur here due to security
+                    _identifier = value;
+                } else
+                {
+                    if (_identifierSet == false)
+                    {
+                        _identifier = value;
+                        _identifierSet = true;
+                    }
+                    else
+                    {
+                        throw new UnauthorizedAccessException("The identifier value is set and locked, therefore cannot be changed.");
+                    }
+                }
+            }
+        }
+        private static string _identifier = string.Empty;
+        private static bool _identifierSet = false;
 
         /// <summary>
         /// Gets the system MAC address.
@@ -238,9 +271,15 @@ namespace P2PNet
         /// All active <see cref="PeerChannel"/> connections are stored here. 
         /// </summary>
         public static volatile List<PeerChannel> ActivePeerChannels = new List<PeerChannel>();
+
+
         private static List<LocalChannel> ActiveLocalChannels = new List<LocalChannel>();
         private static List<MulticastChannel> ActiveMulticastChannels = new List<MulticastChannel>();
+        private static List<BootstrapChannel> ActiveBootstrapChannel = new List<BootstrapChannel>();
+
+        private static List<BootstrapChannel> inactiveBootstrapChannel = new List<BootstrapChannel>();
         private static List<IPAddress> multicast_addresses = new List<IPAddress>();
+
         #endregion
 
 
@@ -266,7 +305,6 @@ namespace P2PNet
             listener = new TcpListener(IPAddress.Any, ListeningPort);
 
             P2PNetworkRoutines.InitializeRoutines();
-
         }
 
         static async Task AcceptClientsAsync()
@@ -278,7 +316,7 @@ namespace P2PNet
                 IPAddress peerIP = ((IPEndPoint)client.Client.RemoteEndPoint).Address;
 
                 // Immediately filter out blocked IPs
-                if (PeerNetwork.IncomingPeerTrustPolicy.BlockedIPs.Contains(peerIP))
+                if (PeerNetwork.TrustPolicies.IncomingPeerTrustPolicy.BlockedIPs.Contains(peerIP))
                 {
                     DebugMessage($"Blocked IP attempted to connect: {peerIP.ToString()}. Ignoring.", MessageType.Warning);
                     client.Dispose();
@@ -374,7 +412,7 @@ namespace P2PNet
                     PeerChannel peerChannel = new PeerChannel(peer);
                     ActivePeerChannels.Add(peerChannel);
 
-                    if (IncomingPeerTrustPolicy.AllowEnhancedPacketExchange == true)
+                    if (TrustPolicies.IncomingPeerTrustPolicy.AllowEnhancedPacketExchange == true)
                     {
                         ElevatePeerPermission(peerChannel);
                     }
@@ -464,7 +502,7 @@ namespace P2PNet
             }
         }
 
-        #region Bootup
+        #region Bootup LAN
 
         /// <summary>
         /// Scans all network interface devices and collects essential information needed for peer network.
@@ -561,6 +599,7 @@ namespace P2PNet
             multicast_addresses = multicast_addresses.Distinct().ToList();
         }
 
+
         /// <summary>
         /// Gets the IPv6 address of the host machine.
         /// </summary>
@@ -599,6 +638,44 @@ namespace P2PNet
                 CheckIfProperInit(); // make sure local sys info loaded proper
 
                 RandomizeBroadcasterPort(); // randomize a broadcast port
+
+                foreach (int port in DesignatedPorts)
+                {
+                    LocalChannel localChannel = new LocalChannel(port);
+                    ActiveLocalChannels.Add(localChannel);
+                }
+                InitiateLocalChannels(BroadcasterPort);
+
+                foreach (IPAddress multicaster in multicast_addresses)
+                {
+                    MulticastChannel multicastChannel = new MulticastChannel(multicaster);
+                    ActiveMulticastChannels.Add(multicastChannel);
+                }
+                InitializeMulticastChannels();
+
+                runningLANdiscovery = true; // toggle flag
+            }
+            catch (Exception e)
+            {
+
+                DebugMessage($"{e.StackTrace} {e.Message}", MessageType.Warning);
+
+            }
+        }
+        /// <summary>
+        /// Begin LAN broadcast and discovery.
+        /// </summary>
+        /// <param name="initialRandomization">By default, the <see cref="PeerNetwork.BroadcasterPort"/> is randomized from available ports. Use this to override or manually set whether random selection occurs. Useful in scenarios when other logic determines the broadcaster port.</param>
+        public static void StartBroadcastingLAN(bool initialRandomization = false)
+        {
+            try
+            {
+                CheckIfProperInit(); // make sure local sys info loaded proper
+
+                if(initialRandomization == true)
+                {
+                    RandomizeBroadcasterPort(); // randomize a broadcast port
+                }
 
                 foreach (int port in DesignatedPorts)
                 {
@@ -707,6 +784,69 @@ namespace P2PNet
 
         #endregion
 
+        #region Bootup Bootstrap
+
+        /// <summary>
+        /// Adds the provided <see cref="BootstrapChannel"/> instance to the active bootstrap channels collection.
+        /// </summary>
+        /// <param name="bootstrapChannel">An instance of <see cref="BootstrapChannel"/> to be added.</param>
+        public static void AddBootstrapChannel(BootstrapChannel bootstrapChannel)
+        {
+            ActiveBootstrapChannel.Add(bootstrapChannel);
+        }
+        /// <summary>
+        /// Creates a new <see cref="BootstrapChannel"/> from the specified connection options and adds it to the active bootstrap channels collection.
+        /// </summary>
+        /// <param name="bootstrapChannel">
+        /// An instance of <see cref="BootstrapChannelConnectionOptions"/> containing the connection settings. 
+        /// The endpoint is mandatory while the authority mode and bootstrap peer values are optional.
+        /// </param>
+        public static void AddBootstrapChannel(BootstrapChannelConnectionOptions bootstrapChannel)
+        {
+            BootstrapChannel bChannel = new BootstrapChannel(bootstrapChannel);
+            ActiveBootstrapChannel.Add(bChannel);
+        }
+        /// <summary>
+        /// Creates a new <see cref="BootstrapChannel"/> using the specified endpoint address and trust policy,
+        /// then adds it to the active bootstrap channels collection.
+        /// </summary>
+        /// <param name="address">The endpoint URL or address of the bootstrap server.</param>
+        /// <param name="trustPolicy">
+        /// A value of <see cref="BootstrapTrustPolicyType"/> that specifies whether the channel should be created in authority or trustless mode.
+        /// </param>
+        public static void AddBootstrapChannel(string address, TrustPolicies.BootstrapTrustPolicyType trustPolicy)
+        {
+            BootstrapChannelConnectionOptions bootstrapChannel = new BootstrapChannelConnectionOptions(
+                address,
+                trustPolicy == TrustPolicies.BootstrapTrustPolicyType.Authority ? true : false);
+            BootstrapChannel bChannel = new BootstrapChannel(bootstrapChannel);
+            ActiveBootstrapChannel.Add(bChannel);
+        }
+
+        /// <summary>
+        /// Begin loading bootstrap connections.
+        /// </summary>
+        public static void StartBootstrapConnections()
+        {
+            try
+            {
+                CheckIfProperInit(); // make sure loaded proper
+
+                // todo
+
+            } catch(Exception e)
+            {
+                DebugMessage($"{e.StackTrace} {e.Message}", MessageType.Warning);
+            }
+
+            foreach (BootstrapChannel bChannel in inactiveBootstrapChannel)
+            {
+                // todo: add logic to start bootstrap connections
+            }
+        }
+
+        #endregion
+
         // Check if local address info init or not
         private static void CheckIfProperInit()
         {
@@ -717,130 +857,168 @@ namespace P2PNet
         }
 
         #region Trust Policies
-
-        /// <summary>
-        /// Handles trust and permissions in regards to incoming peer connections.
-        /// </summary>
-        public static class IncomingPeerTrustPolicy
+        public static class TrustPolicies
         {
             /// <summary>
-            /// Values for <see cref="IncomingPeerPlacement"/>
-            /// <list type="bullet">
-            /// <item>
-            /// <term>QueueBased</term>
-            /// <description>The inbound peer will be directed to the inbound peer queue.</description>
-            /// </item>
-            /// <item>
-            /// <term>EventBased</term>
-            /// <description>An event is triggered and the peer is passed to the event args.</description>
-            /// </item>
-            /// <item>
-            /// <term>QueueAndEventBased</term>
-            /// <description>The peer is directed to the inbound peer queue, and an event is triggered where the peer is passed to the event args.</description>
-            /// </item>
-            /// </list>
+            /// Handles trust and permissions in regards to incoming peer connections.
             /// </summary>
-            public enum IncomingPeerMode
+            public static class IncomingPeerTrustPolicy
             {
-                QueueBased,
-                EventBased,
-                QueueAndEventBased
-            }
-            private static bool _allowDefaultCommunication = true;
-            private static bool _allowEnhancedPacketExchange = false;
-            private static bool _runDefaultTrustProtocol = true;
-            private static IncomingPeerMode _howToHandleInboundPeed = IncomingPeerMode.EventBased;
-            private static List<IPAddress> _blockedIPs = new List<IPAddress>();
-            private static List<string> _blockedIdentifiers = new List<string>();
-
-            /// <summary>
-            /// Gets or sets whether incoming peer connections will be trusted to establish initial communication by default.
-            /// </summary>
-            /// <remarks>This determines communicability of <see cref="PureMessagePacket"/> and <see cref="DisconnectPacket"/> through the PeerChannel.</remarks>
-            public static bool AllowDefaultCommunication
-            {
-                get => _allowDefaultCommunication;
-                set => _allowDefaultCommunication = value;
-            }
-
-            /// <summary>
-            /// Gets or sets whether incoming peer connections will be trusted to exchange all other packet types, like
-            /// data transmission packets, before being trusted peers.
-            /// </summary>
-            public static bool AllowEnhancedPacketExchange
-            {
-                get => _allowEnhancedPacketExchange;
-                set => _allowEnhancedPacketExchange = value;
-            }
-
-            /// <summary>
-            /// Gets or sets the list of blocked IP addresses.
-            /// </summary>
-            /// <remarks>This will prevent peers with the specified IP addresses from connecting.</remarks>
-            public static List<IPAddress> BlockedIPs
-            {
-                get => _blockedIPs;
-                set => _blockedIPs = value;
-            }
-            /// <summary>
-            /// Gets or sets the list of blocked peer identifiers.
-            /// </summary>
-            /// <remarks>This is useful in authority mode or when peer identifiers are managed to be unique to machine/IP address.</remarks>
-            public static List<string> BlockedIdentifiers
-            {
-                get => _blockedIdentifiers;
-                set => _blockedIdentifiers = value;
-            }
-
-            /// <summary>
-            /// Gets or sets the logic for handling inbound peers.
-            /// <list type="bullet">
-            /// <item>
-            /// <term>QueueBased</term>
-            /// <description>The inbound peer will be directed to the inbound peer queue.</description>
-            /// </item>
-            /// <item>
-            /// <term>EventBased</term>
-            /// <description>An event is triggered and the peer is passed to the event args.</description>
-            /// </item>
-            /// <item>
-            /// <term>QueueAndEventBased</term>
-            /// <description>The peer is directed to the inbound peer queue, and an event is triggered where the peer is passed to the event args.</description>
-            /// </item>
-            /// </list>
-            /// </summary>
-            public static IncomingPeerMode IncomingPeerPlacement
-            {
-                get => _howToHandleInboundPeed;
-                set => _howToHandleInboundPeed = value;
-            }
-
-            /// <summary>
-            /// Gets or sets whether the default trust protocol will be run when a new peer channel is opened.
-            /// </summary>
-            /// <remarks>The peer channel will invoke <see cref="PeerNetwork.IncomingPeerTrustPolicy.DefaultTrustProtocol"/> Action delegate and pass a reference to itself.</remarks>
-            public static bool RunDefaultTrustProtocol
-            {
-                get => _runDefaultTrustProtocol;
-                set => _runDefaultTrustProtocol = value;
-            }
-            public static Action<PeerChannel> DefaultTrustProtocol { get; set; } = DefaultPingHandler;
-            private static async void DefaultPingHandler(PeerChannel peerChannel)
-            {
-                DebugMessage("Default trust protocol invoked.", ConsoleColor.Cyan);
-                int successfulPings = 0;
-                const int requiredPings = 3;
-
-                EventHandler<PeerChannelBase.DataReceivedEventArgs> dataReceivedHandler = null;
-                EventHandler<PeerChannelBase.DataReceivedEventArgs> postTestDataReceivedHandler = null;
-
-                // trust established, but peer is still waiting for pings
-                postTestDataReceivedHandler = (sender, e) =>
+                /// <summary>
+                /// Values for <see cref="IncomingPeerPlacement"/>
+                /// <list type="bullet">
+                /// <item>
+                /// <term>QueueBased</term>
+                /// <description>The inbound peer will be directed to the inbound peer queue.</description>
+                /// </item>
+                /// <item>
+                /// <term>EventBased</term>
+                /// <description>An event is triggered and the peer is passed to the event args.</description>
+                /// </item>
+                /// <item>
+                /// <term>QueueAndEventBased</term>
+                /// <description>The peer is directed to the inbound peer queue, and an event is triggered where the peer is passed to the event args.</description>
+                /// </item>
+                /// </list>
+                /// </summary>
+                public enum IncomingPeerMode
                 {
-                    DebugMessage(e.Data.ToString(), ConsoleColor.Cyan);
-                    if (e.Data.Contains("Ping from"))
+                    QueueBased,
+                    EventBased,
+                    QueueAndEventBased
+                }
+                private static bool _allowDefaultCommunication = true;
+                private static bool _allowEnhancedPacketExchange = false;
+                private static bool _runDefaultTrustProtocol = true;
+                private static IncomingPeerMode _howToHandleInboundPeed = IncomingPeerMode.EventBased;
+                private static List<IPAddress> _blockedIPs = new List<IPAddress>();
+                private static List<string> _blockedIdentifiers = new List<string>();
+
+                /// <summary>
+                /// Gets or sets whether incoming peer connections will be trusted to establish initial communication by default.
+                /// </summary>
+                /// <remarks>This determines communicability of <see cref="PureMessagePacket"/> and <see cref="DisconnectPacket"/> through the PeerChannel.</remarks>
+                public static bool AllowDefaultCommunication
+                {
+                    get => _allowDefaultCommunication;
+                    set => _allowDefaultCommunication = value;
+                }
+
+                /// <summary>
+                /// Gets or sets whether incoming peer connections will be trusted to exchange all other packet types, like
+                /// data transmission packets, before being trusted peers.
+                /// </summary>
+                public static bool AllowEnhancedPacketExchange
+                {
+                    get => _allowEnhancedPacketExchange;
+                    set => _allowEnhancedPacketExchange = value;
+                }
+
+                /// <summary>
+                /// Gets or sets the list of blocked IP addresses.
+                /// </summary>
+                /// <remarks>This will prevent peers with the specified IP addresses from connecting.</remarks>
+                public static List<IPAddress> BlockedIPs
+                {
+                    get => _blockedIPs;
+                    set => _blockedIPs = value;
+                }
+                /// <summary>
+                /// Gets or sets the list of blocked peer identifiers.
+                /// </summary>
+                /// <remarks>This is useful in authority mode or when peer identifiers are managed to be unique to machine/IP address.</remarks>
+                public static List<string> BlockedIdentifiers
+                {
+                    get => _blockedIdentifiers;
+                    set => _blockedIdentifiers = value;
+                }
+
+                /// <summary>
+                /// Gets or sets the logic for handling inbound peers.
+                /// <list type="bullet">
+                /// <item>
+                /// <term>QueueBased</term>
+                /// <description>The inbound peer will be directed to the inbound peer queue.</description>
+                /// </item>
+                /// <item>
+                /// <term>EventBased</term>
+                /// <description>An event is triggered and the peer is passed to the event args.</description>
+                /// </item>
+                /// <item>
+                /// <term>QueueAndEventBased</term>
+                /// <description>The peer is directed to the inbound peer queue, and an event is triggered where the peer is passed to the event args.</description>
+                /// </item>
+                /// </list>
+                /// </summary>
+                public static IncomingPeerMode IncomingPeerPlacement
+                {
+                    get => _howToHandleInboundPeed;
+                    set => _howToHandleInboundPeed = value;
+                }
+
+                /// <summary>
+                /// Gets or sets whether the default trust protocol will be run when a new peer channel is opened.
+                /// </summary>
+                /// <remarks>The peer channel will invoke <see cref="PeerNetwork.TrustPolicies.IncomingPeerTrustPolicy.DefaultTrustProtocol"/> Action delegate and pass a reference to itself.</remarks>
+                public static bool RunDefaultTrustProtocol
+                {
+                    get => _runDefaultTrustProtocol;
+                    set => _runDefaultTrustProtocol = value;
+                }
+                public static Action<PeerChannel> DefaultTrustProtocol { get; set; } = DefaultPingHandler;
+                private static async void DefaultPingHandler(PeerChannel peerChannel)
+                {
+                    DebugMessage("Default trust protocol invoked.", ConsoleColor.Cyan);
+                    int successfulPings = 0;
+                    const int requiredPings = 3;
+
+                    EventHandler<PeerChannelBase.DataReceivedEventArgs> dataReceivedHandler = null;
+                    EventHandler<PeerChannelBase.DataReceivedEventArgs> postTestDataReceivedHandler = null;
+
+                    // trust established, but peer is still waiting for pings
+                    postTestDataReceivedHandler = (sender, e) =>
                     {
-                        // we have established trust, but peer is still waiting for pings
+                        DebugMessage(e.Data.ToString(), ConsoleColor.Cyan);
+                        if (e.Data.Contains("Ping from"))
+                        {
+                            // we have established trust, but peer is still waiting for pings
+                            PureMessagePacket pingMessage = new PureMessagePacket
+                            {
+                                Message = $"Ping from {PeerNetwork.PublicIPV4Address}"
+                            };
+                            string outgoing = Serialize(pingMessage);
+                            WrapPacket(PacketType.PureMessage, ref outgoing);
+                            peerChannel.LoadOutgoingData(outgoing);
+                        }
+                    };
+
+                    // peer is not yet trusted, we are still waiting for pings
+                    dataReceivedHandler = (sender, e) =>
+                    {
+                        DebugMessage(e.Data.ToString(), ConsoleColor.Cyan);
+                        if (e.Data.Contains("Ping from"))
+                        {
+                            successfulPings++;
+                            if ((successfulPings >= requiredPings) && (successfulPings < 6))
+                            {
+                                peerChannel.TrustPeer();
+                                DebugMessage("Peer passed trust test.", ConsoleColor.Green);
+                            }
+                            else if (successfulPings >= 5)
+                            {
+                                // swap event handlers
+                                peerChannel.DataReceived -= dataReceivedHandler;
+                                peerChannel.DataReceived += postTestDataReceivedHandler;
+                            }
+                        }
+                    };
+
+
+
+                    peerChannel.DataReceived += dataReceivedHandler;
+
+                    while (peerChannel.IsTrustedPeer == false)
+                    {
                         PureMessagePacket pingMessage = new PureMessagePacket
                         {
                             Message = $"Ping from {PeerNetwork.PublicIPV4Address}"
@@ -848,142 +1026,208 @@ namespace P2PNet
                         string outgoing = Serialize(pingMessage);
                         WrapPacket(PacketType.PureMessage, ref outgoing);
                         peerChannel.LoadOutgoingData(outgoing);
+                        Thread.Sleep(3000);
                     }
-                };
+                }
+            }
 
-                // peer is not yet trusted, we are still waiting for pings
-                dataReceivedHandler = (sender, e) =>
+            /// <summary>
+            /// Handles trust and permissions in regards to bootstrap connections.
+            /// </summary>
+            public static class BootstrapTrustPolicy
+            {
+                private static bool _allowBootstrapAuthorityConnection = false;
+                private static bool _allowBootstrapTrustlessConnection = true;
+                private static bool _mustBeAuthority = false;
+                private static bool _firstSingleLockingAuthority = false;
+                private static BootstrapChannel FirstLockingAuthority { get; set; } = null; // only used in FirstSingleLockingAuthority mode
+                private static bool _firstLockingAuthroitySet = false;
+
+                /// <summary>
+                /// Gets or sets whether bootstrap authority connections are allowed.
+                /// When enabled, the client can connect to bootstrap servers able to issue command tasks that are signed with authority certificates.
+                /// This signed command tasks will be executed by the client and are used to control the network.
+                /// </summary>
+                public static bool AllowBootstrapAuthorityConnection
                 {
-                    DebugMessage(e.Data.ToString(), ConsoleColor.Cyan);
-                    if (e.Data.Contains("Ping from"))
+                    get => _allowBootstrapAuthorityConnection;
+                    set
                     {
-                        successfulPings++;
-                        if ((successfulPings >= requiredPings) && (successfulPings < 6))
+                        if ((_firstSingleLockingAuthority == true) && (value == false))
                         {
-                            peerChannel.TrustPeer();
-                            DebugMessage("Peer passed trust test.", ConsoleColor.Green);
-                        } else if (successfulPings >= 5)
+                            // must enforce consistent policy rules
+                            throw new TrustPolicyConflictException("FirstSingleLockingAuthority is true, therefore AllowBootstrapAuthorityConnection must be true.");
+                        }
+                        else
                         {
-                            // swap event handlers
-                            peerChannel.DataReceived -= dataReceivedHandler;
-                            peerChannel.DataReceived += postTestDataReceivedHandler;
+                            _allowBootstrapAuthorityConnection = value;
                         }
                     }
-                };
-
-
-
-                peerChannel.DataReceived += dataReceivedHandler;
-
-                while (peerChannel.IsTrustedPeer == false)
-                {
-                    PureMessagePacket pingMessage = new PureMessagePacket
-                    {
-                        Message = $"Ping from {PeerNetwork.PublicIPV4Address}"
-                    };
-                    string outgoing = Serialize(pingMessage);
-                    WrapPacket(PacketType.PureMessage, ref outgoing);
-                    peerChannel.LoadOutgoingData(outgoing);
-                    Thread.Sleep(3000);
                 }
-            }
-        }
 
-        /// <summary>
-        /// Handles trust and permissions in regards to bootstrap connections.
-        /// </summary>
-        public static class BootstrapTrustPolicy
-        {
-            private static bool _allowBootstrapAuthorityConnection = false;
-            private static bool _allowBootstrapTrustlessConnection = true;
-            private static bool _mustBeAuthority = false;
-            private static bool _firstSingleLockingAuthority = false;
-
-            /// <summary>
-            /// Gets or sets whether bootstrap authority connections are allowed.
-            /// When enabled, the client can connect to bootstrap servers able to issue command tasks that are signed with authority certificates.
-            /// This signed command tasks will be executed by the client and are used to control the network.
-            /// </summary>
-            public static bool AllowBootstrapAuthorityConnection
-            {
-                get => _allowBootstrapAuthorityConnection;
-                set => _allowBootstrapAuthorityConnection = value;
-            }
-
-            /// <summary>
-            /// Gets or sets whether bootstrap trustless connections are allowed.
-            /// When enabled, the client can connect to bootstrap servers able to serve a static endpoint for giving new peers the peer list.
-            /// This can be disabled to enforce bootstrap authority.
-            /// </summary>
-            public static bool AllowBootstrapTrustlessConnection
-            {
-                get => _allowBootstrapTrustlessConnection;
-                set => _allowBootstrapTrustlessConnection = value;
-            }
-
-            /// <summary>
-            /// Gets or sets whether bootstrap servers must establish an authority connection.
-            /// </summary>
-            public static bool MustBeAuthority
-            {
-                get => _mustBeAuthority;
-                set => _mustBeAuthority = value;
-            }
-
-            /// <summary>
-            /// If true, the first authority connection will be the only authority connection.
-            /// No other authority connections will be allowed.
-            /// Setting this value to true will also set <see cref="MustBeAuthority"/> and <see cref="AllowBootstrapAuthorityConnection"/> to true.
-            /// </summary>
-            public static bool FirstSingleLockingAuthority
-            {
-                get => _firstSingleLockingAuthority;
-                set
+                /// <summary>
+                /// Gets or sets whether bootstrap trustless connections are allowed.
+                /// When enabled, the client can connect to bootstrap servers able to serve a static endpoint for giving new peers the peer list.
+                /// This can be disabled to enforce bootstrap authority.
+                /// </summary>
+                /// <remarks>Trustless boostrap connection cannot relay commands or information of any sorts, they may only serve to relay identifying peer information.</remarks>
+                public static bool AllowBootstrapTrustlessConnection
                 {
-                    _firstSingleLockingAuthority = value;
-                    if (value == true)
+                    get => _allowBootstrapTrustlessConnection;
+                    set
                     {
-                        _mustBeAuthority = true;
-                        _allowBootstrapAuthorityConnection = true;
+                        if ((_firstSingleLockingAuthority == true) && (value == true))
+                        {
+                            throw new TrustPolicyConflictException("FirstSingleLockingAuthority is true, therefore AllowBootstrapTrustlessConnection must be false.");
+                        }
+                        else
+                        {
+                            _allowBootstrapTrustlessConnection = value;
+                        }
                     }
                 }
+
+                /// <summary>
+                /// If true, the first authority connection will be the only authority connection.
+                /// No other authority connections will be allowed.
+                /// Setting this value to true will also set <see cref="MustBeAuthority"/> and <see cref="AllowBootstrapAuthorityConnection"/> to true.
+                /// </summary>
+                public static bool FirstSingleLockingAuthority
+                {
+                    get => _firstSingleLockingAuthority;
+                    set
+                    {
+                        _firstSingleLockingAuthority = value;
+                        if (value == true)
+                        {
+                            _mustBeAuthority = true;
+                            _allowBootstrapAuthorityConnection = true;
+                        }
+                    }
+                }
+
+                /// <summary>
+                /// Gets whether the first authority connection has been set or not.
+                /// </summary>
+                public static bool FirstSingleLockingAuthoritySet
+                {
+                    get => _firstLockingAuthroitySet;
+                }
+
+                /// <summary>
+                /// Sets the first authority connection to be established via the bootstrap connection.
+                /// </summary>
+                /// <param name="authority">The bootstrap channel that will take first single locking authority.</param>
+                public static void SetFirstLockingAuthority(BootstrapChannel authority)
+                {
+                    if (_firstLockingAuthroitySet == false)
+                    {
+                        FirstLockingAuthority = authority;
+                        _firstLockingAuthroitySet = true;
+                    }
+                }
+
+                /// <summary>
+                /// Gets or sets whether bootstrap servers must establish an authority connection.
+                /// </summary>
+                /// <remarks>Setting this to true will automatically set <see cref="AllowBootstrapTrustlessConnection"/> to false.</remarks>
+                public static bool MustBeAuthority
+                {
+                    get => _mustBeAuthority;
+                    set
+                    {
+                        _mustBeAuthority = value;
+                        if (value == true)
+                        {
+                            _allowBootstrapTrustlessConnection = false;
+                        }
+                    }
+                }
+
+
             }
 
-        }
-        public enum BootstrapTrustPolicyType
-        {
-            Trustless,
-            Authority
-        }
+            public static class PeerNetworkTrustPolicy
+            {
+                private static LocalIdentifierSetPolicyTypes _localIdentifierInitPolicy = LocalIdentifierSetPolicyTypes.LocalAndRemote;
 
+                /// <summary>
+                /// Gets or sets the policy for initializing and managing the identifier of a peer member in the P2P network.
+                /// This policy determines whether the identifier can be set locally, remotely, or both, and whether it can be changed after initial assignment.
+                /// </summary>
+                /// <exception cref="UnauthorizedAccessException">
+                /// Thrown if an attempt is made to change the policy to or from <see cref="LocalIdentifierSetPolicyTypes.StrictLocalOnly"/> or <see cref="LocalIdentifierSetPolicyTypes.StrictRemoteOnly"/>
+                /// after the identifier has already been set.
+                /// </exception>
+                public static LocalIdentifierSetPolicyTypes LocalIdentifierSetPolicy
+                {
+                    get => _localIdentifierInitPolicy;
+                    set
+                    {
+                        if ((_localIdentifierInitPolicy == LocalIdentifierSetPolicyTypes.StrictLocalOnly || _localIdentifierInitPolicy == LocalIdentifierSetPolicyTypes.StrictRemoteOnly) && (_identifierSet == true))
+                        {
+                            // ensure that the identifier cannot be changed after initial assignment
+                            throw new UnauthorizedAccessException("The identifier policy is locked and cannot be changed after initial assignment.");
+                        }
+                        else
+                        {
+                            _localIdentifierInitPolicy = value;
+                        }
+                    }
+                }
+
+            }
+
+            public enum BootstrapTrustPolicyType
+            {
+                Trustless,
+                Authority
+            }
+
+            /// <summary>
+            /// Specifies the policy for initializing and managing the identifier of a peer member in the P2P network.
+            /// This policy determines whether the identifier can be set locally, remotely, or both, and whether it can be changed after initial assignment.
+            /// </summary>
+            public enum LocalIdentifierSetPolicyTypes
+            {
+                /// <summary>
+                /// The identifier is set only upon initialization and cannot be changed thereafter.
+                /// This ensures that the identifier remains consistent and is not influenced by any external commands or local changes.
+                /// Note that this will lock in the policy and prevent any changes to the identifier after initial assignment.
+                /// </summary>
+                StrictLocalOnly,
+
+                /// <summary>
+                /// The identifier can be set and changed locally by the client.
+                /// This allows the client to manage its own identifier through out application lifecycle, but does not permit remote commands to alter it.
+                /// </summary>
+                Local,
+
+                /// <summary>
+                /// The identifier can be set and changed both locally and remotely.
+                /// The client can receive a NetworkTask from a trusted source (e.g., a bootstrap server in authority mode) with instructions to change the identifier.
+                /// This provides flexibility for both local and remote management of the identifier.
+                /// </summary>
+                LocalAndRemote,
+
+                /// <summary>
+                /// The identifier can only be set based on a NetworkTask from a remote authority source, such as a bootstrap server.
+                /// This ensures that the identifier is controlled by a trusted external entity and cannot be changed locally by the client.
+                /// </summary>
+                RemoteOnly,
+
+                /// <summary>
+                /// The identifier is strictly initialized and managed by a remote authority source and cannot be changed locally.
+                /// This provides the highest level of control by ensuring that the identifier is only influenced by trusted remote commands.
+                /// Note that this will lock in the policy and prevent any changes to the identifier after initial assignment.
+                /// </summary>
+                StrictRemoteOnly
+            }
+        }
         #endregion
 
         #region Management Policies
 
-        public static class LocalAreaNetworkManagement
-        {
-            private static bool _allowSameIPConnections { get; set; } = false;
-            private static LANIdentifierPreference _identifierPreference { get; set; } = LANIdentifierPreference.PeerID;
-
-            public static bool AllowSameIPConnections
-            {
-                get => _allowSameIPConnections;
-                set => _allowSameIPConnections = value;
-            }
-
-            public static LANIdentifierPreference LANIdentifierPreference
-            {
-                get => _identifierPreference;
-                set => _identifierPreference = value;
-            }
-
-        }
-        public enum LANIdentifierPreference
-        {
-            IP,
-            MAC,
-            PeerID
-        }
 
         #endregion
     }

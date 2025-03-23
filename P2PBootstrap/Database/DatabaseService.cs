@@ -14,6 +14,7 @@ namespace P2PBootstrap.Database
         public static bool DbRunning { get; set; } = true;
 
         public static Table_LogsCLI LogsCLI_table { get; set; } = new Table_LogsCLI();
+        public static Table_SigningHistory SigningHistory_table { get; set; } = new Table_SigningHistory();
 
         public static void InitializeDatabase()
         {
@@ -49,6 +50,12 @@ namespace P2PBootstrap.Database
             {
                 command.ExecuteNonQuery();
             }
+
+            using (var command = new SqliteCommand(SigningHistory_table.GetCreateTableCommand(), connection))
+            {
+                command.ExecuteNonQuery();
+            }
+
         }
 
         public static void ExecuteTableCommand(string command)
@@ -99,6 +106,34 @@ namespace P2PBootstrap.Database
             else
             {
                 DebugMessage("No entries found in LogsCLI_Table.", MessageType.Warning);
+            }
+        }
+
+        public static bool VerifyHashRecord(string hash)
+        {
+            string query = "SELECT COUNT(*) FROM SigningHistory WHERE Hash = @hash";
+            int count = 0;
+            try
+            {
+                using (var command = new SqliteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@hash", hash);
+                    var result = command.ExecuteScalar();
+                    if (result != null && int.TryParse(result.ToString(), out count))
+                    {
+                        return count > 0;
+                    }
+                    else
+                    {
+                        DebugMessage("Unable to parse count result from SigningHistory.", MessageType.Warning);
+                        return false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                DebugMessage($"Error verifying hash in SigningHistory: {ex.Message}", MessageType.Warning);
+                return false;
             }
         }
 

@@ -253,35 +253,35 @@ namespace P2PNet.Peers
         #region Packet Handling
         protected virtual void HandleIdentityPacket(string data)
         {
-            if (_isTrustedPeer || IncomingPeerTrustPolicy.AllowEnhancedPacketExchange)
+            if (_isTrustedPeer || TrustPolicies.IncomingPeerTrustPolicy.AllowEnhancedPacketExchange)
             {
                 PacketHandleProtocol.HandleIdentityPacketAction?.Invoke(data);
             } // enhanced packet exchange defines behavior with impact
         }
         protected virtual void HandleDisconnectPacket(string data)
         {
-            if (_isTrustedPeer || IncomingPeerTrustPolicy.AllowDefaultCommunication == true)
+            if (_isTrustedPeer || TrustPolicies.IncomingPeerTrustPolicy.AllowDefaultCommunication == true)
             {
                 PacketHandleProtocol.HandleDisconnectPacketAction?.Invoke(data);
             } // default communication defines relay of info with little to impact
         }
         protected virtual void HandlePeerGroupPacket(string data)
         {
-            if (_isTrustedPeer || IncomingPeerTrustPolicy.AllowEnhancedPacketExchange)
+            if (_isTrustedPeer || TrustPolicies.IncomingPeerTrustPolicy.AllowEnhancedPacketExchange)
             {
                 PacketHandleProtocol.HandlePeerGroupPacketAction?.Invoke(data);
             } // enhanced packet exchange defines behavior with impact
         }
         protected virtual void HandleDataTransmissionPacket(string data)
         {
-            if (_isTrustedPeer || IncomingPeerTrustPolicy.AllowEnhancedPacketExchange)
+            if (_isTrustedPeer || TrustPolicies.IncomingPeerTrustPolicy.AllowEnhancedPacketExchange)
             {
                 PacketHandleProtocol.HandleDataTransmissionPacketAction?.Invoke(data);
             } // enhanced packet exchange defines behavior with impact
         }
         protected virtual void HandlePureMessagePacket(string data)
         {
-            if (_isTrustedPeer || IncomingPeerTrustPolicy.AllowDefaultCommunication == true)
+            if (_isTrustedPeer || TrustPolicies.IncomingPeerTrustPolicy.AllowDefaultCommunication == true)
             {
                 PacketHandleProtocol.HandlePureMessagePacketAction?.Invoke(data);
             } // default communication defines relay of info with little to impact

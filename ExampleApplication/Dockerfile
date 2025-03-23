@@ -1,6 +1,9 @@
 FROM mcr.microsoft.com/dotnet/sdk:9.0-windowsservercore-ltsc2019 AS build
 WORKDIR /app
 
+ENV CONTAINERIZED_ENVIRONMENT=true
+ENV BOOTSTRAP_MODE=Authority
+
 # copy the NuGet configuration file from the root directory
 COPY ["NuGet.config", "./"]
 
@@ -13,7 +16,7 @@ COPY . .
 WORKDIR "/app/ExampleApplication"
 
 # download WinPcap
-RUN powershell -Command Invoke-WebRequest -Uri https://github.com/realChrisDeBon/P2PNet/releases/download/dependency/winpcap-nmap-4.13.exe -OutFile winpcap-download.exe
+RUN powershell -Command Invoke-WebRequest -Uri https://github.com/P2PNetSuite/P2PNet/releases/download/dependency/winpcap-nmap-4.13.exe -OutFile winpcap-download.exe
 
 
 # install WinPcap

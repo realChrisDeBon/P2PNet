@@ -369,5 +369,5 @@ FodyWeavers.xsd
 /api
 /_site/favicon.ico
 /_site/logo.svg
-/P2PNet/P2PNet.csproj
 /Build_Docs.ps1
+/SyncOrgMaster.ps1

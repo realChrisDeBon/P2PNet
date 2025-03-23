@@ -85,9 +85,14 @@ namespace P2PNet.Distribution.NetworkTasks
         UpdateSettings,
 
         /// <summary>
+        /// A request to verify the existence of a hash record.
+        /// </summary>
+        RequestVerifyHashRecord,
+
+        /// <summary>
         /// Verify the PGP signature of a message or command.
         /// </summary>
-        VerifySignature,
+        RequestVerifySignature,
 
         /// <summary>
         /// Request the public key of a peer or bootstrap server.
@@ -95,12 +100,12 @@ namespace P2PNet.Distribution.NetworkTasks
         RequestPublicKey,
 
         /// <summary>
-        /// Send the public key to a peer or bootstrap server.
+        /// Send the public key and peer list to the peer from the bootstrap server.
         /// </summary>
-        SendPublicKey,
+        BootstrapInitialization,
 
         /// <summary>
-        /// Send a heartbeat signal to check the status of a peer or server.
+        /// Send a heartbeat signal to a bootstrap server.
         /// </summary>
         /// <remarks>This can be useful with bootstrap servers to track if peers are still live or drop off the network.</remarks>
         Heartbeat,
@@ -109,7 +114,7 @@ namespace P2PNet.Distribution.NetworkTasks
         /// Set the local identifier to the specified value.
         /// </summary>
         /// <remarks>This can be useful with the Authority trust policy to assign unique IDs to peers.</remarks>
-        AcceptIdentifier,
+        SetLocalIdentifier,
 
         /// <summary>
         /// Set the identifier of a peer to the specified value.

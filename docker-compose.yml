@@ -9,6 +9,8 @@ services:
         - network.host
         - security.insecure
     container_name: peer_one
+    environment:
+      - BROADCASTPORT=8001
     expose:
       - "1000-9000:1000-9000"
     networks:
@@ -23,7 +25,7 @@ services:
         - security.insecure
     container_name: peer_two
     environment:
-      - ASPNETCORE_URLS=http://+:8001
+      - BROADCASTPORT=8002
     expose:
       - "1000-9000:1000-9000"
     networks:
@@ -38,7 +40,7 @@ services:
         - security.insecure
     container_name: peer_three
     environment:
-      - ASPNETCORE_URLS=http://+:8002
+      - BROADCASTPORT=8003
     expose:
       - "1000-9000:1000-9000"
     networks:
