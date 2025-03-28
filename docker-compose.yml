@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  peerone:
+    build:
+      context: .
+      dockerfile: ExampleApplication/Dockerfile
+      entitlements:
+        - network.host
+        - security.insecure
+    container_name: peer_one
+    environment:
+      - BROADCASTPORT=8001
+    expose:
+      - "1000-9000:1000-9000"
+    networks:
+      - lan_peer_network
+
+  peertwo:
+    build:
+      context: .
+      dockerfile: ExampleApplication/Dockerfile
+      entitlements:
+        - network.host
+        - security.insecure
+    container_name: peer_two
+    environment:
+      - BROADCASTPORT=8002
+    expose:
+      - "1000-9000:1000-9000"
+    networks:
+      - lan_peer_network
+
+  peerthree:
+    build:
+      context: .
+      dockerfile: ExampleApplication/Dockerfile
+      entitlements:
+        - network.host
+        - security.insecure
+    container_name: peer_three
+    environment:
+      - BROADCASTPORT=8003
+    expose:
+      - "1000-9000:1000-9000"
+    networks:
+      - lan_peer_network
+
+networks:
+  lan_peer_network:

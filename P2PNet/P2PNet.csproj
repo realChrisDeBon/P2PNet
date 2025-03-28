@@ -1,0 +1,49 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net9.0</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+	<IsPackable>true</IsPackable>
+	<Version>1.0.0.6</Version>
+	<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+	<Title>P2PNet</Title>
+	<Company>CD</Company>
+	<Description> P2PNet is a peer-to-peer facilitation library with the goal of seamless peer discovery, secure encryption, and distributed data exchange. </Description>
+	<PackageReleaseNotes>More optimizations and setting the foundation for WAN discovery and IPv6.
+Including PacketDotNet and SharpPcap as dependencies.</PackageReleaseNotes>
+	<PackageTags>p2pnet;p2p;peer-to-peer;</PackageTags>
+	<PackageIcon>p2pnet_logo.jpg-HD.png</PackageIcon>
+	<RepositoryUrl>https://github.com/realChrisDeBon/P2PNet</RepositoryUrl>
+	<NoWarn>$(NoWarn);CS0168,CS0219</NoWarn>
+  </PropertyGroup>
+
+	<PropertyGroup>
+		<NoWarn>$(NoWarn);CS0168,CS0219,CA1416</NoWarn>
+	</PropertyGroup>
+
+	<ItemGroup>
+    <None Include="..\p2pnet_logo.jpg-HD.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ConsoleDebugger" Version="1.0.3" />
+    <PackageReference Include="PacketDotNet" Version="1.4.8-pre18" />
+    <PackageReference Include="PgpCore" Version="6.5.0" />
+    <PackageReference Include="SharpPcap" Version="6.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="P2PNet.Distribution.DistributionProtocol">
+      <Static>True</Static>
+    </Using>
+    <Using Include="System.Timers.Timer">
+      <Alias>Timer</Alias>
+    </Using>
+  </ItemGroup>
+
+</Project>

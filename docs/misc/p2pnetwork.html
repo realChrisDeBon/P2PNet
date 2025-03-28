@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title> | P2PNetDocs </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content=" | P2PNetDocs ">
+      
+      
+      <link rel="icon" href="../misc/p2pnet_logo.png">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/realChrisDeBon/P2PNet/blob/master/misc/p2pnetwork.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../misc/p2plogo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="p2pnetworkbasics">
+
+<h3 id="p2p-network-basics-">P2P Network Basics 🌐</h3>
+<hr>
+<p>The <code>P2PNet</code> library provides the core functionality for building and managing a peer-to-peer network. It includes classes and methods for peer discovery, connection management, data exchange, and network routines. This document provides a broad overview of the peer network basics.</p>
+<h3 id="initialization">Initialization</h3>
+<hr>
+<p>The <code>PeerNetwork</code> class is the main entry point for initializing and managing the peer-to-peer network. It sets up the necessary configurations and services required for network operations.</p>
+<ol>
+<li><strong>Configuration</strong>: The peer network hosts several configuration fields which can be used to fine tune control over the network operations. Some of these fields include subclasses that can be explored under <code>TrustPolicies</code>. Other aspects of configuration are in design such as the usage of queues and events, or the use of delegates for handling certain scenarios.</li>
+<li><strong>Logging</strong>: Logging is handled using the <code>ConsoleDebugger</code> package.</li>
+<li><strong>Network Configuration</strong>: The application scans all network interface devices and collects essential information needed for the peer network, such as public IP addresses.</li>
+</ol>
+<h3 id="operation">Operation</h3>
+<hr>
+<p>The <code>PeerNetwork</code> class operates by providing several key functionalities:</p>
+<ol>
+<li><p><strong>Peer Discovery and Connection</strong>:The library supports both LAN and WAN peer discovery. It uses broadcasting, multicasting, and designated ports to discover peers and establishes connections using TCP.</p>
+<ul>
+<li><strong>LAN Discovery</strong>: Broadcasts are used for peer discovery within the local network.</li>
+<li><strong>WAN Discovery</strong>: Specific WAN components and designated ports facilitate the discovery of peers over a wide area.</li>
+</ul>
+</li>
+<li><p><strong>Peer Management</strong>:A list of known peers and active peer channels is maintained. This supports functions such as adding or removing peers and managing connection permissions.</p>
+<ul>
+<li><strong>Known Peers</strong>: Stores details of all discovered peers.</li>
+<li><strong>Active Peer Channels</strong>: Manages active communication channels and leverages the <code>PeerChannel</code> class to encapsulate connection logic.</li>
+</ul>
+</li>
+<li><p><strong>Data Exchange and Network Packets</strong>:Data exchange between peers is accomplished via network packets formatted to ensure data consistency and integrity.</p>
+<ul>
+<li><strong>Network Packets</strong>:
+These packets encapsulate various types of information for transmission between peers. Types include identity packets, disconnect packets, data transmission packets, pure message packets, and more. The packets are wrapped using the <code>DistributionProtocol</code> so that each packet is tagged properly, making it easier for the receiver to determine the payload type.</li>
+<li><strong>DistributionHandler</strong>:
+This static class is responsible for handling outgoing and incoming data packets. It wraps raw data into packets and distributes them to trusted peers. In addition, the handler supports unwrapping payloads to extract raw data before processing.</li>
+<li><strong>NetworkTaskHandler</strong>:
+In parallel with data handling, the <code>NetworkTaskHandler</code> manages network tasks defined as actions such as blocking a peer, sending messages, or synchronizing data. Tasks are enqueued and processed asynchronously to maintain smooth operations across the network.</li>
+</ul>
+</li>
+<li><p><strong>Peer Channels</strong>:
+Each communication channel between peers is represented by an instance of the <code>PeerChannel</code> class. This class manages the relay of data packets, conducts connection retries, and enforces trust policies by invoking predefined delegates from the <code>PacketHandleProtocol</code>.</p>
+</li>
+</ol>
+<h3 id="routines">Routines</h3>
+<hr>
+<p>The <code>NetworkRoutines</code> class provides a mechanism for managing network routines. Routines are tasks that run at specified intervals to perform various network-related operations.</p>
+<ol>
+<li><strong>Routine Management</strong>: The <code>NetworkRoutines</code> class manages a dictionary of routines and provides methods for adding, starting, stopping, and setting the interval of routines.
+<ul>
+<li><strong>Default Routines</strong>: The application has default routines. These default routines do not automatically startup, but are automatically added in to the routines list.</li>
+<li><strong>Custom Routines</strong>: Users can add custom routines to perform specific tasks.</li>
+</ul>
+</li>
+</ol>
+<p>Routines are accessed using their <code>RoutineName</code> property. This is automatically handled when they are added as network routines.</p>
+<h3 id="trust-policies">Trust Policies</h3>
+<hr>
+<p>The <code>PeerNetwork</code> class employs a multi-pronged trust model to ensure secure and robust peer interactions. These policies determine how incoming connections are verified, how bootstrap nodes are treated, and how the local network identifier is managed.</p>
+<ol>
+<li><p><strong>Incoming Peer Trust Policy</strong>This policy governs the verification and handling of peers attempting to connect to the network. It includes several configurable settings:</p>
+<ul>
+<li><strong>AllowDefaultCommunication</strong>:
+Enables basic communication—such as exchanging <code>PureMessagePackets</code> and <code>DisconnectPackets</code>—without full verification.
+<em>Example use case</em>: In a trusted LAN environment, you might allow default communication to quickly establish a connection before a deeper security check.</li>
+<li><strong>AllowEnhancedPacketExchange</strong>:
+When enabled, permits the exchange of complex packets (e.g., <code>DataTransmissionPackets</code>) that may carry critical data.
+<em>Example use case</em>: For networks where peers are pre-validated, you might allow enhanced packet exchange immediately to boost performance.</li>
+<li><strong>RunDefaultTrustProtocol</strong>:
+Initiates the system’s built-in handshake mechanism (which you can replace with a custom <code>PeerTrustHandshake</code> delegate) that verifies a peer’s authenticity before granting them full network access.</li>
+<li><strong>Incoming Peer Placement</strong>:
+Supports both queue-based and event-based models. Queue-based placement helps throttle connections when there are many incoming requests, while event-based placement provides immediate notification for further processing.</li>
+</ul>
+</li>
+<li><p><strong>Bootstrap Trust Policy</strong>This policy handles the initial secure connection phase with bootstrap nodes that help a new node join the network. Key settings include:</p>
+<ul>
+<li><strong>AllowBootstrapTrustlessConnection</strong>:
+Permits bootstrap connections without pre-established credentials, often useful for open networks needing quick scalability.</li>
+<li><strong>AllowBootstrapAuthorityConnection</strong>:
+Allow bootstrap nodes to validate their credentials via key issuance, ensuring a tighter security model.</li>
+<li><strong>MustBeAuthority</strong>: Prohibits connecting to bootstrap nodes that are not operating in authority mode.
+<em>Example use case</em>: In a decentralized network, you may require that only nodes with verified authority can bootstrap, ensuring that malicious nodes cannot easily infiltrate the system.</li>
+<li><strong>FirstSingleLockingAuthority</strong>:
+Enforce strict measures so that the first trusted authority connection can be locked in—preventing further authority connections that might threaten network integrity.</li>
+</ul>
+</li>
+<li><p><strong>PeerNetworkTrustPolicy</strong>Focuses on controlling how the local network identifier—a unique marker for each peer—is set and maintained:</p>
+<ul>
+<li><strong>LocalIdentifierSetPolicy</strong>:
+Defines policies like <code>StrictLocalOnly</code> or <code>StrictRemoteOnly</code> to ensure that the identifier is assigned only under secure, predefined conditions.
+<em>Use case for remote</em>: In a decentralized network that values security, bootstrap servers are tasked with assigning identities to peers using a protocol that hashes the the public IPv4 address and another unique serial value if available. If a peer is found to be a malicious actor, it is much easier to then ban and exclude them from connecting.
+<em>Use case for local</em>: In a decentralized network that prioritizes anonymity, the identifier is nullified locally with <code>StrictLocalOnly</code> set to true. This will prevent the peer's activity from bearing any unique fingerprinting that isn't easy to spoof.</li>
+</ul>
+</li>
+</ol>
+<p>These trust policies work in tandem to balance flexibility and security. You can adjust the settings to suit various network scenarios—from enterprise-level internal networks that rely on rapid, low-security handshakes, to public peer-to-peer systems that demand strict, authority-based validations.</p>
+<h3 id="overview">Overview</h3>
+<hr>
+<p><strong>Peer Network Architecture</strong>
+Shows a broad overview of the architecture of the peer network, including default discovery mechanisms.</p>
+<p>
+    <img src="https://raw.githubusercontent.com/p2pnetsuite/P2PNet/refs/heads/master/misc/P2PNetwork.png" width="500" height="325" alt="peer network chart">
+</p>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

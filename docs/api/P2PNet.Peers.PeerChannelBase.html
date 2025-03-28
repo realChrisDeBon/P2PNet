@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class PeerChannelBase | P2PNetDocs </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class PeerChannelBase | P2PNetDocs ">
+      
+      
+      <link rel="icon" href="../misc/p2pnet_logo.png">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/realChrisDeBon/P2PNet/new/master/apiSpec/new?filename=P2PNet_Peers_PeerChannelBase.md&amp;value=---%0Auid%3A%20P2PNet.Peers.PeerChannelBase%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../misc/p2plogo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="P2PNet.Peers.PeerChannelBase">
+
+
+
+  <h1 id="P2PNet_Peers_PeerChannelBase" data-uid="P2PNet.Peers.PeerChannelBase" class="text-break">
+Class PeerChannelBase  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/master/P2PNet/Peers/PeerChannelBase.cs/#L15"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="P2PNet.html">P2PNet</a>.<a class="xref" href="P2PNet.Peers.html">Peers</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>P2PNet.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"></div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract class PeerChannelBase</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">PeerChannelBase</span></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist derived">
+    <dt>Derived</dt>
+    <dd>
+      <div><a class="xref" href="P2PNet.Peers.PeerChannel.html">PeerChannel</a></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="fields">Fields
+</h2>
+
+
+
+  <h3 id="P2PNet_Peers_PeerChannelBase_CustomData" data-uid="P2PNet.Peers.PeerChannelBase.CustomData">
+  CustomData
+  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/master/P2PNet/Peers/PeerChannelBase.cs/#L36"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected Dictionary&lt;string, Type&gt; CustomData</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="P2PNet_Peers_PeerChannelBase_IncomingDataQueue" data-uid="P2PNet.Peers.PeerChannelBase.IncomingDataQueue">
+  IncomingDataQueue
+  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/master/P2PNet/Peers/PeerChannelBase.cs/#L32"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected ConcurrentQueue&lt;string&gt; IncomingDataQueue</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.concurrent.concurrentqueue-1">ConcurrentQueue</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="P2PNet_Peers_PeerChannelBase_OutgoingDataQueue" data-uid="P2PNet.Peers.PeerChannelBase.OutgoingDataQueue">
+  OutgoingDataQueue
+  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/master/P2PNet/Peers/PeerChannelBase.cs/#L33"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected ConcurrentQueue&lt;string&gt; OutgoingDataQueue</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.concurrent.concurrentqueue-1">ConcurrentQueue</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="P2PNet_Peers_PeerChannelBase_packetQueue" data-uid="P2PNet.Peers.PeerChannelBase.packetQueue">
+  packetQueue
+  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/master/P2PNet/Peers/PeerChannelBase.cs/#L34"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected ConcurrentQueue&lt;DistributionProtocol.PacketTypeRelay&gt; packetQueue</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.concurrent.concurrentqueue-1">ConcurrentQueue</a>&lt;<a class="xref" href="P2PNet.Distribution.DistributionProtocol.html">DistributionProtocol</a>.<a class="xref" href="P2PNet.Distribution.DistributionProtocol.PacketTypeRelay.html">PacketTypeRelay</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="P2PNet_Peers_PeerChannelBase_IsTrustedPeer_" data-uid="P2PNet.Peers.PeerChannelBase.IsTrustedPeer*"></a>
+
+  <h3 id="P2PNet_Peers_PeerChannelBase_IsTrustedPeer" data-uid="P2PNet.Peers.PeerChannelBase.IsTrustedPeer">
+  IsTrustedPeer
+  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/master/P2PNet/Peers/PeerChannelBase.cs/#L159"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsTrustedPeer { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="P2PNet_Peers_PeerChannelBase__isTrustedPeer_" data-uid="P2PNet.Peers.PeerChannelBase._isTrustedPeer*"></a>
+
+  <h3 id="P2PNet_Peers_PeerChannelBase__isTrustedPeer" data-uid="P2PNet.Peers.PeerChannelBase._isTrustedPeer">
+  _isTrustedPeer
+  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/master/P2PNet/Peers/PeerChannelBase.cs/#L158"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected bool _isTrustedPeer { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="P2PNet_Peers_PeerChannelBase_AddProperties_" data-uid="P2PNet.Peers.PeerChannelBase.AddProperties*"></a>
+
+  <h3 id="P2PNet_Peers_PeerChannelBase_AddProperties_System_String_System_Type_" data-uid="P2PNet.Peers.PeerChannelBase.AddProperties(System.String,System.Type)">
+  AddProperties(string, Type)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/master/P2PNet/Peers/PeerChannelBase.cs/#L40"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Adds custom properties or data to the peer channel. This is to help with custom needs associated with the peer channel.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void AddProperties(string key, Type type)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>key</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>type</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="P2PNet_Peers_PeerChannelBase_ExtractWholeMessage_" data-uid="P2PNet.Peers.PeerChannelBase.ExtractWholeMessage*"></a>
+
+  <h3 id="P2PNet_Peers_PeerChannelBase_ExtractWholeMessage_System_String_" data-uid="P2PNet.Peers.PeerChannelBase.ExtractWholeMessage(System.String)">
+  ExtractWholeMessage(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/master/P2PNet/Peers/PeerChannelBase.cs/#L291"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected DistributionProtocol.PacketTypeRelay ExtractWholeMessage(string receivedData)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>receivedData</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="P2PNet.Distribution.DistributionProtocol.html">DistributionProtocol</a>.<a class="xref" href="P2PNet.Distribution.DistributionProtocol.PacketTypeRelay.html">PacketTypeRelay</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="P2PNet_Peers_PeerChannelBase_HandleDataTransmissionPacket_" data-uid="P2PNet.Peers.PeerChannelBase.HandleDataTransmissionPacket*"></a>
+
+  <h3 id="P2PNet_Peers_PeerChannelBase_HandleDataTransmissionPacket_System_String_" data-uid="P2PNet.Peers.PeerChannelBase.HandleDataTransmissionPacket(System.String)">
+  HandleDataTransmissionPacket(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/master/P2PNet/Peers/PeerChannelBase.cs/#L275"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void HandleDataTransmissionPacket(string data)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>data</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="P2PNet_Peers_PeerChannelBase_HandleDisconnectPacket_" data-uid="P2PNet.Peers.PeerChannelBase.HandleDisconnectPacket*"></a>
+
+  <h3 id="P2PNet_Peers_PeerChannelBase_HandleDisconnectPacket_System_String_" data-uid="P2PNet.Peers.PeerChannelBase.HandleDisconnectPacket(System.String)">
+  HandleDisconnectPacket(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/master/P2PNet/Peers/PeerChannelBase.cs/#L261"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void HandleDisconnectPacket(string data)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>data</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="P2PNet_Peers_PeerChannelBase_HandleIdentityPacket_" data-uid="P2PNet.Peers.PeerChannelBase.HandleIdentityPacket*"></a>
+
+  <h3 id="P2PNet_Peers_PeerChannelBase_HandleIdentityPacket_System_String_" data-uid="P2PNet.Peers.PeerChannelBase.HandleIdentityPacket(System.String)">
+  HandleIdentityPacket(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/master/P2PNet/Peers/PeerChannelBase.cs/#L254"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void HandleIdentityPacket(string data)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>data</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="P2PNet_Peers_PeerChannelBase_HandlePeerGroupPacket_" data-uid="P2PNet.Peers.PeerChannelBase.HandlePeerGroupPacket*"></a>
+
+  <h3 id="P2PNet_Peers_PeerChannelBase_HandlePeerGroupPacket_System_String_" data-uid="P2PNet.Peers.PeerChannelBase.HandlePeerGroupPacket(System.String)">
+  HandlePeerGroupPacket(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/master/P2PNet/Peers/PeerChannelBase.cs/#L268"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void HandlePeerGroupPacket(string data)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>data</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="P2PNet_Peers_PeerChannelBase_HandlePureMessagePacket_" data-uid="P2PNet.Peers.PeerChannelBase.HandlePureMessagePacket*"></a>
+
+  <h3 id="P2PNet_Peers_PeerChannelBase_HandlePureMessagePacket_System_String_" data-uid="P2PNet.Peers.PeerChannelBase.HandlePureMessagePacket(System.String)">
+  HandlePureMessagePacket(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/master/P2PNet/Peers/PeerChannelBase.cs/#L282"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void HandlePureMessagePacket(string data)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>data</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="P2PNet_Peers_PeerChannelBase_IsValidMessageFormat_" data-uid="P2PNet.Peers.PeerChannelBase.IsValidMessageFormat*"></a>
+
+  <h3 id="P2PNet_Peers_PeerChannelBase_IsValidMessageFormat_System_String_" data-uid="P2PNet.Peers.PeerChannelBase.IsValidMessageFormat(System.String)">
+  IsValidMessageFormat(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/master/P2PNet/Peers/PeerChannelBase.cs/#L328"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected bool IsValidMessageFormat(string inputString)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>inputString</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="P2PNet_Peers_PeerChannelBase_LoadOutgoingData_" data-uid="P2PNet.Peers.PeerChannelBase.LoadOutgoingData*"></a>
+
+  <h3 id="P2PNet_Peers_PeerChannelBase_LoadOutgoingData_P2PNet_NetworkPackets_CollectionSharePacket_" data-uid="P2PNet.Peers.PeerChannelBase.LoadOutgoingData(P2PNet.NetworkPackets.CollectionSharePacket)">
+  LoadOutgoingData(CollectionSharePacket)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/master/P2PNet/Peers/PeerChannelBase.cs/#L87"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void LoadOutgoingData(CollectionSharePacket peerColPacket)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>peerColPacket</code> <a class="xref" href="P2PNet.NetworkPackets.CollectionSharePacket.html">CollectionSharePacket</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="P2PNet_Peers_PeerChannelBase_LoadOutgoingData_" data-uid="P2PNet.Peers.PeerChannelBase.LoadOutgoingData*"></a>
+
+  <h3 id="P2PNet_Peers_PeerChannelBase_LoadOutgoingData_P2PNet_NetworkPackets_DataTransmissionPacket_" data-uid="P2PNet.Peers.PeerChannelBase.LoadOutgoingData(P2PNet.NetworkPackets.DataTransmissionPacket)">
+  LoadOutgoingData(DataTransmissionPacket)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/master/P2PNet/Peers/PeerChannelBase.cs/#L75"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void LoadOutgoingData(DataTransmissionPacket dataTransmissionPacket)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dataTransmissionPacket</code> <a class="xref" href="P2PNet.NetworkPackets.DataTransmissionPacket.html">DataTransmissionPacket</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="P2PNet_Peers_PeerChannelBase_LoadOutgoingData_" data-uid="P2PNet.Peers.PeerChannelBase.LoadOutgoingData*"></a>
+
+  <h3 id="P2PNet_Peers_PeerChannelBase_LoadOutgoingData_P2PNet_NetworkPackets_DisconnectPacket_" data-uid="P2PNet.Peers.PeerChannelBase.LoadOutgoingData(P2PNet.NetworkPackets.DisconnectPacket)">
+  LoadOutgoingData(DisconnectPacket)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/master/P2PNet/Peers/PeerChannelBase.cs/#L93"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void LoadOutgoingData(DisconnectPacket disconnectPacket)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>disconnectPacket</code> <a class="xref" href="P2PNet.NetworkPackets.DisconnectPacket.html">DisconnectPacket</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="P2PNet_Peers_PeerChannelBase_LoadOutgoingData_" data-uid="P2PNet.Peers.PeerChannelBase.LoadOutgoingData*"></a>
+
+  <h3 id="P2PNet_Peers_PeerChannelBase_LoadOutgoingData_P2PNet_NetworkPackets_PureMessagePacket_" data-uid="P2PNet.Peers.PeerChannelBase.LoadOutgoingData(P2PNet.NetworkPackets.PureMessagePacket)">
+  LoadOutgoingData(PureMessagePacket)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/master/P2PNet/Peers/PeerChannelBase.cs/#L81"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void LoadOutgoingData(PureMessagePacket pureMessagePacket)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>pureMessagePacket</code> <a class="xref" href="P2PNet.NetworkPackets.PureMessagePacket.html">PureMessagePacket</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="P2PNet_Peers_PeerChannelBase_LoadOutgoingData_" data-uid="P2PNet.Peers.PeerChannelBase.LoadOutgoingData*"></a>
+
+  <h3 id="P2PNet_Peers_PeerChannelBase_LoadOutgoingData_System_String_" data-uid="P2PNet.Peers.PeerChannelBase.LoadOutgoingData(System.String)">
+  LoadOutgoingData(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/master/P2PNet/Peers/PeerChannelBase.cs/#L71"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Add the outgoing information to the broadcast queue.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void LoadOutgoingData(string outgoing)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>outgoing</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The information to be queued for broadcast.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="P2PNet_Peers_PeerChannelBase_OnDataReceived_" data-uid="P2PNet.Peers.PeerChannelBase.OnDataReceived*"></a>
+
+  <h3 id="P2PNet_Peers_PeerChannelBase_OnDataReceived_System_String_" data-uid="P2PNet.Peers.PeerChannelBase.OnDataReceived(System.String)">
+  OnDataReceived(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/master/P2PNet/Peers/PeerChannelBase.cs/#L139"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void OnDataReceived(string data)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>data</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="P2PNet_Peers_PeerChannelBase_PacketHandler_" data-uid="P2PNet.Peers.PeerChannelBase.PacketHandler*"></a>
+
+  <h3 id="P2PNet_Peers_PeerChannelBase_PacketHandler_System_Threading_CancellationToken_" data-uid="P2PNet.Peers.PeerChannelBase.PacketHandler(System.Threading.CancellationToken)">
+  PacketHandler(CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/master/P2PNet/Peers/PeerChannelBase.cs/#L217"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected Task PacketHandler(CancellationToken cancellationToken)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="P2PNet_Peers_PeerChannelBase_StartPacketHandling_" data-uid="P2PNet.Peers.PeerChannelBase.StartPacketHandling*"></a>
+
+  <h3 id="P2PNet_Peers_PeerChannelBase_StartPacketHandling" data-uid="P2PNet.Peers.PeerChannelBase.StartPacketHandling">
+  StartPacketHandling()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/master/P2PNet/Peers/PeerChannelBase.cs/#L212"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void StartPacketHandling()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="P2PNet_Peers_PeerChannelBase_TerminateChannel_" data-uid="P2PNet.Peers.PeerChannelBase.TerminateChannel*"></a>
+
+  <h3 id="P2PNet_Peers_PeerChannelBase_TerminateChannel" data-uid="P2PNet.Peers.PeerChannelBase.TerminateChannel">
+  TerminateChannel()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/master/P2PNet/Peers/PeerChannelBase.cs/#L161"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void TerminateChannel()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="P2PNet_Peers_PeerChannelBase_TerminateCurrentReceiver_" data-uid="P2PNet.Peers.PeerChannelBase.TerminateCurrentReceiver*"></a>
+
+  <h3 id="P2PNet_Peers_PeerChannelBase_TerminateCurrentReceiver" data-uid="P2PNet.Peers.PeerChannelBase.TerminateCurrentReceiver">
+  TerminateCurrentReceiver()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/master/P2PNet/Peers/PeerChannelBase.cs/#L186"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Terminates the receiver task.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void TerminateCurrentReceiver()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+  <h4 class="section" id="P2PNet_Peers_PeerChannelBase_TerminateCurrentReceiver_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Peer channel will cease processing inbound data packets.</p>
+</div>
+
+
+
+
+  <a id="P2PNet_Peers_PeerChannelBase_TerminateCurrentSender_" data-uid="P2PNet.Peers.PeerChannelBase.TerminateCurrentSender*"></a>
+
+  <h3 id="P2PNet_Peers_PeerChannelBase_TerminateCurrentSender" data-uid="P2PNet.Peers.PeerChannelBase.TerminateCurrentSender">
+  TerminateCurrentSender()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/master/P2PNet/Peers/PeerChannelBase.cs/#L178"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Terminates the sender task.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void TerminateCurrentSender()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+  <h4 class="section" id="P2PNet_Peers_PeerChannelBase_TerminateCurrentSender_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Peer channel will cease broadcasting outbound data packets.</p>
+</div>
+
+
+
+
+  <a id="P2PNet_Peers_PeerChannelBase_TerminatePacketHandler_" data-uid="P2PNet.Peers.PeerChannelBase.TerminatePacketHandler*"></a>
+
+  <h3 id="P2PNet_Peers_PeerChannelBase_TerminatePacketHandler" data-uid="P2PNet.Peers.PeerChannelBase.TerminatePacketHandler">
+  TerminatePacketHandler()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/master/P2PNet/Peers/PeerChannelBase.cs/#L193"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Terminates the packet handler task.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void TerminatePacketHandler()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="P2PNet_Peers_PeerChannelBase_TrustPeer_" data-uid="P2PNet.Peers.PeerChannelBase.TrustPeer*"></a>
+
+  <h3 id="P2PNet_Peers_PeerChannelBase_TrustPeer" data-uid="P2PNet.Peers.PeerChannelBase.TrustPeer">
+  TrustPeer()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/master/P2PNet/Peers/PeerChannelBase.cs/#L200"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Promote trust level of peer.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void TrustPeer()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="P2PNet_Peers_PeerChannelBase_TryGetProperty_" data-uid="P2PNet.Peers.PeerChannelBase.TryGetProperty*"></a>
+
+  <h3 id="P2PNet_Peers_PeerChannelBase_TryGetProperty_System_String_" data-uid="P2PNet.Peers.PeerChannelBase.TryGetProperty(System.String)">
+  TryGetProperty(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/master/P2PNet/Peers/PeerChannelBase.cs/#L55"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Attempts to retrieve a custom property or data from the peer channel.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Type TryGetProperty(string key)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>key</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></dt>
+    <dd><p>The target value stored in the peer channel.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="P2PNet_Peers_PeerChannelBase_UntrustPeer_" data-uid="P2PNet.Peers.PeerChannelBase.UntrustPeer*"></a>
+
+  <h3 id="P2PNet_Peers_PeerChannelBase_UntrustPeer" data-uid="P2PNet.Peers.PeerChannelBase.UntrustPeer">
+  UntrustPeer()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/master/P2PNet/Peers/PeerChannelBase.cs/#L207"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Demote trust level of peer.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void UntrustPeer()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="events">Events
+</h2>
+
+
+
+  <h3 id="P2PNet_Peers_PeerChannelBase_DataReceived" data-uid="P2PNet.Peers.PeerChannelBase.DataReceived">
+  DataReceived
+  <a class="header-action link-secondary" title="View source" href="https://github.com/realChrisDeBon/P2PNet/blob/master/P2PNet/Peers/PeerChannelBase.cs/#L128"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Occurs when a peer channel receives incoming data or information.
+Subscribers can use this event to handle and process incoming data and information.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;PeerChannelBase.DataReceivedEventArgs&gt; DataReceived</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="P2PNet.Peers.PeerChannelBase.html">PeerChannelBase</a>.<a class="xref" href="P2PNet.Peers.PeerChannelBase.DataReceivedEventArgs.html">DataReceivedEventArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+  <h4 class="section" id="P2PNet_Peers_PeerChannelBase_DataReceived_examples">Examples</h4>
+  <pre><code class="lang-csharp">// Event is raised when a new known peer is discovered, regardless of point of origin
+private static void HandleNewKnownPeer(object sender, PeerNetwork.NewPeerEventArgs e)
+{
+    // The peer channel's DataReceived event subscribed to HandleIncomingData function
+    e.peerChannel.DataReceived += HandleIncomingData;
+}
+
+private static void HandleIncomingData(object? sender, Peer_Channel_Base.DataReceivedEventArgs e)
+{
+    Console.WriteLine(e.Data); // incoming information received by the PeerChannel is printed to console
+}</code></pre>
+
+
+
+
+
+
+
+</article>
+
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

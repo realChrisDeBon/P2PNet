@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title> | P2PNetDocs </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content=" | P2PNetDocs ">
+      
+      
+      <link rel="icon" href="../misc/p2pnet_logo.png">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/realChrisDeBon/P2PNet/blob/master/misc/testing.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../misc/p2plogo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="testing">
+
+<h3 id="testing">Testing</h3>
+<hr>
+<p>This portion of documentation outlines different methods of testing, and different test types with varying levels of setup complexity.</p>
+<p><strong>LAN Tests</strong></p>
+<ul>
+<li><p>Quick LAN test - quickly setup a peer connection using the ExampleApplication container and a local instance started from Visual Studio</p>
+</li>
+<li><p>Multi-peer LAN test - runs a Powershell script which automates a Docker Compose setup to simulate 3 peers establishing connection over NAT</p>
+</li>
+</ul>
+<p><strong>WAN Tests</strong></p>
+<ul>
+<li><p>Bootstrap test - <em>in progress</em></p>
+</li>
+<li><p>Widescan test - <em>in progress</em></p>
+</li>
+</ul>
+<hr>
+<h3 id="quick-lan-test">Quick LAN test</h3>
+<ol>
+<li>In the ExampleApplication, startup the Docker container from Visual Studio.<p>
+     <img src="https://raw.githubusercontent.com/p2pnetsuite/P2PNet/refs/heads/master/misc/screenshots/quick_lan_test_1.png">
+ </p>
+</li>
+<li>Once the container have verifiably started, go ahead and stop the container (Ctrl + C or from Docker dashboard)<p>
+     <img src="https://raw.githubusercontent.com/p2pnetsuite/P2PNet/refs/heads/master/misc/screenshots/quick_lan_test_2.png">
+ </p>
+</li>
+<li>With the container still stopped, go ahead and run a regular instance of the ExampleApplication from Visual Studio (Ctrl + F5)<p>
+     <img src="https://raw.githubusercontent.com/p2pnetsuite/P2PNet/refs/heads/master/misc/screenshots/quick_lan_test_3.png">
+ </p>
+</li>
+<li>Ensure the regular instance of the ExampleApplication starts up. Leave this open.<p>
+     <img src="https://raw.githubusercontent.com/p2pnetsuite/P2PNet/refs/heads/master/misc/screenshots/quick_lan_test_4.png">
+ </p>
+</li>
+<li>With the regular instance running, go into your Docker dashboard and go to Containers. Proceed to startup the ExampleApplication container (simply click the Start button). Go to the Exec tab and you should see the Windows terminal open. Type <code>ExampleApplication.exe</code> then hit enter.<p>
+     <img src="https://raw.githubusercontent.com/p2pnetsuite/P2PNet/refs/heads/master/misc/screenshots/quick_lan_test_5.png">
+ </p>
+</li>
+<li>You should now be able to see the application start up in the Docker container. From this point, you have two instances of the ExampleApplication running which you should be able to observe side-by-side. Observe and see if the default trust protocol shows back and forth communication between the peers.<p>
+     <img src="https://raw.githubusercontent.com/p2pnetsuite/P2PNet/refs/heads/master/misc/screenshots/quick_lan_test_6.png">
+ </p>
+</li>
+</ol>
+<h3 id="multi-peer-lan-test">Multi-peer LAN test</h3>
+<ol>
+<li>Open the solution in Visual Studio. It is advised to Clean Solution and then to do a fresh Build Solution. Then, proceed to run the <code>LAN_Test.ps1</code> script that should be in the root directory<p>
+     <img src="https://raw.githubusercontent.com/p2pnetsuite/P2PNet/refs/heads/master/misc/screenshots/multipeer_lan_test_1.png">
+ </p>
+</li>
+<li>The Docker Compose build process may take a minute or two. This is normal.<p>
+     <img src="https://raw.githubusercontent.com/p2pnetsuite/P2PNet/refs/heads/master/misc/screenshots/multipeer_lan_test_2.png">
+ </p>
+</li>
+<li>The build process creates a new NAT network and 3 individual peer containers. This is automated through the Powershell script.<p>
+     <img src="https://raw.githubusercontent.com/p2pnetsuite/P2PNet/refs/heads/master/misc/screenshots/multipeer_lan_test_3.png">
+ </p>
+</li>
+<li>You should then be able to observe the multi-peer LAN test output within the Developer Powershell console in Visual Studio. It will typically look something like this:<p>
+     <img src="https://raw.githubusercontent.com/p2pnetsuite/P2PNet/refs/heads/master/misc/screenshots/multipeer_lan_test_4.png">
+ </p>
+</li>
+</ol>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

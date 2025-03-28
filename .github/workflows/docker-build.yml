@@ -1,0 +1,26 @@
+name: Build and Publish Docker Image
+
+on:
+  push:
+    paths:
+      - 'P2PBootstrap/**'
+  pull_request:
+    paths:
+      - 'P2PBootstrap/**'
+
+jobs:
+  dockerbuild:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Log in to GitHub Container Registry
+      run: echo "${{ secrets.CR_PAT }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+    - name: Build Docker image
+      run: docker build -t ghcr.io/p2pnetsuite/p2pnet/p2pbootstrap:latest -f P2PBootstrap/Dockerfile .
+    
+    - name: Push Docker image
+      run: docker push ghcr.io/p2pnetsuite/p2pnet/p2pbootstrap:latest
